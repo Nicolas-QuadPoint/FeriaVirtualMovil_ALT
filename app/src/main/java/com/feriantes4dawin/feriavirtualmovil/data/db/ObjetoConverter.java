@@ -94,6 +94,11 @@ public class ObjetoConverter {
         return new Gson().fromJson(json, ProductoVenta.class);
     }
 
+    @TypeConverter
+    public Producto JSONAProducto(String json){
+        return new Gson().fromJson(json, Producto.class);
+    }
+
 
     @TypeConverter
     public Rol JSONARol(String json){

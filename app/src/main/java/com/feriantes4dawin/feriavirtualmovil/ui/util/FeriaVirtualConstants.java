@@ -20,7 +20,7 @@ public final class FeriaVirtualConstants {
      * URL base que indica la dirección del 
      * webapi de FeriaVirtual. 
      */
-    public static final String URL_BASE_API_WEB_FERIAVIRTUAL = "http://192.168.100.9:3000/api/v1/";
+    public static final String URL_BASE_API_WEB_FERIAVIRTUAL = "http://192.168.100.8:3000/api/v1/";
 
     /**
      * Identificador del nombre de la base de datos 
