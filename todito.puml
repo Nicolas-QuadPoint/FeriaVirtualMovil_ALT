@@ -1,0 +1,879 @@
+@startuml
+class com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesViewModelFactory {
+- FeriaVirtualApplication feriaVirtualApplication
+- VentaRepository ventaRepository
++ <<Create>> MyProcessesViewModelFactory(VentaRepository,FeriaVirtualApplication)
++ T create(Class<T>)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.OfertaSubastaProductor {
++ Integer id_subasta_productor
++ Integer unidades_producto
++ Integer precio_unidad
++ Producto producto
++ Productor productor
++ Integer seleccionado
++ Subasta subasta
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.home.HomeViewModel {
++ MutableLiveData<String> _text
++ LiveData<String> text
++ <<Create>> HomeViewModel()
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository {
+~ Call<VentasSimples> getVentasSimplesDisponibles(Usuario)
+~ Call<VentasSimples> getVentasDisponibles(Usuario)
+~ Call<Venta> getInfoVenta(Integer)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.remote.FeriaVirtualAPIProvider {
+- FeriaVirtualApplication fva
+- Retrofit.Builder apiServiceCreator
++ <<Create>> FeriaVirtualAPIProvider(FeriaVirtualApplication)
++ UsuarioAPIService provideUsuarioAPI()
++ VentaAPIService provideVentaAPI()
++ SubastaAPIService provideSubastaAPI()
+- Retrofit.Builder commonAPIBuilder()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Ventas {
++ List<Venta> ventas
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.local.UsuarioLocalDataSource {
++ UsuarioDAO usuarioDAO
++ <<Create>> UsuarioLocalDataSource(UsuarioDAO)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.LoggedInUser {
++ String userId
++ String displayName
++ <<Create>> LoggedInUser(String,String)
++ <<Create>> LoggedInUser()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.main.MainActivity {
+- AppBarConfiguration appBarConfiguration
+- MainViewModel mainViewmodel
+- MainViewModelFactory mainViewModelFactory
++ FeriaVirtualComponent feriaVirtualComponent
++ UsuarioRepositoryImpl usuarioRepository
++ Gson convertidorJSON
++ void onCreate(Bundle)
++ boolean onCreateOptionsMenu(Menu)
++ boolean onOptionsItemSelected(MenuItem)
++ void onBackPressed()
++ boolean onSupportNavigateUp()
++ void onActivityResult(int,int,Intent)
++ void navLogoutClick(View)
++ void actualizarDatosMenuLateral(Usuario)
++ void cerrarSesion()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaProductor {
++ Subasta subasta
++ Productor productor
++ List<ObjetoPujaSubastaProductor> lista_productos_puja
+}
+class com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication {
+- FeriaVirtualComponent feriaVirtualComponent
++ void onCreate()
++ FeriaVirtualComponent getFeriaVirtualComponent()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ProductoVenta {
++ Producto producto
++ Integer cantidad
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.ConnectivityInterceptor {
+~ Response intercept(Interceptor.Chain)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileViewModel {
+- UsuarioRepository usuarioRepository
+- Gson convertidorJSON
+- FeriaVirtualApplication fva
+- MutableLiveData<Usuario> datosMutablesUsuario
+- LiveData<Usuario> datosUsuario
++ <<Create>> MyProfileViewModel(UsuarioRepository,Gson,FeriaVirtualApplication)
++ LiveData<Usuario> getDatosUsuario()
+- void cargarDatosUsuario()
++ void guardarCambiosUsuario(Usuario)
++ void cambiarContrasena(ObjetoModificacionContrasena,SimpleAction)
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.AuthenticationInterceptor {
+~ Response intercept(Interceptor.Chain)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.TiposSubasta {
++ List<TipoSubasta> tipos_subasta
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ParProductoCantidad {
++ Producto producto
++ Integer cantidad
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadosUsuario {
++ List<EstadoUsuario> estados_usuario
+}
+class com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl {
++ SubastaDAO subastaDAO
++ SubastaAPIService subastaAPI
++ <<Create>> SubastaRepositoryImpl(SubastaDAO,SubastaAPIService)
+}
+interface com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction {
+~ void doAction(Object)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Usuarios {
++ List<Usuario> usuarios
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesViewModelFactory {
+- VentaRepository ventaRepository
+- FeriaVirtualApplication fva
++ <<Create>> CurrentSalesViewModelFactory(VentaRepository,FeriaVirtualApplication)
++ T create(Class<T>)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Usuario {
++ Integer secret_id_usuario
++ Integer id_usuario
++ String personal_id
++ String nombre
++ String nombre_segundo
++ String apellido_paterno
++ String apellido_materno
++ String fecha_nacimiento
++ Integer telefono
++ String direccion
++ String email
++ String contrasena
++ String salt_contrasena
++ Nacionalidad nacionalidad
++ Rol rol
++ EstadoUsuario estado_usuario
++ ContratoUsuario contrato_usuario
++ String toString()
++ String getNombreCompleto()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Producto {
++ Integer id_producto
++ String nombre
++ Integer volumen
++ TipoProducto tipo_producto
++ Integer costo_mantencion
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Transportista {
++ String nombre_empresa
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.remote.SubastaRemoteDataSource {
++ SubastaAPIService subastaAPI
++ <<Create>> SubastaRemoteDataSource(SubastaAPIService)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.network.calladapters.LiveDataCallAdapterFactory {
++ CallAdapter<?,?> get(Type,Annotation[],Retrofit)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ParesClaveValor {
++ List<ParClaveValor> valores
+}
+class com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplicationModule {
+- Application application
++ <<Create>> FeriaVirtualApplicationModule(Application)
++ Application getContext()
+}
+interface com.feriantes4dawin.feriavirtualmovil.ui.util.ViewmodelFactory {
+~ T create(T)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants {
++ {static} int ESCOGER_IMAGEN_REQUEST
++ {static} String URL_BASE_API_WEB_FERIAVIRTUAL
++ {static} String NOMBRE_BASE_DATOS
++ {static} String SP_FERIAVIRTUAL_WEBAPI_AUTH_TOKEN
++ {static} String FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES
++ {static} String SP_USUARIO_ID
++ {static} String SP_USUARIO_OBJ_STR
++ {static} String SP_VENTA_ID
++ {static} int CURRENT_LOGGED_USUARIO
++ {static} String FRAGMENTO_LISTA_PETICIONES_VENTA
++ {static} String FRAGMENTO_MI_PERFIL
++ {static} String FRAGMENTO_MIS_PROCESOS
++ {static} String FRAGMENTO_INICIO
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadosSubasta {
++ List<EstadoSubasta> estados_subasta
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.db.UsuarioDAO {
+~ void upsert(Usuario)
+~ Usuario find()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.ListItemDetailProductCustomAdapter {
+- List<ProductoVenta> productosVenta
++ <<Create>> ListItemDetailProductCustomAdapter(List<ProductoVenta>)
++ ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder,int)
++ int getItemCount()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder {
++ Integer id_producto
++ TextView lblNombreProducto
++ TextView lblTipoProducto
++ TextView lblUnidades
++ <<Create>> ListItemDetailProductViewHolder(View)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesFragment {
+- CurrentSalesViewModel currentSalesViewModel
+- CurrentSalesViewModelFactory currentSalesViewModelFactory
+- FeriaVirtualComponent feriaVirtualComponent
++ VentaRepositoryImpl ventaRepository
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onAttach(Context)
+- void rellenarListaVentas(VentasSimples)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.ConnectivityInterceptorImpl {
+- Context c
++ <<Create>> ConnectivityInterceptorImpl(Context)
++ ConnectivityInterceptorImpl getInstance(Context)
++ Response intercept(Interceptor.Chain)
+- boolean isOnline()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesFragment {
+- MyProcessesViewModelFactory myProcessesViewModelFactory
+- MyProcessesViewModel myProcessesViewModel
+- FeriaVirtualComponent feriaVirtualComponent
++ VentaRepositoryImpl ventaRepository
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onAttach(Context)
++ void actualizarDatosVista(VentasSimples)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.SaleDetailViewModel {
+~ VentaRepository ventaRepository
+~ FeriaVirtualApplication feriaVirtualApplication
+~ LiveData<Venta> datosVenta
+~ MutableLiveData<Venta> datosMutablesVenta
++ <<Create>> SaleDetailViewModel(VentaRepository,FeriaVirtualApplication)
++ LiveData<Venta> getDatosVenta(Integer)
+- void cargarDatosVenta(Integer)
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository {
+~ Call<ResultadoUsuario> loginUsuario(LoginObject)
+~ Call<ResultadoUsuario> getInfoUsuario(Usuario)
+~ Call<ResultadoID> updateUsuario(Usuario)
+~ Call<ResultadoID> changePasswordUsuario(ObjetoModificacionContrasena)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Nacionalidades {
++ List<Nacionalidad> nacionalidades
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.auction.AuctionSaleActivity {
+- AppBarConfiguration appBarConfiguration
+# void onCreate(Bundle)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID {
++ Integer id_resultado
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.SaleDetailViewModelFactory {
+~ VentaRepository ventaRepository
+~ FeriaVirtualApplication feriaVirtualApplication
++ <<Create>> SaleDetailViewModelFactory(VentaRepository,FeriaVirtualApplication)
++ T create(Class<T>)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.Result {
++ String toString()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.Result.Success {
++ T data
++ <<Create>> Success()
++ <<Create>> Success(T)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.Result.Error {
++ Exception exception
++ <<Create>> Error()
++ <<Create>> Error(Exception)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadoContrato {
++ Integer id_estado_contrato
++ String descripcion
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.login.LoginResult {
++ LoggedInUserView success
++ Integer error
++ <<Create>> LoginResult()
++ <<Create>> LoginResult(LoggedInUserView,Integer)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ProductosVenta {
++ List<ProductoVenta> productosVenta
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadosContrato {
++ List<EstadoContrato> estados_contrato
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.local.VentaLocalDataSource {
++ VentaDAO ventaDAO
++ <<Create>> VentaLocalDataSource(VentaDAO)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ParClaveValor {
++ Integer id
++ String valor
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.login.LoginFormState {
++ Integer usernameError
++ Integer passwordError
++ Boolean isDataValid
++ <<Create>> LoginFormState()
++ <<Create>> LoginFormState(Integer,Integer,Boolean)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta {
++ Integer id_tipo_venta
++ String descripcion
+}
+class com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl {
++ VentaDAO ventaDAO
++ VentaAPIService ventaAPI
++ <<Create>> VentaRepositoryImpl(VentaDAO,VentaAPIService)
++ Call<VentasSimples> getVentasDisponibles(Usuario)
++ Call<VentasSimples> getVentasSimplesDisponibles(Usuario)
++ Call<Venta> getInfoVenta(Integer)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesViewModel {
+- FeriaVirtualApplication feriaVirtualApplication
+- VentaRepository ventaRepository
+- LiveData<VentasSimples> datosVenta
+- MutableLiveData<VentasSimples> datosMutablesVenta
++ <<Create>> MyProcessesViewModel(VentaRepository,FeriaVirtualApplication)
+~ LiveData<VentasSimples> getDatosVenta()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.network.calladapters.ApiResponse {
+- {static} Pattern LINK_PATTERN
+- {static} Pattern PAGE_PATTERN
+- {static} String NEXT_LINK
++ int code
++ T body
++ String errorMessage
++ Map<String,String> links
++ <<Create>> ApiResponse(Throwable)
++ <<Create>> ApiResponse(Response<T>)
++ boolean isSuccessful()
++ Integer getNextPage()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadoSubasta {
++ Integer id_estado_venta
++ String descripcion
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Nacionalidad {
++ Integer id_nacionalidad
++ String iso
++ String nombre
++ String codigo_telefonico
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.util.JsonConverterProvider {
++ Gson getJSONParser()
+}
+abstract class com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleDialog {
+# AppCompatActivity act
+# SimpleAction positiveResponseFunc
+# SimpleAction negativeResponseFunc
+# AlertDialog dlg
+# View v
++ <<Create>> SimpleDialog(AppCompatActivity,SimpleAction,SimpleAction)
+# {abstract}View prepareView()
+# {abstract}void prepareResponses()
++ AlertDialog generate()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoUsuario {
++ String token_usuario
++ Usuario usuario
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Subasta {
++ Integer id_subasta
++ String fecha_inicio_subasta
++ String fecha_fin_subasta
++ TipoSubasta tipo_subasta
++ EstadoSubasta estado_subasta
++ Venta venta
++ List<ObjetoPujaSubastaProductor> ofertas_productores
++ List<ObjetoPujaSubastaTransportista> ofertas_transportistas
+}
+class com.feriantes4dawin.feriavirtualmovil.misc.exceptions.NoConnectionException {
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesViewModel {
+- VentaRepository ventaRepository
+- FeriaVirtualApplication fva
+- LiveData<VentasSimples> datosVenta
+- MutableLiveData<VentasSimples> datosMutablesVenta
++ <<Create>> CurrentSalesViewModel(VentaRepository,FeriaVirtualApplication)
++ LiveData<VentasSimples> getDatosVenta()
+- void cargarListaVentas()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.db.ObjetoConverter {
++ String ObjetoAJSON(Object)
++ String ListaAJSON(List<?>)
++ List<ProductoVenta> JSONAListaProductosVenta(String)
++ List<ObjetoPujaSubastaProductor> JSONAListaObjetosPujaSubastaProductor(String)
++ List<ObjetoPujaSubastaTransportista> JSONAListaObjetosPujaSubastaTransportista(String)
++ ClienteExterno JSONAClienteExterno(String)
++ ContratoUsuario JSONAContratoUsuario(String)
++ Transportista JSONATransportista(String)
++ EstadoUsuario JSONAEstadoUsuario(String)
++ EstadoContrato JSONAEstadoContrato(String)
++ EstadoSubasta JSONAEstadoSubasta(String)
++ EstadoVenta JSONAEstadoVenta(String)
++ Minorista JSONAMinorista(String)
++ Nacionalidad JSONANacionalidad(String)
++ ProductoVenta JSONAProductosVenta(String)
++ Rol JSONARol(String)
++ Subasta JSONASubasta(String)
++ TipoVenta JSONATipoVenta(String)
++ TipoProducto JSONATipoProducto(String)
++ TipoSubasta JSONATipoSubasta(String)
++ Usuario JSONAUsuario(String)
++ Venta JSONAVenta(String)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl {
+- UsuarioRepository instancia
+- UsuarioDAO usuarioDAO
+- UsuarioAPIService usuarioAPI
+- Usuario usuarioActivo
++ <<Create>> UsuarioRepositoryImpl(UsuarioDAO,UsuarioAPIService)
++ Call<ResultadoUsuario> loginUsuario(LoginObject)
++ Call<ResultadoUsuario> getInfoUsuario(Usuario)
++ Call<ResultadoID> updateUsuario(Usuario)
++ Call<ResultadoID> changePasswordUsuario(ObjetoModificacionContrasena)
+- void saveUsuarioToDatabase(Usuario)
+- void setLoggedInUser(Usuario)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.SaleDetailActivity {
+- SaleDetailViewModel saleDetailViewModel
+- SaleDetailViewModelFactory saleDetailViewModelFactory
+- FeriaVirtualComponent feriaVirtualComponent
+- Integer id_venta
++ VentaRepositoryImpl ventaRepository
++ void onCreate(Bundle)
++ void onBackPressed()
++ void supportNavigateUpTo(Intent)
+- void rellenarDatosVenta(Venta)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.remote.UsuarioRemoteDataSource {
++ UsuarioAPIService usuarioAPI
++ <<Create>> UsuarioRemoteDataSource(UsuarioAPIService)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.login.LoginActivity {
+- FeriaVirtualComponent feriaVirtualComponent
++ UsuarioRepositoryImpl usuarioRepository
++ Gson convertidorJSON
+- LoginViewModel loginViewModel
+- LoginViewModelFactory loginViewModelFactory
++ void onCreate(Bundle)
+- void updateUiWithUser(LoggedInUserView)
+- void showLoginFailed(int)
++ boolean revisarSiHaySesion(SharedPreferences)
++ void manejarSesion()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ObjetoPujaSubastaTransportista {
++ Integer p_secret_pk
++ Subasta subasta
++ Transportista transportista
++ String descripcion_propuesta
++ Integer coste_transporte
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog {
+- boolean result
+- String title
+- String message
++ <<Create>> YesNoDialog(AppCompatActivity,String,String,SimpleAction,SimpleAction)
++ boolean getResult()
+# View prepareView()
+# void prepareResponses()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Productor {
+~ ParProductoCantidad productos_asociados
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.home.HomeFragment {
+- HomeViewModel homeViewModel
+- FeriaVirtualComponent feriaVirtualComponent
++ Gson convertidorJSON
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onAttach(Context)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.widgets.ChangePasswordDialog {
+- String passwdString
++ <<Create>> ChangePasswordDialog(AppCompatActivity,SimpleAction,SimpleAction)
++ String getPasswdString()
+# View prepareView()
++ AlertDialog generate()
+# void prepareResponses()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.widgets.ChangePasswordDialog.ChangePasswordTextWatcher {
+- EditText txtPasswd2
++ <<Create>> ChangePasswordTextWatcher(EditText,EditText)
++ void afterTextChanged(Editable)
+- boolean isPasswdValid(Editable)
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.network.SubastaAPIService {
+~ ResultadoID pujarSubastaProductor(Integer,ObjetoPujaSubastaProductor)
+~ ResultadoID pujarSubastaTransportista(Integer,ObjetoPujaSubastaTransportista)
+~ List<ObjetoPujaSubastaProductor> getAllPujasSubastaProductor(Integer)
+~ Subastas getSubastasProductor(Integer)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileFragment {
+- MyProfileViewModelFactory myProfileViewModelFactory
+- MyProfileViewModel myProfileViewModel
+- FeriaVirtualComponent feriaVirtualComponent
++ UsuarioRepositoryImpl usuarioRepository
++ Gson convertidorJSON
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
++ void onAttach(Context)
+- void actualizarDatosVista(Usuario)
++ void btnCambiarContrasenaClick(View)
++ void btnFotoPerfilUsuarioClick(View)
++ void btnGuardarCambiosPerfilClick(View)
++ void btnCancelarCambiosPerfilClick(View)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.TipoProducto {
++ Integer id_tipo_producto
++ String descripcion
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.local.FeriaVirtualDBProvider {
+- FeriaVirtualApplication fva
++ <<Create>> FeriaVirtualDBProvider(FeriaVirtualApplication)
++ UsuarioDAO provideUsuarioDAO()
++ VentaDAO provideVentaDAO()
++ SubastaDAO provideSubastaDAO()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadoVenta {
++ Integer id_estado_venta
++ String descripcion
+}
+class com.feriantes4dawin.feriavirtualmovil.data.network.calladapters.LiveDataCallAdapter {
+- Type responseType
++ <<Create>> LiveDataCallAdapter(Type)
++ Type responseType()
++ LiveData<ApiResponse<R>> adapt(Call<R>)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.settings.SettingsViewModel {
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.login.LoginViewModel {
++ MutableLiveData<LoginFormState> _loginForm
+- UsuarioRepository usuarioRepository
+- Gson convertidorJSON
+- FeriaVirtualApplication fva
++ LiveData<LoginFormState> loginFormState
+- MutableLiveData<LoginResult> _loginResult
++ LiveData<LoginResult> loginResult
++ <<Create>> LoginViewModel(UsuarioRepository,Gson,FeriaVirtualApplication)
++ void login(String,String)
++ void loginDataChanged(String,String)
+- boolean isUserNameValid(String)
+- boolean isPasswordValid(String)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.TiposVenta {
++ List<TipoVenta> tipos_venta
+}
+abstract class com.feriantes4dawin.feriavirtualmovil.data.db.FeriaVirtualDatabase {
+- {static} FeriaVirtualDatabase feriaVirtualDatabase
+- {static} Object LOCK
++ {abstract}UsuarioDAO getUsuarioDAO()
++ {abstract}SubastaDAO getSubastaDAO()
++ {abstract}VentaDAO getVentaDAO()
++ {static} FeriaVirtualDatabase getInstance(Context)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.TipoSubasta {
++ Integer id_tipo_subasta
++ String descripcion
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Productos {
++ List<Producto> productos
+}
+class com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.AuthenticationInterceptorImpl {
+- Context c
++ <<Create>> AuthenticationInterceptorImpl(Context)
++ AuthenticationInterceptorImpl getInstance(Context)
++ Response intercept(Chain)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ObjetoPujaSubastaProductor {
++ Integer p_secret_pk
++ Integer p_id_producto
++ Integer p_kilos
++ Integer p_precio_kilo
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.LoginObject {
++ String email
++ String contrasena
++ <<Create>> LoginObject()
++ <<Create>> LoginObject(String,String)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ObjetoModificacionContrasena {
++ Integer id_usuario
++ String contrasena_actual
++ String nueva_contrasena
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.util.UtilityFunctions {
++ {static} void getImageFromGallery(AppCompatActivity)
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.network.VentaAPIService {
+~ Call<VentasSimples> getVentasSimplesDisponibles()
+~ Call<Ventas> getVentasDisponibles()
+~ Call<Venta> getInfoVenta(Integer)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Venta {
++ Integer id_venta
++ String fecha_inicio_venta
++ String fecha_fin_venta
++ String comentarios_venta
++ Integer monto_total
++ Integer comision
++ Usuario usuario_autor
++ EstadoVenta estado_venta
++ TipoVenta tipo_venta
++ List<ProductoVenta> productos_venta
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.network.UsuarioAPIService {
+~ Call<ResultadoUsuario> login(LoginObject)
+~ Call<ResultadoUsuario> getInfoUsuario(Integer)
+~ Call<ResultadoID> updateUsuario(Integer,Usuario)
+~ Call<ResultadoID> changePasswordUsuario(Integer,ObjetoModificacionContrasena)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.local.SubastaLocalDataSource {
++ SubastaDAO subastaDAO
++ <<Create>> SubastaLocalDataSource(SubastaDAO)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.VentaSimple {
++ Integer id_venta
++ String fecha_inicio_venta
++ String comentarios_venta
++ Usuario usuario_autor
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Minorista {
++ String nombre_minorista
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushDetailProductorDialog {
+- String productName
++ <<Create>> PushDetailProductorDialog(AppCompatActivity,String,SimpleAction,SimpleAction)
+# View prepareView()
++ AlertDialog generate()
+# void prepareResponses()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushDetailProductorDialog.ComparadorTextWatcher {
+- EditText txt2
++ <<Create>> ComparadorTextWatcher(EditText,EditText)
++ void afterTextChanged(Editable)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ContratoUsuario {
++ Integer id_contrato_usuario
++ String fecha_inicio_contrato
++ String fecha_termino_contrato
++ EstadoContrato estado_contrato
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Rol {
++ Integer id_rol
++ String descripcion
+}
+interface com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent {
+~ void injectUsuarioRepositoryIntoMyProfileFragment(MyProfileFragment)
+~ void injectVentaRepositoryIntoCurrentSalesFragment(CurrentSalesFragment)
+~ void injectVentaRepositoryIntoMyProcessesFragment(MyProcessesFragment)
+~ void injectVentaRepositoryIntoSaleDetailActivity(SaleDetailActivity)
+~ void injectSubastaRepositoryIntoSaleDetailActivity(SaleDetailActivity)
+~ void injectUsuarioRepositoryIntoLoginActivity(LoginActivity)
+~ void injectUsuarioRepositoryIntoMainActivity(MainActivity)
+~ void injectIntoHomeFragment(HomeFragment)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.SimpleSaleItemCustomAdapter {
+- VentasSimples ventasSimples
++ <<Create>> SimpleSaleItemCustomAdapter(VentasSimples)
++ SimpleSaleItemViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(SimpleSaleItemViewHolder,int)
++ int getItemCount()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.sales.SimpleSaleItemCustomAdapter.SimpleSaleItemViewHolder {
++ Integer id_venta
++ TextView lblNombreEmpresa
++ TextView lblFechaInicioVenta
++ TextView lblComentariosVenta
++ <<Create>> SimpleSaleItemViewHolder(View)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.login.LoginViewModelFactory {
+- UsuarioRepository usuarioRepository
+- Gson convertidorJSON
+- FeriaVirtualApplication fva
++ <<Create>> LoginViewModelFactory(UsuarioRepository,Gson,FeriaVirtualApplication)
++ T create(Class<T>)
+}
+class com.feriantes4dawin.feriavirtualmovil.data.datasources.remote.VentaRemoteDataSource {
++ VentaAPIService ventaAPI
++ <<Create>> VentaRemoteDataSource(VentaAPIService)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorCustomAdapter {
+- ArrayList<String> listaProductos
++ <<Create>> PushProductorCustomAdapter()
++ PushProductorViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(PushProductorViewHolder,int)
++ int getItemCount()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorCustomAdapter.PushProductorViewHolder {
++ String id_producto
++ TextView lblNombreProducto
++ TextView lblCantidadProducto
++ TextView lblPrecioPorUnidadProducto
++ CheckBox chkSeleccionado
+~ <<Create>> PushProductorViewHolder(View)
++ void limpiarCampos()
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.db.SubastaDAO {
+~ List<Subasta> getSubastas()
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.db.VentaDAO {
+~ void insert(Venta)
+~ void borrarVenta(Venta)
+~ void modificarVenta(Venta)
+~ Venta findVenta(Integer)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.main.MainViewModel {
+- UsuarioRepository usuarioRepository
+- Gson convertidorJSON
+- FeriaVirtualApplication feriaVirtualApplication
+- LiveData<Usuario> datosUsuario
+- MutableLiveData<Usuario> datosMutablesUsuario
++ <<Create>> MainViewModel(UsuarioRepository,Gson,FeriaVirtualApplication)
++ LiveData<Usuario> getDatosUsuario()
+- void cargarDatosUsuario()
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcher {
+# EditText txt
++ <<Create>> SimpleTextWatcher(EditText)
++ void beforeTextChanged(CharSequence,int,int,int)
++ void onTextChanged(CharSequence,int,int,int)
++ void afterTextChanged(Editable)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.main.HelpSectionFragment {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ <<Create>> HelpSectionFragment()
++ {static} HelpSectionFragment newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+interface com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository {
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.settings.SettingsFragment {
++ void onCreatePreferences(Bundle,String)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.settings.SettingsActivity {
+- SettingsViewModel viewmodel
++ void onCreate(Bundle)
++ void onBackPressed()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadoUsuario {
++ Integer id_estado_usuario
++ String descripcion
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.main.MainViewModelFactory {
+- UsuarioRepository usuarioRepository
+- Gson convertidorJSON
+- FeriaVirtualApplication feriaVirtualApplication
++ <<Create>> MainViewModelFactory(UsuarioRepository,Gson,FeriaVirtualApplication)
++ T create(Class<T>)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileViewModelFactory {
+- UsuarioRepository usuarioRepo
+- Gson convertidorJSON
+- FeriaVirtualApplication fva
++ <<Create>> MyProfileViewModelFactory(UsuarioRepository,Gson,FeriaVirtualApplication)
++ T create(Class<T>)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.login.LoggedInUserView {
++ String displayName
++ <<Create>> LoggedInUserView(String)
++ <<Create>> LoggedInUserView()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.EstadosVenta {
++ List<EstadoVenta> estados_venta
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushProductorDialog {
++ <<Create>> PushProductorDialog(AppCompatActivity,SimpleAction,SimpleAction)
+# View prepareView()
+# void prepareResponses()
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples {
++ List<VentaSimple> ventas
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.Subastas {
++ List<Subasta> subastas
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.ClienteExterno {
++ String nombre_empresa
+}
+class com.feriantes4dawin.feriavirtualmovil.data.models.TiposProducto {
++ List<TipoProducto> tipos_producto
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.auction.PushListCustomAdapter {
+- ArrayList<String> listaElementos
++ <<Create>> PushListCustomAdapter()
++ PushListViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(PushListViewHolder,int)
++ int getItemCount()
++ void pushItem(String)
+}
+class com.feriantes4dawin.feriavirtualmovil.ui.auction.PushListCustomAdapter.PushListViewHolder {
++ String id_puja
++ TextView lblNombreUsuario
++ TextView lblFechaPuja
++ TextView lblCosteTotalPuja
++ <<Create>> PushListViewHolder(View)
+}
+
+
+com.feriantes4dawin.feriavirtualmovil.ui.proccesses.Factory <|.. com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesViewModelFactory
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.home.HomeViewModel
+androidx.appcompat.app.AppCompatActivity <|-- com.feriantes4dawin.feriavirtualmovil.ui.main.MainActivity
+android.app.Application <|-- com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication
+okhttp3.Interceptor <|-- com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.ConnectivityInterceptor
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileViewModel
+okhttp3.Interceptor <|-- com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.AuthenticationInterceptor
+com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository <|.. com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl
+com.feriantes4dawin.feriavirtualmovil.ui.sales.Factory <|.. com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesViewModelFactory
+com.feriantes4dawin.feriavirtualmovil.data.models.Usuario <|-- com.feriantes4dawin.feriavirtualmovil.data.models.Transportista
+com.feriantes4dawin.feriavirtualmovil.data.network.calladapters.Factory <|-- com.feriantes4dawin.feriavirtualmovil.data.network.calladapters.LiveDataCallAdapterFactory
+com.feriantes4dawin.feriavirtualmovil.ui.sales.Adapter <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.ListItemDetailProductCustomAdapter
+com.feriantes4dawin.feriavirtualmovil.ui.sales.ListItemDetailProductCustomAdapter +.. com.feriantes4dawin.feriavirtualmovil.ui.sales.ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder
+com.feriantes4dawin.feriavirtualmovil.ui.sales.ViewHolder <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder
+androidx.fragment.app.Fragment <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesFragment
+com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.ConnectivityInterceptor <|.. com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.ConnectivityInterceptorImpl
+androidx.fragment.app.Fragment <|-- com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesFragment
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.SaleDetailViewModel
+androidx.appcompat.app.AppCompatActivity <|-- com.feriantes4dawin.feriavirtualmovil.ui.auction.AuctionSaleActivity
+com.feriantes4dawin.feriavirtualmovil.ui.sales.Factory <|.. com.feriantes4dawin.feriavirtualmovil.ui.sales.SaleDetailViewModelFactory
+com.feriantes4dawin.feriavirtualmovil.data.Result +.. com.feriantes4dawin.feriavirtualmovil.data.Result.Success
+com.feriantes4dawin.feriavirtualmovil.data.Result <|-- com.feriantes4dawin.feriavirtualmovil.data.Result.Success
+com.feriantes4dawin.feriavirtualmovil.data.Result +.. com.feriantes4dawin.feriavirtualmovil.data.Result.Error
+com.feriantes4dawin.feriavirtualmovil.data.Result <|-- com.feriantes4dawin.feriavirtualmovil.data.Result.Error
+com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository <|.. com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesViewModel
+java.io.IOException <|-- com.feriantes4dawin.feriavirtualmovil.misc.exceptions.NoConnectionException
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesViewModel
+com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository <|.. com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl
+androidx.appcompat.app.AppCompatActivity <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.SaleDetailActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.feriantes4dawin.feriavirtualmovil.ui.login.LoginActivity
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleDialog <|-- com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog
+com.feriantes4dawin.feriavirtualmovil.data.models.Usuario <|-- com.feriantes4dawin.feriavirtualmovil.data.models.Productor
+androidx.fragment.app.Fragment <|-- com.feriantes4dawin.feriavirtualmovil.ui.home.HomeFragment
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleDialog <|-- com.feriantes4dawin.feriavirtualmovil.ui.widgets.ChangePasswordDialog
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.ChangePasswordDialog +.. com.feriantes4dawin.feriavirtualmovil.ui.widgets.ChangePasswordDialog.ChangePasswordTextWatcher
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleTextWatcher <|-- com.feriantes4dawin.feriavirtualmovil.ui.widgets.ChangePasswordDialog.ChangePasswordTextWatcher
+androidx.fragment.app.Fragment <|-- com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileFragment
+retrofit2.CallAdapter <|.. com.feriantes4dawin.feriavirtualmovil.data.network.calladapters.LiveDataCallAdapter
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.settings.SettingsViewModel
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.login.LoginViewModel
+androidx.room.RoomDatabase <|-- com.feriantes4dawin.feriavirtualmovil.data.db.FeriaVirtualDatabase
+com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.AuthenticationInterceptor <|.. com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.AuthenticationInterceptorImpl
+com.feriantes4dawin.feriavirtualmovil.data.models.Usuario <|-- com.feriantes4dawin.feriavirtualmovil.data.models.Minorista
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleDialog <|-- com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushDetailProductorDialog
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushDetailProductorDialog +.. com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushDetailProductorDialog.ComparadorTextWatcher
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleTextWatcher <|-- com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushDetailProductorDialog.ComparadorTextWatcher
+com.feriantes4dawin.feriavirtualmovil.ui.sales.Adapter <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.SimpleSaleItemCustomAdapter
+com.feriantes4dawin.feriavirtualmovil.ui.sales.SimpleSaleItemCustomAdapter +.. com.feriantes4dawin.feriavirtualmovil.ui.sales.SimpleSaleItemCustomAdapter.SimpleSaleItemViewHolder
+com.feriantes4dawin.feriavirtualmovil.ui.sales.ViewHolder <|-- com.feriantes4dawin.feriavirtualmovil.ui.sales.SimpleSaleItemCustomAdapter.SimpleSaleItemViewHolder
+com.feriantes4dawin.feriavirtualmovil.ui.login.Factory <|.. com.feriantes4dawin.feriavirtualmovil.ui.login.LoginViewModelFactory
+com.feriantes4dawin.feriavirtualmovil.ui.auction.Adapter <|-- com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorCustomAdapter
+com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorCustomAdapter +.. com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorCustomAdapter.PushProductorViewHolder
+com.feriantes4dawin.feriavirtualmovil.ui.auction.ViewHolder <|-- com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorCustomAdapter.PushProductorViewHolder
+androidx.lifecycle.ViewModel <|-- com.feriantes4dawin.feriavirtualmovil.ui.main.MainViewModel
+android.text.TextWatcher <|.. com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcher
+androidx.fragment.app.Fragment <|-- com.feriantes4dawin.feriavirtualmovil.ui.main.HelpSectionFragment
+androidx.preference.PreferenceFragmentCompat <|-- com.feriantes4dawin.feriavirtualmovil.ui.settings.SettingsFragment
+androidx.appcompat.app.AppCompatActivity <|-- com.feriantes4dawin.feriavirtualmovil.ui.settings.SettingsActivity
+com.feriantes4dawin.feriavirtualmovil.ui.main.Factory <|.. com.feriantes4dawin.feriavirtualmovil.ui.main.MainViewModelFactory
+com.feriantes4dawin.feriavirtualmovil.ui.profile.Factory <|.. com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileViewModelFactory
+com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleDialog <|-- com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushProductorDialog
+com.feriantes4dawin.feriavirtualmovil.data.models.Usuario <|-- com.feriantes4dawin.feriavirtualmovil.data.models.ClienteExterno
+com.feriantes4dawin.feriavirtualmovil.ui.auction.Adapter <|-- com.feriantes4dawin.feriavirtualmovil.ui.auction.PushListCustomAdapter
+com.feriantes4dawin.feriavirtualmovil.ui.auction.PushListCustomAdapter +.. com.feriantes4dawin.feriavirtualmovil.ui.auction.PushListCustomAdapter.PushListViewHolder
+com.feriantes4dawin.feriavirtualmovil.ui.auction.ViewHolder <|-- com.feriantes4dawin.feriavirtualmovil.ui.auction.PushListCustomAdapter.PushListViewHolder
+@enduml

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/tbpm_btnPujar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/ppbd_push"
+        app:layout_constraintEnd_toStartOf="@+id/tbpm_btnEliminar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/tbpm_btnEliminar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:enabled="false"
+        android:text="@string/action_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/tbpm_btnPujar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tbpm_btnPujar"
+        app:layout_constraintTop_toTopOf="@+id/tbpm_btnPujar" />
+
+    <Button
+        android:id="@+id/tbpm_btnCancelar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/action_cancel"
+        app:layout_constraintEnd_toEndOf="@+id/tbpm_btnEliminar"
+        app:layout_constraintStart_toStartOf="@+id/tbpm_btnPujar"
+        app:layout_constraintTop_toBottomOf="@+id/tbpm_btnPujar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

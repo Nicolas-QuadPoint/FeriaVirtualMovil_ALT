@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/csf_swipeCurrentSales"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/diseno_degra"
+    android:fillViewport="true"
+    android:isScrollContainer="true"
+    android:scrollbars="vertical"
+    tools:context=".ui.sales.CurrentSalesFragment">
+
+    <FrameLayout
+        android:id="@+id/csf_flContenedor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fondo_claro"
+        android:measureAllChildren="true">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/asd_rvListaProductosSolicitados"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/csf_llPlaceholderEmptyList"
+            layout="@layout/placeholder_empty_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_margin="16dp"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

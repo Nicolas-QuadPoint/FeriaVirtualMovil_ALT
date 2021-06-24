@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.feriantes4dawin.feriavirtualmovil.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_nav_sales"
+            app:destination="@id/nav_sales" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sales"
+        android:name="com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesFragment"
+        android:label="@string/menu_sales"
+        tools:layout="@layout/fragment_current_sales">
+        <action
+            android:id="@+id/action_nav_sales_to_nav_processes"
+            app:destination="@id/nav_processes" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_processes"
+        android:name="com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesFragment"
+        android:label="@string/menu_process"
+        tools:layout="@layout/fragment_my_processes">
+        <action
+            android:id="@+id/action_nav_processes_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_help"
+            app:destination="@id/nav_help" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="com.feriantes4dawin.feriavirtualmovil.ui.main.HelpSectionFragment"
+        android:label="@string/menu_help"
+        tools:layout="@layout/fragment_help" >
+    </fragment>
+
+</navigation>

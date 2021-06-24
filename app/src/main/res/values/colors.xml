@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Definiendo colores de la aplicación! -->
+    <color name="fondo_defecto">#F1F1F1</color>
+    <color name="boton_ok">#BB4A4A</color>
+    <color name="boton_ok_press">#7A4447</color>
+    <color name="enfasis_claro">#7D74CA</color>
+    <color name="enfasis_claro_2">#4F4A80</color>
+    <color name="enfasis_oscuro">#3e425b</color>
+    <color name="enfasis_oscuro_2">#262837</color>
+    <color name="fondo_claro">#F1F1F1</color>
+    <color name="fondo_oscuro">#9C9C9C</color>
+    <color name="negro">#000000</color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="blanco_traslucido">#66FFFFFF</color>
+</resources>
