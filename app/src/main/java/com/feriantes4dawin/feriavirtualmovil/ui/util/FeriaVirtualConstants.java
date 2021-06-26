@@ -63,6 +63,12 @@ public final class FeriaVirtualConstants {
     public static final String SP_VENTA_ID = "id_venta";
 
     /**
+     * Clave de preferencia compartida para guardar la cadena con
+     * el objeto JSON de la venta actualmente seleccionada.
+     */
+    public static final String SP_VENTA_OBJ_STR = "sp_venta_obj_str";
+
+    /**
      * Esto permite tener un solo usuario en la base de datos
      * y así asegurar que el que tiene iniciada la sesión sea
      * único.

@@ -20,6 +20,7 @@ import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,6 +59,9 @@ public class CurrentSalesFragment extends Fragment {
      */
     @Inject
     public VentaRepositoryImpl ventaRepository;
+
+    @Inject
+    public Gson convertidorJSON;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -104,6 +108,8 @@ public class CurrentSalesFragment extends Fragment {
                 get(CurrentSalesViewModel.class);
 
 
+
+
         //Observamos el livedata del objeto y veamos que pasa!
         currentSalesViewModel.getDatosVenta().observe(this,
                 new Observer<VentasSimples>() {
@@ -138,7 +144,7 @@ public class CurrentSalesFragment extends Fragment {
             rvListaVentasSimples.setAdapter(null);
 
             //Creo un nuevo objeto adapter, pasandole los datos!
-            rvListaVentasSimples.setAdapter(new SimpleSaleItemCustomAdapter(ventasSimples));
+            rvListaVentasSimples.setAdapter(new SimpleSaleItemCustomAdapter(ventasSimples,convertidorJSON));
             rvListaVentasSimples.setLayoutManager( new LinearLayoutManager(requireContext()));
 
             llPlaceholderEmptyList.setVisibility(View.GONE);

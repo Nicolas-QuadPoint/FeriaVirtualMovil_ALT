@@ -124,6 +124,11 @@
     <string name="action_delete">Eliminar</string>
     <string name="action_confirm">Confirmar</string>
     <string name="confirm_delete_push">¿Estás seguro de remover la puja de esta subasta? Si te arrepientes, puedes volver a intentarlo más tarde.</string>
+    <string name="title_sale_process">Proceso de venta</string>
+    <string name="sale_start_date">Empezo en</string>
+    <string name="sale_end_date">Finaliza el</string>
+    <string name="product_list">Lista de productos</string>
+    <string name="confirm_push_products">Los productos ingresados serán enviados al sistema ¿Continuar?</string>
 
 
 </resources>

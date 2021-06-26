@@ -8,9 +8,9 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="0dp"
     android:layout_marginBottom="8dp"
-    android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="auto">
+    android:focusable="auto"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,19 +18,18 @@
         android:layout_margin="8dp">
 
         <TextView
-            android:id="@+id/csi_lblNacionalidad"
+            android:id="@+id/csi_lblStub1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="@string/mpf_setting_country"
-            app:layout_constraintEnd_toStartOf="@+id/csi_lblEstadoVenta"
+            android:text="@string/sale_end_date"
+            app:layout_constraintEnd_toStartOf="@+id/csi_lblFechaFinVenta"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/csi_imgClienteExterno"
-            app:layout_constraintStart_toStartOf="@+id/csi_lblFechaVenta"
-            app:layout_constraintTop_toBottomOf="@+id/csi_lblFechaVenta" />
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <TextView
-            android:id="@+id/csi_lblNombreNegocio"
+            android:id="@+id/csi_lblCodigoVenta"
             style="@style/Widget.AppCompat.TextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,7 +37,7 @@
             android:layout_marginTop="8dp"
             android:inputType="textMultiLine"
             android:maxLines="2"
-            android:text="@string/li_sale_simple_author"
+            android:text="@string/title_sale_process"
             android:textAlignment="textStart"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -48,18 +47,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/csi_lblFechaVenta"
+            android:id="@+id/textView5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/li_sale_simple_date"
-            app:layout_constraintStart_toStartOf="@+id/csi_lblNombreNegocio"
-            app:layout_constraintTop_toBottomOf="@+id/csi_lblNombreNegocio" />
+            android:text="@string/sale_start_date"
+            app:layout_constraintEnd_toStartOf="@+id/csi_lblFechaInicioVenta"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/csi_imgClienteExterno"
+            app:layout_constraintStart_toStartOf="@+id/csi_lblCodigoVenta"
+            app:layout_constraintTop_toBottomOf="@+id/csi_lblCodigoVenta" />
 
         <TextView
             android:id="@+id/csi_lblComentariosVenta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:text="@string/li_sale_simple_comments"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -67,21 +68,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/csi_lblNacionalidad"
+            app:layout_constraintTop_toBottomOf="@+id/csi_lblEstadoVenta"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/csi_lblEstadoVenta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:text="@string/li_sale_simple_status"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewStart"
             android:textColor="#009688"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/csi_lblNacionalidad"
-            app:layout_constraintTop_toTopOf="@+id/csi_lblNacionalidad" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/csi_lblFechaFinVenta"
+            app:layout_constraintStart_toStartOf="@+id/csi_lblStub1"
+            app:layout_constraintTop_toBottomOf="@+id/csi_lblStub1" />
 
         <ImageButton
             android:id="@+id/csi_imgClienteExterno"
@@ -93,12 +93,36 @@
             android:contentDescription="@string/mpf_setting_usertype"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/csi_lblComentariosVenta"
-            app:layout_constraintEnd_toStartOf="@+id/csi_lblNombreNegocio"
+            app:layout_constraintEnd_toStartOf="@+id/csi_lblCodigoVenta"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.307"
             app:srcCompat="@drawable/logo_feriavirtual_compacto" />
+
+        <TextView
+            android:id="@+id/csi_lblFechaInicioVenta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/other_stub"
+            android:textAlignment="textEnd"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/csi_lblCodigoVenta"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+        <TextView
+            android:id="@+id/csi_lblFechaFinVenta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/other_stub"
+            android:textAlignment="textEnd"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/csi_lblStub1"
+            app:layout_constraintTop_toTopOf="@+id/csi_lblStub1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

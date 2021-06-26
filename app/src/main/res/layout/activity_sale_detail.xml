@@ -5,22 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/asd_btnParticiparSubasta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/boton_ok"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/sale_detail_act_join"
-        android:textColor="#FFFFFF"
-        app:icon="@drawable/baseline_shopping_cart_black_48"
-        app:iconTint="@color/fondo_claro"
-        app:rippleColor="#FFFFFF"
-        app:srcCompat="@drawable/baseline_shopping_cart_black_48" />
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/asd_swipeSaleDetail"
         android:layout_width="match_parent"
@@ -36,22 +20,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/diseno_degra">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/asd_rvListaProductosSolicitados"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="80dp"
-                    android:background="@color/fondo_claro"
-                    android:scrollbars="none"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/textView8"
-                    app:layout_constraintStart_toStartOf="@+id/textView8"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8"
-                    app:layout_constraintVertical_bias="0.493" />
+                android:layout_height="match_parent">
 
                 <include
                     android:id="@+id/asd_fichaInfoVenta"
@@ -70,12 +39,90 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="@string/li_sale_simple_request_summary"
-                    android:textColor="@color/fondo_claro"
-                    app:layout_constraintEnd_toEndOf="@+id/asd_fichaInfoVenta"
+                    android:text="@string/product_list"
+                    app:layout_constraintEnd_toStartOf="@+id/asd_btnCancelar"
                     app:layout_constraintStart_toStartOf="@+id/asd_fichaInfoVenta"
                     app:layout_constraintTop_toBottomOf="@+id/asd_fichaInfoVenta" />
+
+                <Button
+                    android:id="@+id/asd_btnCancelar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/boton_ok"
+                    android:text="@string/action_cancel"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                    app:layout_constraintEnd_toEndOf="@+id/asd_fichaInfoVenta"
+                    app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+                <include
+                    android:id="@+id/incl_contenedorFormulario"
+                    layout="@layout/dialog_push_productor"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="100dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/asd_btnCancelar"
+                    app:layout_constraintStart_toStartOf="@id/textView8"
+                    app:layout_constraintTop_toBottomOf="@+id/asd_btnCancelar" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/asd_btnPujar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="0"
+            android:backgroundTint="@color/enfasis_claro"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/ppbd_push"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/baseline_shopping_cart_black_48"
+            app:iconTint="@color/fondo_claro"
+            app:rippleColor="#FFFFFF"
+            app:srcCompat="@drawable/baseline_shopping_cart_black_48" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/asd_btnConfirmar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="0"
+            android:backgroundTint="@color/enfasis_claro_2"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/action_confirm"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/logo_feriavirtual_compacto"
+            app:iconTint="@color/fondo_claro"
+            app:rippleColor="#FFFFFF"
+            app:srcCompat="@drawable/baseline_shopping_cart_black_48" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/asd_llloading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blanco_traslucido"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:visibility="visible" />
+    </LinearLayout>
 </FrameLayout>

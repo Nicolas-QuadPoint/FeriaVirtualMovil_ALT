@@ -17,42 +17,34 @@ public class Rol{
     @Expose
     public String descripcion;
 
-
-
-
-
-
     /**
      * Valor de rol para Administrador.
      */
     public static final Rol ADMINISTRADOR = new Rol(1,"Administrador");
+
+
+    /**
+     * Valor de rol para Productor
+     */
+    public static final Rol PRODUCTOR = new Rol(2,"Productor");
+
+
+    /**
+     * Valor de rol para Transportista
+     */
+    public static final Rol TRANSPORTISTA = new Rol(3,"Transportista");
+
+    /**
+     * Valor de rol para Cliente (No se especifica si es minorista o cliente externo)
+     */
+    public static final Rol CLIENTE = new Rol(4,"Cliente");
 
     /**
      * @deprecated
      * Valor de rol para Estadista (No usado, y posiblemente sea removida
      * en alguna actualización!)
      */
-    public static final Rol ESTADISTA = new Rol(2,"Estadista");
-
-    /**
-     * Valor de rol para Minorista
-     */
-    public static final Rol MINORISTA = new Rol(5,"Minorista");
-
-    /**
-     * Valor de rol para Transportista
-     */
-    public static final Rol TRANSPORTISTA = new Rol(6,"Transportista");
-
-    /**
-     * Valor de rol para Productor
-     */
-    public static final Rol PRODUCTOR = new Rol(7,"Productor");
-
-    /**
-     * Valor de rol para Cliente externo
-     */
-    public static final Rol CLIENTE_EXTERNO = new Rol(4,"Cliente Externo");
+    public static final Rol ESTADISTA = new Rol(5,"Estadista");
 
     public Rol(){
         this.id_rol = 0;
@@ -87,19 +79,4 @@ public class Rol{
         return false;
     }
 
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Rol rol = (Rol) o;
-        return Objects.equals(id_rol, rol.id_rol) &&
-                Objects.equals(descripcion, rol.descripcion);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id_rol, descripcion);
-    }
 }

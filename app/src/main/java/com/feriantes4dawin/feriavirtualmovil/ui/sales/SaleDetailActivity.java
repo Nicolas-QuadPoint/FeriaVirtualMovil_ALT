@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
@@ -19,12 +21,21 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.R;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.VentaSimple;
+import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
+import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.AuctionSaleActivity;
+import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorActivity;
+import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushTransportistaActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,11 +69,30 @@ public class SaleDetailActivity extends AppCompatActivity {
     private Integer id_venta;
 
     /**
+     * Referencia al usuario actualmente autenticado
+     */
+    private Usuario usuario;
+
+    /**
+     * Referencia a la venta seleccionada en la lista de ventas.
+     */
+    private VentaSimple ventaSimple;
+
+    private boolean estaCargando;
+
+    /**
      * Dependencia que nos ofrece la fuente de datos que 
      * usará saleDetailViewModel. 
      */
     @Inject
     public VentaRepositoryImpl ventaRepository;
+
+
+    @Inject
+    public SubastaRepositoryImpl subastaRepository;
+
+    @Inject
+    public Gson convertidorJSON;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,8 +101,11 @@ public class SaleDetailActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_sale_detail);
 
-        ExtendedFloatingActionButton asd_btnParticiparSubasta = (ExtendedFloatingActionButton)findViewById(R.id.asd_btnParticiparSubasta);
+        ExtendedFloatingActionButton btnPujar = (ExtendedFloatingActionButton)findViewById(R.id.asd_btnPujar);
+        Button btnCancelar = findViewById(R.id.asd_btnCancelar);
+        Button btnConfirmar = findViewById(R.id.asd_btnConfirmar);
         SwipeRefreshLayout miSwiper = (SwipeRefreshLayout)findViewById(R.id.asd_swipeSaleDetail);
+        View pantallaCarga = findViewById(R.id.asd_llloading);
         SharedPreferences sp = getSharedPreferences(
                 FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
                 Context.MODE_PRIVATE);
@@ -96,6 +129,8 @@ public class SaleDetailActivity extends AppCompatActivity {
 
         //Obtenemos el id de venta seleccionada en el fragmento CurrentSalesFragment o MyProcessesFragment
         this.id_venta = sp.getInt(FeriaVirtualConstants.SP_VENTA_ID,0);
+        this.ventaSimple = convertidorJSON.fromJson(sp.getString(FeriaVirtualConstants.SP_VENTA_OBJ_STR,""),VentaSimple.class);
+        this.usuario = convertidorJSON.fromJson( sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,""), Usuario.class );
 
 
         //Observamos el livedata del objeto y veamos que pasa!
@@ -112,7 +147,33 @@ public class SaleDetailActivity extends AppCompatActivity {
         miSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                pantallaCarga.setVisibility(View.VISIBLE);
                 saleDetailViewModel.getDatosVenta(id_venta);
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+
+            }
+        });
+
+        btnConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                YesNoDialog ynd = new YesNoDialog(SaleDetailActivity.this,
+                        getString(R.string.action_confirm),
+                        getString(R.string.confirm_push_products),
+                        null,
+                        null);
+
+                ynd.generate().show();
+
+
             }
         });
 
@@ -120,11 +181,38 @@ public class SaleDetailActivity extends AppCompatActivity {
          * Con esto se redirige el flujo a la actividad AuctionSaleActivity, que sería
          * la sección de subastas.
          */
-        asd_btnParticiparSubasta.setOnClickListener( v -> {
+        btnPujar.setOnClickListener( v -> {
 
-            Intent i = new Intent(SaleDetailActivity.this, AuctionSaleActivity.class);
-            i.putExtra("id_venta","1");
-            startActivity(i);
+            try{
+
+                Class<? extends AppCompatActivity> actividadObjetivo = null;
+
+                if(Rol.PRODUCTOR.equalsValues(usuario.rol)) {
+
+                    actividadObjetivo = PushProductorActivity.class;
+
+                } else if(Rol.TRANSPORTISTA.equalsValues(usuario.rol)){
+
+                    actividadObjetivo = PushTransportistaActivity.class;
+
+                } else {
+
+                    Snackbar.make(this,findViewById(R.id.asd_contenedor),getString(R.string.err_msg_generic),Snackbar.LENGTH_LONG).show();
+                    return;
+
+                }
+
+                Intent i = new Intent(SaleDetailActivity.this, actividadObjetivo);
+                i.putExtra("id_venta", this.id_venta);
+                startActivity(i);
+
+
+            }catch(Exception ex){
+
+                Log.e("SALE_DETAIL_ACT",String.format("Un error al intentar pujar!: %s",ex.toString()));
+                Snackbar.make(this,findViewById(R.id.asd_contenedor),getString(R.string.err_msg_generic),Snackbar.LENGTH_LONG).show();
+
+            }
 
         });
 
@@ -133,7 +221,9 @@ public class SaleDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //No domino la navegación entre actividades aún, mejor finalicemos este.
-        finish();
+        if(!estaCargando){
+            finish();
+        }
     }
 
     @Override
@@ -153,14 +243,17 @@ public class SaleDetailActivity extends AppCompatActivity {
     private void rellenarDatosVenta(Venta venta){
 
         SwipeRefreshLayout miSwiper = (SwipeRefreshLayout)findViewById(R.id.asd_swipeSaleDetail);
+        View pantallaCarga = findViewById(R.id.asd_llloading);
+
+        TextView lblNombreEmpresa = findViewById(R.id.csi_lblCodigoVenta);
+        TextView lblFechaInicioVenta = findViewById(R.id.csi_lblFechaInicioVenta);
+        TextView lblFechaFinVenta = findViewById(R.id.csi_lblFechaFinVenta);
+        TextView lblEstadoVenta = findViewById(R.id.csi_lblEstadoVenta);
+        TextView lblComentariosVenta = findViewById(R.id.csi_lblComentariosVenta);
+
+        RecyclerView rvProductosSeleccionados = findViewById(R.id.asd_rvListaProductosSolicitados);
 
         if(venta != null){
-
-            TextView lblNombreEmpresa = findViewById(R.id.csi_lblNombreNegocio);
-            TextView lblFechaInicioVenta = findViewById(R.id.csi_lblFechaVenta);
-            TextView lblComentariosVenta = findViewById(R.id.csi_lblComentariosVenta);
-            TextView lblEstadoVenta = findViewById(R.id.csi_lblEstadoVenta);
-            RecyclerView rvProductosSeleccionados = findViewById(R.id.asd_rvListaProductosSolicitados);
 
             lblNombreEmpresa.setText( venta.usuario_autor.nombre );
             lblFechaInicioVenta.setText( venta.fecha_inicio_venta );
@@ -171,14 +264,24 @@ public class SaleDetailActivity extends AppCompatActivity {
             rvProductosSeleccionados.setAdapter(new ListItemDetailProductCustomAdapter(venta.productos_venta));
             rvProductosSeleccionados.setLayoutManager( new LinearLayoutManager(this));
 
-
         } else {
 
-            Snackbar.make(this,findViewById(R.id.asd_contenedor),getString(R.string.err_msg_generic),Snackbar.LENGTH_LONG);
+            lblNombreEmpresa.setText( String.format("%s N° %d",getString(R.string.title_sale_process),ventaSimple.id_venta) );
+            lblFechaInicioVenta.setText( ventaSimple.fecha_inicio_venta );
+            lblFechaFinVenta.setText( ventaSimple.fecha_fin_venta );
+            lblComentariosVenta.setText( ventaSimple.comentarios_venta );
+            lblEstadoVenta.setText( ventaSimple.estado_venta.descripcion );
+
+            Snackbar.make
+                    (this,
+                            findViewById(R.id.asd_contenedor),
+                            getString(R.string.err_msg_generic),
+                            Snackbar.LENGTH_LONG).show();
 
         }
 
         if(miSwiper.isRefreshing()){
+            pantallaCarga.setVisibility(View.GONE);
             miSwiper.setRefreshing(false);
         }
 

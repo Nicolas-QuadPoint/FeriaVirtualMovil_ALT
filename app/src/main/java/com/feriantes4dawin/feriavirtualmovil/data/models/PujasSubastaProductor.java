@@ -4,5 +4,6 @@ import java.util.List;
 
 public class PujasSubastaProductor {
     public Productor productor;
-    public List<PujaSubastaProductor> pujasProductor ;
+    public TipoVenta tipo_venta;
+    public List<PujaSubastaProductor> pujas_productor ;
 }

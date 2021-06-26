@@ -18,67 +18,36 @@ public class Usuario {
     @Expose
     public Long id_usuario;
     @Expose
-    public String personal_id;
-    @Expose
     public String nombre;
     @Expose
-    public String nombre_segundo;
-    @Expose
-    public String apellido_paterno;
-    @Expose
-    public String apellido_materno;
-    @Expose
-    public String fecha_nacimiento;
-    @Expose
-    public Long telefono;
-    @Expose
-    public String direccion;
+    public String apellido;
     @Expose
     public String email;
     @Expose
     public String contrasena;
     @Expose
-    public String salt_contrasena;
-    @Expose
-    public Nacionalidad nacionalidad;
-    @Expose
     public Rol rol;
     @Expose
-    public EstadoUsuario estado_usuario;
-    @Expose
-    public ContratoUsuario contrato_usuario;
+    public Integer id_productor;
 
     @Override
     public String toString() {
         return "Usuario{" +
                 "secret_id_usuario=" + secret_id_usuario +
                 ", id_usuario=" + id_usuario +
-                ", personal_id='" + personal_id + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", nombre_segundo='" + nombre_segundo + '\'' +
-                ", apellido_paterno='" + apellido_paterno + '\'' +
-                ", apellido_materno='" + apellido_materno + '\'' +
-                ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
-                ", telefono=" + telefono +
-                ", direccion='" + direccion + '\'' +
                 ", email='" + email + '\'' +
                 ", contrasena='" + contrasena + '\'' +
-                ", salt_contrasena='" + salt_contrasena + '\'' +
-                ", nacionalidad=" + nacionalidad +
                 ", rol=" + rol +
-                ", estado_usuario=" + estado_usuario +
-                ", contrato_usuario=" + contrato_usuario +
                 '}';
     }
 
     public String getNombreCompleto(){
 
-        return String.format("%s %s %s %s",
+        return String.format("%s %s",
 
                 nombre != null? nombre : "",
-                nombre_segundo != null? nombre_segundo : "",
-                apellido_paterno != null? apellido_paterno : "",
-                apellido_materno != null? apellido_materno : ""
+                apellido != null? apellido : ""
 
         );
 

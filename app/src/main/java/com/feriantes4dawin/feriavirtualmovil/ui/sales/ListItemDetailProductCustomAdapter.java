@@ -58,7 +58,7 @@ public class ListItemDetailProductCustomAdapter extends RecyclerView.Adapter<Lis
 
             holder.id_producto = pv.producto.id_producto;
             holder.lblNombreProducto.setText(pv.producto.nombre);
-            holder.lblTipoProducto.setText(pv.producto.tipo_producto.descripcion);
+            holder.lblTipoProducto.setText("Producto sin descripcion");
             holder.lblUnidades.setText(pv.cantidad.toString());
 
         } catch(Exception ex) {

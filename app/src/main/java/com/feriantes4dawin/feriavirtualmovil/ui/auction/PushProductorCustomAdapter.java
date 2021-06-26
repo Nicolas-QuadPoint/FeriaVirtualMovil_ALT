@@ -12,24 +12,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushDetailProductorDialog;
 
 import java.util.ArrayList;
 
 public class PushProductorCustomAdapter extends RecyclerView.Adapter<PushProductorCustomAdapter.PushProductorViewHolder> {
 
-    private ArrayList<String> listaProductos;
+    private ArrayList<Producto> listaProductos;
 
     public PushProductorCustomAdapter(){
 
         super();
 
-        this.listaProductos = new ArrayList<String>();
-        this.listaProductos.add("Pera");
-        this.listaProductos.add("Manzana");
-        this.listaProductos.add("Zapallo");
-        this.listaProductos.add("Papa");
-        this.listaProductos.add("Banana");
+        this.listaProductos = new ArrayList<Producto>();
 
     }
 
@@ -71,7 +67,7 @@ public class PushProductorCustomAdapter extends RecyclerView.Adapter<PushProduct
     @Override
     public void onBindViewHolder(PushProductorViewHolder holder, int position) {
         //Aquí dejo los datos del producto!
-        holder.lblNombreProducto.setText(listaProductos.get(position));
+        holder.lblNombreProducto.setText(listaProductos.get(position).nombre);
 
     }
 

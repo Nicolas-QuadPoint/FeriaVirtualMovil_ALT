@@ -3,6 +3,7 @@ package com.feriantes4dawin.feriavirtualmovil.ui.sales;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.data.models.VentaSimple;
 import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.google.gson.Gson;
 
 /**
  * SimpleSaleItemCustomAdapter 
@@ -37,23 +39,31 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
      */
     private VentasSimples ventasSimples;
 
+    private Gson convertidorJSON;
+
+    private Context context;
+
     /**
      * Constructor que crea un objeto SimpleSaleItemCustomAdapter. 
      * 
      * @param ventasSimples Objeto VentasSimples usado como origen de 
      * datos.
      */
-    public SimpleSaleItemCustomAdapter(VentasSimples ventasSimples){
+    public SimpleSaleItemCustomAdapter(VentasSimples ventasSimples, Gson convertidorJSON){
 
         super();
         this.ventasSimples = ventasSimples;
+        this.convertidorJSON = convertidorJSON;
 
     }
 
     @Override
     public SimpleSaleItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_sale_item,parent,false);
         SimpleSaleItemViewHolder vh = new SimpleSaleItemViewHolder(view);
+
+        this.context = parent.getContext();
 
         /**
          * Aquí se gestiona el evento de selección para un elemento de lista. 
@@ -67,9 +77,13 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
                     FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
                     Context.MODE_PRIVATE);
 
-            Intent i = new Intent(parent.getContext(),SaleDetailActivity.class);
+            String ventaString = convertidorJSON.toJson(vh.ventaSimple);
 
-            sp.edit().putInt(FeriaVirtualConstants.SP_VENTA_ID,vh.id_venta).commit();
+            Intent i = new Intent(parent.getContext(),SaleDetailActivity.class);
+            sp.edit()
+                    .putInt(FeriaVirtualConstants.SP_VENTA_ID,vh.id_venta)
+                    .putString(FeriaVirtualConstants.SP_VENTA_OBJ_STR,ventaString)
+                    .commit();
 
             parent.getContext().startActivity(i);
         });
@@ -85,17 +99,24 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
         try {
 
             VentaSimple vs = ventasSimples.ventas.get(position);
-
+            holder.ventaSimple = vs;
             holder.id_venta = vs.id_venta;
-            holder.lblNombreEmpresa.setText(vs.usuario_autor.nombre);
+            holder.lblCodigoVenta.setText(String.format("%s N° %d",context.getString(R.string.title_sale_process),vs.id_venta));
             holder.lblFechaInicioVenta.setText(vs.fecha_inicio_venta);
+            holder.lblFechaFinVenta.setText(vs.fecha_fin_venta);
+            holder.lblEstadoVenta.setText(vs.estado_venta.descripcion);
             holder.lblComentariosVenta.setText(vs.comentarios_venta);
 
         } catch(Exception ex) {
 
+            Log.e("SALE_ITEM_CUSTOMADAPTER",String.format("Paso algo raro!: %s",ex.toString()));
+
             holder.id_venta = 0;
-            holder.lblNombreEmpresa.setText(R.string.err_mes_not_avalaible);
+
+            holder.lblCodigoVenta.setText(R.string.err_mes_not_avalaible);
             holder.lblFechaInicioVenta.setText(R.string.err_mes_not_avalaible);
+            holder.lblFechaFinVenta.setText(R.string.err_mes_not_avalaible);
+            holder.lblEstadoVenta.setText(R.string.err_mes_not_avalaible);
             holder.lblComentariosVenta.setText(R.string.err_mes_not_avalaible);
 
         }
@@ -116,17 +137,22 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
      */
     public class SimpleSaleItemViewHolder extends RecyclerView.ViewHolder {
 
+        public VentaSimple ventaSimple;
         public Integer id_venta;
-        public TextView lblNombreEmpresa;
+        public TextView lblCodigoVenta;
         public TextView lblFechaInicioVenta;
+        public TextView lblFechaFinVenta;
+        public TextView lblEstadoVenta;
         public TextView lblComentariosVenta;
 
         public SimpleSaleItemViewHolder(View v) {
 
             super(v);
-
-            this.lblNombreEmpresa = v.findViewById(R.id.csi_lblNombreNegocio);
-            this.lblFechaInicioVenta = v.findViewById(R.id.csi_lblFechaVenta);
+            this.ventaSimple = null;
+            this.lblCodigoVenta = v.findViewById(R.id.csi_lblCodigoVenta);
+            this.lblFechaInicioVenta = v.findViewById(R.id.csi_lblFechaInicioVenta);
+            this.lblFechaFinVenta = v.findViewById(R.id.csi_lblFechaFinVenta);
+            this.lblEstadoVenta = v.findViewById(R.id.csi_lblEstadoVenta);
             this.lblComentariosVenta = v.findViewById(R.id.csi_lblComentariosVenta);
 
         }

@@ -125,5 +125,10 @@
     <string name="action_delete">Delete</string>
     <string name="action_confirm">Confirm</string>
     <string name="confirm_delete_push">Are you sure to remove your push from this auction? You can push again later.</string>
+    <string name="title_sale_process">Sale Process</string>
+    <string name="sale_start_date">Started in</string>
+    <string name="sale_end_date">Ends in</string>
+    <string name="product_list">Product List</string>
+    <string name="confirm_push_products">The products you input will be submitted to the system for this sale ¿Continue?</string>
 
 </resources>
