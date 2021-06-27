@@ -5,19 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
+import com.feriantes4dawin.feriavirtualmovil.ui.sales.SimpleSaleItemCustomAdapter;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,6 +62,9 @@ public class MyProcessesFragment extends Fragment{
     @Inject
     public VentaRepositoryImpl ventaRepository;
 
+    @Inject
+    public Gson convertidorJSON;
+
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
 
@@ -72,6 +79,8 @@ public class MyProcessesFragment extends Fragment{
 
             }
         });
+
+        miSwiper.setRefreshing(true);
 
         return root;
     }
@@ -99,15 +108,17 @@ public class MyProcessesFragment extends Fragment{
 
         //Observamos el livedata del objeto y veamos que pasa!
         myProcessesViewModel.getDatosVenta().observe(this,
-                new Observer<VentasSimples>() {
+                new Observer<Ventas>() {
                     @Override
-                    public void onChanged(VentasSimples ventasSimples) {
+                    public void onChanged(Ventas ventasSimples) {
 
                         actualizarDatosVista(ventasSimples);
 
                     }
                 }
+
         );
+
 
 
     }
@@ -116,10 +127,10 @@ public class MyProcessesFragment extends Fragment{
      * Actualiza los datos de la lista de procesos de venta, 
      * tomando como fuente el objeto entregado por el puente de 
      * datos. 
-     * @param ventasSimples Objeto VentasSimples con los datos de 
+     * @param ventasSimples Objeto Ventas con los datos de
      * ventas pasadas, o null si no hay datos disponibles. 
      */
-    public void actualizarDatosVista(VentasSimples ventasSimples){
+    public void actualizarDatosVista(Ventas ventasSimples){
 
         SwipeRefreshLayout miSwiper = requireView().findViewById(R.id.fmproc_swipeMyProcesses);
         View llPlaceholderEmptyList = requireView().findViewById(R.id.myprocf_llPlaceholderEmptyList);
@@ -130,6 +141,8 @@ public class MyProcessesFragment extends Fragment{
 
             listaElementos.setVisibility(View.VISIBLE);
             llPlaceholderEmptyList.setVisibility(View.GONE);
+            rvMyProcesses.setAdapter( new SimpleSaleItemCustomAdapter(ventasSimples,convertidorJSON,true));
+            rvMyProcesses.setLayoutManager(new LinearLayoutManager(getContext()));
 
         } else {
 

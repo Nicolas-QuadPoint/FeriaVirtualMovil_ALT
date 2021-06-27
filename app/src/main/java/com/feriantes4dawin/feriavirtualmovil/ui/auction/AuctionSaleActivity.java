@@ -83,7 +83,8 @@ public class AuctionSaleActivity extends AppCompatActivity {
             (FeriaVirtualApplication) getApplication(),
             ventaRepository,
             usuarioRepository,
-            subastaRepository
+            subastaRepository,
+        null
         );
         this.auctionViewModel = new ViewModelProvider(this,auctionViewModelFactory)
                 .get(AuctionViewModel.class);

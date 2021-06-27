@@ -69,6 +69,12 @@ public final class FeriaVirtualConstants {
     public static final String SP_VENTA_OBJ_STR = "sp_venta_obj_str";
 
     /**
+     * Clave para usar en un Intent con el fin de inicializar
+     * SaleDetailActivity en modo de solo lectura.
+     */
+    public static final String MODO_SOLO_LECTURA = "modo_solo_lectura";
+
+    /**
      * Esto permite tener un solo usuario en la base de datos
      * y así asegurar que el que tiene iniciada la sesión sea
      * único.

@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
 
 import retrofit2.Call;
@@ -29,19 +29,19 @@ public class SaleDetailViewModel extends ViewModel {
     /**
      * Fuente de datos para Ventas 
      */
-    VentaRepository ventaRepository; 
+    private VentaRepository ventaRepository;
 
     /**
      * Referencia a la aplicación. 
      */
-    FeriaVirtualApplication feriaVirtualApplication;
+    private FeriaVirtualApplication feriaVirtualApplication;
 
     /**
-     * Puente de datos para SaleDetailActivity. 
-     * @see https://developer.android.com/topic/libraries/architecture/livedata
+     * Puente de datos para SaleDetailActivity.
+     * @link https://developer.android.com/topic/libraries/architecture/livedata
      */
-    LiveData<Venta> datosVenta;
-    MutableLiveData<Venta> datosMutablesVenta;
+    private LiveData<DetalleVenta> datosVenta;
+    private MutableLiveData<DetalleVenta> datosMutablesVenta;
 
     /**
      * Crea un objeto SaleDetailViewModel
@@ -55,7 +55,7 @@ public class SaleDetailViewModel extends ViewModel {
         this.ventaRepository = ventaRepository;
         this.feriaVirtualApplication = feriaVirtualApplication;
 
-        this.datosMutablesVenta = new MutableLiveData<Venta>();
+        this.datosMutablesVenta = new MutableLiveData<>();
         this.datosVenta = datosMutablesVenta;
 
     }
@@ -70,7 +70,7 @@ public class SaleDetailViewModel extends ViewModel {
      * @return Un objeto LiveData, el cual se debe vigilar en 
      * caso de encontrar resultados, o no.
      */
-    public LiveData<Venta> getDatosVenta(Integer venta_id){
+    public LiveData<DetalleVenta> getDatosVenta(Integer venta_id){
 
         /* Llamo a la rutina asíncrona */
         cargarDatosVenta(venta_id);
@@ -90,12 +90,12 @@ public class SaleDetailViewModel extends ViewModel {
 
         if(venta_id != null){
 
-            Call<Venta> ventaCall = ventaRepository.getInfoVenta(venta_id);
+            Call<DetalleVenta> ventaCall = ventaRepository.getDetalleVenta(venta_id);
             
-            ventaCall.enqueue(new Callback<Venta>() {
+            ventaCall.enqueue(new Callback<DetalleVenta>() {
 
                 @Override
-                public void onResponse(Call<Venta> call, Response<Venta> response) {
+                public void onResponse(Call<DetalleVenta> call, Response<DetalleVenta> response) {
 
                     if(response.isSuccessful() && response.body() != null) {
 
@@ -110,7 +110,7 @@ public class SaleDetailViewModel extends ViewModel {
                 }
 
                 @Override
-                public void onFailure(Call<Venta> call, Throwable t) {
+                public void onFailure(Call<DetalleVenta> call, Throwable t) {
                     Log.e("SALE_DETAIL_VIEW_MODEL", "Error! no se pudo recuperar datos de venta!: " + t.toString());
                     datosMutablesVenta.setValue(null);
                 }

@@ -11,11 +11,12 @@ public class DetallePujaSubastaProductor {
     public Integer p_secret_pk;
 
     @Expose
-    public Subasta subasta;
+    public Integer id_venta;
     @Expose
-    public Producto producto;
+    public Producto id_producto;
     @Expose
-    public Integer kilos;
+    public Integer cantidad;
     @Expose
-    public Integer precio_kilo;
+    public TipoVenta tipo_venta;
+
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
+import com.google.gson.Gson;
 
 /**
  * CurrentSalesViewModelFactory 
@@ -28,16 +29,22 @@ public class CurrentSalesViewModelFactory implements ViewModelProvider.Factory {
      */
     private FeriaVirtualApplication fva;
 
-    public CurrentSalesViewModelFactory(VentaRepository ventaRepository,FeriaVirtualApplication fva){
+    /**
+     * Convertidor de JSON
+     */
+    private Gson convertidorJSON;
+
+    public CurrentSalesViewModelFactory(VentaRepository ventaRepository,FeriaVirtualApplication fva,Gson convertidorJSON){
         this.ventaRepository = ventaRepository;
         this.fva = fva;
+        this.convertidorJSON = convertidorJSON;
     }
 
     public <T extends ViewModel> T create(Class<T> modelClass) {
 
         if(modelClass.isAssignableFrom(CurrentSalesViewModel.class)) {
 
-            return (T)(new CurrentSalesViewModel(ventaRepository,fva));
+            return (T)(new CurrentSalesViewModel(ventaRepository,fva,convertidorJSON));
 
         }
 

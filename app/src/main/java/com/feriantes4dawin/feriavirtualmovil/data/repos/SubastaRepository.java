@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
+import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -21,14 +22,14 @@ import retrofit2.http.Path;
 
 public interface SubastaRepository {
 
-    ResultadoID pujarSubastaProductor(
+    Call<ResultadoID> pujarSubastaProductor(
 
         Integer id_subasta,
         DetallePujaSubastaProductor puja
 
     );
 
-    ResultadoID pujarSubastaTransportista(
+    Call<ResultadoID> pujarSubastaTransportista(
 
 
         Integer id_subasta,
@@ -36,14 +37,14 @@ public interface SubastaRepository {
 
     );
 
-    ResultadoID removerPujaSubastaProductor(
+    Call<ResultadoID> removerPujaSubastaProductor(
 
         Integer id_subasta,
         Integer id_productor
 
     );
 
-    ResultadoID removerPujaSubastaTransportista(
+    Call<ResultadoID> removerPujaSubastaTransportista(
 
         Integer id_subasta,
         Integer id_transportista

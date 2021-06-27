@@ -1,8 +1,8 @@
 package com.feriantes4dawin.feriavirtualmovil.ui.sales;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +18,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +57,11 @@ public class CurrentSalesFragment extends Fragment {
     private FeriaVirtualComponent feriaVirtualComponent;
 
     /**
+     * Instancia del usuario autenticado
+     */
+    private Usuario usuario;
+
+    /**
      * Dependencia utilizada para CurrentSalesViewModel. 
      */
     @Inject
@@ -75,7 +82,7 @@ public class CurrentSalesFragment extends Fragment {
             public void onRefresh() {
 
                 //Reinicio la lista de ventas!
-                currentSalesViewModel.getDatosVenta();
+                currentSalesViewModel.getDatosVenta(usuario);
 
             }
 
@@ -92,6 +99,8 @@ public class CurrentSalesFragment extends Fragment {
 
         super.onAttach(context);
 
+        FeriaVirtualApplication fva = ((FeriaVirtualApplication) getActivity().getApplicationContext());
+
         // Se obtiene el gestor de dependencias por medio de la aplicación!
         feriaVirtualComponent = ((FeriaVirtualApplication) getActivity().getApplicationContext())
                 .getFeriaVirtualComponent();
@@ -100,26 +109,34 @@ public class CurrentSalesFragment extends Fragment {
         feriaVirtualComponent.injectIntoCurrentSalesFragment(this);
 
         //Instanciamos el factory!
-        this.currentSalesViewModelFactory = new CurrentSalesViewModelFactory(ventaRepository,
-                ((FeriaVirtualApplication) getActivity().getApplicationContext()));
+        this.currentSalesViewModelFactory =
+            new CurrentSalesViewModelFactory(
+                ventaRepository,
+                fva, convertidorJSON
+            );
 
         //Creamos nuestro viewmodel
         this.currentSalesViewModel = new ViewModelProvider(this,currentSalesViewModelFactory).
                 get(CurrentSalesViewModel.class);
 
 
+        //Recuperamos el objeto de nuestro usuario
+        SharedPreferences sp = fva.getSharedPreferences(FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
+                Context.MODE_PRIVATE);
+
+        this.usuario = convertidorJSON.fromJson(sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,""),Usuario.class);
 
 
         //Observamos el livedata del objeto y veamos que pasa!
-        currentSalesViewModel.getDatosVenta().observe(this,
-                new Observer<VentasSimples>() {
-                    @Override
-                    public void onChanged(VentasSimples ventasSimples) {
-                        
-                        rellenarListaVentas(ventasSimples);
+        currentSalesViewModel.getDatosVenta(usuario).observe(this,
+            new Observer<Ventas>() {
+                @Override
+                public void onChanged(Ventas ventasSimples) {
 
-                    }
+                    rellenarListaVentas(ventasSimples);
+
                 }
+            }
         );
 
     }
@@ -128,10 +145,10 @@ public class CurrentSalesFragment extends Fragment {
      * Método que se encarga de actualizar los componentes de vista con 
      * los datos entregados por parte del objeto CurrentSalesViewModel. 
      * 
-     * @param ventasSimples Objeto VentasSimples obtenido del puente de 
+     * @param ventasSimples Objeto Ventas obtenido del puente de
      * datos. Un valor null indica que no hay datos disponibles. 
      */
-    private void rellenarListaVentas(VentasSimples ventasSimples){
+    private void rellenarListaVentas(Ventas ventasSimples){
 
         View vistaMaestra = requireView();
         RecyclerView rvListaVentasSimples = vistaMaestra.findViewById(R.id.asd_rvListaProductosSolicitados);

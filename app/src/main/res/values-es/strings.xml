@@ -10,7 +10,7 @@
     <!-- Secciones de menu -->
 
     <string name="menu_home">Inicio</string>
-    <string name="menu_sales">Mostrar peticiones de venta</string>
+    <string name="menu_sales">Ventas actuales</string>
     <string name="menu_process">Mis procesos de venta</string>
     <string name="menu_profile">Mi perfil</string>
     <string name="menu_help">Manual de usuario</string>
@@ -106,7 +106,7 @@
 
     <!-- Push Productor bid messages -->
     <string name="ppbd_title">Pujar oferta</string>
-    <string name="ppbd_prod">Escoge los productos a pujar. Los elementos seleccionados serán parte de la puja</string>
+    <string name="ppbd_prod">Ingresa los productos que quieras aportar para este proceso de venta.</string>
     <string name="ppbd_item">Producto</string>
     <string name="ppbd_quantity">¿Cuántos? (Unidades, Kilos)</string>
     <string name="ppbd_price">¿A qué precio?</string>
@@ -129,6 +129,21 @@
     <string name="sale_end_date">Finaliza el</string>
     <string name="product_list">Lista de productos</string>
     <string name="confirm_push_products">Los productos ingresados serán enviados al sistema ¿Continuar?</string>
+    <string name="sale_type">Tipo de Venta</string>
+    <string name="product_added">Producto agregado</string>
+    <string name="err_mes_product_add_failed">No se pudo agregar el producto. Intente nuevamente</string>
+    <string name="err_mes_operation_failed_due">La operación falló debido a: %s</string>
+    <string name="err_code_str_generic">Error desconocido</string>
+    <string name="err_code_str_cant_recover_data">No se pudo obtener datos del exterior. Revisa tu conexión</string>
+    <string name="err_code_str_ok">Ok</string>
+    <string name="desc_my_processes_frag">La siguiente lista contiene los procesos de venta que ya han finalizado (exitoso o no) Toca un registro para más detalles</string>
+    <string name="product_summary">Resumen de productos</string>
+    <string name="action_transport">Transportar</string>
+    <string name="feriavirtualmovil_version_str">Feria Virtual Móvil, versión 2.0</string>
+    <string name="empty_list">Lista vacía</string>
+    <string name="mes_adv_add_items_to_list">Agrega elementos para verlos en la lista, o refresca si ya hay elementos</string>
+    <string name="mes_adv_no_items">Ahora mismo no hay elementos para mostrar. Puedes deslizar hacia abajo para refrescar la lista y ver si hay nuevos elementos</string>
+    <string name="no_content">Sin contenido</string>
 
 
 </resources>

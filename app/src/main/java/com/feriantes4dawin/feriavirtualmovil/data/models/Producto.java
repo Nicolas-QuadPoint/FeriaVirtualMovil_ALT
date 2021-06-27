@@ -1,7 +1,10 @@
 package com.feriantes4dawin.feriavirtualmovil.data.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
 
 @Entity
 public class Producto{
@@ -15,4 +18,11 @@ public class Producto{
     public Integer refrigeracion;
     public String fecha_llegada;
     public Integer codigo_productor;
+
+    @NonNull
+    @NotNull
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
 }

@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
             EditText username = findViewById(R.id.username);
             EditText password = findViewById(R.id.password);
             Button login = findViewById(R.id.login);
-            LinearLayout loading = findViewById(R.id.asd_llloading);
+            LinearLayout loading = findViewById(R.id.dcp_llloading);
             Button  quit = findViewById(R.id.btnQuit);
             TextView linkRegistro = findViewById(R.id.tvLinkRegistro);
             Spanned textolink;

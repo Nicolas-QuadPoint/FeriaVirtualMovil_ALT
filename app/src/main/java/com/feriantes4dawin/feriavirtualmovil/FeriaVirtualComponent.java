@@ -2,6 +2,8 @@ package com.feriantes4dawin.feriavirtualmovil;
 
 import com.feriantes4dawin.feriavirtualmovil.data.datasources.local.FeriaVirtualDBProvider;
 import com.feriantes4dawin.feriavirtualmovil.data.datasources.remote.FeriaVirtualAPIProvider;
+import com.feriantes4dawin.feriavirtualmovil.data.repos.ProductoRepository;
+import com.feriantes4dawin.feriavirtualmovil.data.repos.ProductoRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository;
@@ -48,7 +50,8 @@ import dagger.Component;
         FeriaVirtualDBProvider.class,
         UsuarioRepositoryImpl.class,
         VentaRepositoryImpl.class,
-        SubastaRepositoryImpl.class
+        SubastaRepositoryImpl.class,
+        ProductoRepositoryImpl.class
 })
 public interface FeriaVirtualComponent {
 
@@ -118,7 +121,7 @@ public interface FeriaVirtualComponent {
      * @see {@link javax.inject.Inject} 
      * @param myProcessesFragment Una instancia de MyProcessesFragment 
      */
-    void injectIntoMyProcessesFragment(MyProcessesFragment MyProcessesFragment);
+    void injectIntoMyProcessesFragment(MyProcessesFragment myProcessesFragment);
 
     /**
      * Se llama en la clase SaleDetailActivity para inyectar 
@@ -138,7 +141,7 @@ public interface FeriaVirtualComponent {
      * la actividad, como en onCreate. 
      * 
      * @see {@link javax.inject.Inject} 
-     * @param currentSalesFragment Una instancia de SaleDetailActivity 
+     * @param saleDetailActivity Una instancia de SaleDetailActivity
      */
     void injectIntoSaleDetailActivity(SaleDetailActivity saleDetailActivity);
 

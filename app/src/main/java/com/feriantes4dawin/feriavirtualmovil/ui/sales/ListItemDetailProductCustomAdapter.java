@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ProductoVenta;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ListItemDetailProductCustomAdapter extends RecyclerView.Adapter<Lis
     /**
      * Fuente de datos para rellenar este adapter.
      */
-    private List<ProductoVenta> productosVenta;
+    private List<Producto> productosVenta;
 
     /**
      * Crea un objeto ListItemDetailProductCustomAdapter 
@@ -34,7 +35,7 @@ public class ListItemDetailProductCustomAdapter extends RecyclerView.Adapter<Lis
      * @param productosVenta Objeto que sirve como origen 
      * de datos para este adapter. 
      */
-    public ListItemDetailProductCustomAdapter(List<ProductoVenta> productosVenta){
+    public ListItemDetailProductCustomAdapter(List<Producto> productosVenta){
 
         super();
         this.productosVenta = productosVenta;
@@ -53,13 +54,12 @@ public class ListItemDetailProductCustomAdapter extends RecyclerView.Adapter<Lis
     @Override
     public void onBindViewHolder(ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder holder, int position) {
 
-        ProductoVenta pv = productosVenta.get(position);
+        Producto p = productosVenta.get(position);
         try {
 
-            holder.id_producto = pv.producto.id_producto;
-            holder.lblNombreProducto.setText(pv.producto.nombre);
-            holder.lblTipoProducto.setText("Producto sin descripcion");
-            holder.lblUnidades.setText(pv.cantidad.toString());
+            holder.id_producto = p.id_producto;
+            holder.lblNombreProducto.setText(p.nombre);
+            holder.lblUnidades.setText(p.cantidad.toString());
 
         } catch(Exception ex) {
 

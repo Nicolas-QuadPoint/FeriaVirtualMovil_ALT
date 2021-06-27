@@ -38,13 +38,13 @@
             android:name=".ui.auction.PushProductorActivity"
             android:label="@string/ppbd_push"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.auction.AuctionSaleActivity"/>
+            android:parentActivityName=".ui.sales.SaleDetailActivity"/>
 
         <activity
             android:name=".ui.auction.PushTransportistaActivity"
             android:label="@string/ppbd_push"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.auction.AuctionSaleActivity"/>
+            android:parentActivityName=".ui.sales.SaleDetailActivity"/>
 
 
         <activity

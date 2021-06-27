@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Call;
 
 @Module
 public class SubastaRepositoryImpl implements SubastaRepository {
@@ -31,22 +32,28 @@ public class SubastaRepositoryImpl implements SubastaRepository {
     }
 
     @Override
-    public ResultadoID pujarSubastaProductor(Integer id_subasta, DetallePujaSubastaProductor puja) {
+    public Call<ResultadoID> pujarSubastaProductor(Integer id_subasta, DetallePujaSubastaProductor puja) {
+
+        Call<ResultadoID> puc = subastaAPI.pujarSubastaProductor(id_subasta,puja);
+
+        return puc;
+    }
+
+    @Override
+    public Call<ResultadoID> pujarSubastaTransportista(Integer id_subasta, DetallePujaSubastaTransportista puja) {
+
+        Call<ResultadoID> puc = subastaAPI.pujarSubastaTransportista(id_subasta,puja);
+
+        return puc;
+    }
+
+    @Override
+    public Call<ResultadoID> removerPujaSubastaProductor(Integer id_subasta, Integer id_productor) {
         return null;
     }
 
     @Override
-    public ResultadoID pujarSubastaTransportista(Integer id_subasta, DetallePujaSubastaTransportista puja) {
-        return null;
-    }
-
-    @Override
-    public ResultadoID removerPujaSubastaProductor(Integer id_subasta, Integer id_productor) {
-        return null;
-    }
-
-    @Override
-    public ResultadoID removerPujaSubastaTransportista(Integer id_subasta, Integer id_transportista) {
+    public Call<ResultadoID> removerPujaSubastaTransportista(Integer id_subasta, Integer id_transportista) {
         return null;
     }
 

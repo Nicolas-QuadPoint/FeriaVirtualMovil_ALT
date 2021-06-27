@@ -33,10 +33,10 @@
         <include
             android:id="@+id/csf_llPlaceholderEmptyList"
             layout="@layout/placeholder_empty_list"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="16dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </FrameLayout>
 

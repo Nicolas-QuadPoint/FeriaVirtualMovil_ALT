@@ -130,5 +130,20 @@
     <string name="sale_end_date">Ends in</string>
     <string name="product_list">Product List</string>
     <string name="confirm_push_products">The products you input will be submitted to the system for this sale ¿Continue?</string>
+    <string name="sale_type">Sale Type</string>
+    <string name="product_added">Product added</string>
+    <string name="err_mes_product_add_failed">Can\'t add product. Please try again</string>
+    <string name="err_mes_operation_failed_due">The operation failed, due following reason: %s</string>
+    <string name="err_code_str_generic">Unknown error</string>
+    <string name="err_code_str_cant_recover_data">Can\'t recover data. Please check your internet connetion</string>
+    <string name="err_code_str_ok">OK</string>
+    <string name="desc_my_processes_frag">This list contains the sales process thas has already ended. Touch one element for details</string>
+    <string name="product_summary">Product Summary</string>
+    <string name="action_transport">Transport</string>
+    <string name="feriavirtualmovil_version_str">Feria Virtual Móvil, version 2.0</string>
+    <string name="empty_list">Empty List</string>
+    <string name="mes_adv_add_items_to_list">Add items to view them on list, or refresh to check if are items added</string>
+    <string name="mes_adv_no_items">Actually this list is empty. Slide to refresh this view and check if there are data</string>
+    <string name="no_content">No content</string>
 
 </resources>

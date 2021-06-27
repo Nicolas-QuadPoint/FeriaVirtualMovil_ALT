@@ -7,12 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentaSimple;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
-
-import java.util.List;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,17 +35,25 @@ public class CurrentSalesViewModel extends ViewModel {
     private FeriaVirtualApplication fva;
 
     /**
+     * Ideal para traspasar JSON en algunos casos
+     */
+    private Gson convertidorJSON;
+
+    /**
      * Puente de datos para usarse en 
      * CurrentSalesFragment. 
      */
-    private LiveData<VentasSimples> datosVenta;
-    private MutableLiveData<VentasSimples> datosMutablesVenta;
+    private LiveData<Ventas> datosVenta;
+    private MutableLiveData<Ventas> datosMutablesVenta;
 
 
-    public CurrentSalesViewModel(VentaRepository ventaRepository, FeriaVirtualApplication fva){
+    public CurrentSalesViewModel(VentaRepository ventaRepository, FeriaVirtualApplication fva, Gson convertidorJSON){
+
         this.ventaRepository = ventaRepository;
         this.fva = fva;
-        this.datosMutablesVenta = new MutableLiveData<VentasSimples>();
+        this.convertidorJSON = convertidorJSON;
+
+        this.datosMutablesVenta = new MutableLiveData<Ventas>();
         this.datosVenta = datosMutablesVenta;
     }
 
@@ -59,10 +65,10 @@ public class CurrentSalesViewModel extends ViewModel {
      * 
      * @return Un objeto LiveData para vigilarlo. 
      */
-    public LiveData<VentasSimples> getDatosVenta(){
+    public LiveData<Ventas> getDatosVenta(Usuario u){
 
         //Operación asíncrona. No esperar a que termine.
-        cargarListaVentas();
+        cargarListaVentas(u);
 
         return datosVenta;
 
@@ -75,43 +81,48 @@ public class CurrentSalesViewModel extends ViewModel {
      * Venta para que el fragmento CurrentSalesFragment pueda 
      * procesar. 
      */
-    private void cargarListaVentas(){
+    private void cargarListaVentas(Usuario u){
 
-        Usuario u;
-        Call<VentasSimples> ruc;
+        Call<Ventas> ruc;
         try{
 
-            u = new Usuario();
-            u.id_usuario = 0l;
-            ruc = ventaRepository.getVentasSimplesDisponibles(u);
+            ruc = ventaRepository.getVentasDisponibles(u);
 
-            ruc.enqueue(new Callback<VentasSimples>() {
-                @Override
-                public void onResponse(Call<VentasSimples> call, Response<VentasSimples> response) {
+            if(ruc == null){
 
-                    Log.i("CUR_SALES_VIEW_MODEL",String.format("Código de respuesta http: %d",response.code()));
+                datosMutablesVenta.setValue(null);
 
-                    if(response.isSuccessful() && response.body().ventas != null && response.body().ventas.size() > 0){
+            } else {
 
-                        datosMutablesVenta.setValue(response.body());
+                ruc.enqueue(new Callback<Ventas>() {
+                    @Override
+                    public void onResponse(Call<Ventas> call, Response<Ventas> response) {
 
-                    } else {
+                        Log.i("CUR_SALES_VIEW_MODEL",String.format("Código de respuesta http: %d",response.code()));
 
+                        if(response.isSuccessful() && response.body().ventas != null && response.body().ventas.size() > 0){
+
+                            datosMutablesVenta.setValue(response.body());
+
+                        } else {
+
+                            datosMutablesVenta.setValue(null);
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Ventas> call, Throwable t) {
+
+                        Log.e("CUR_SALES_VIEW_MODEL",String.format("No se pudo recuperar datos de venta!: %s",t.toString()));
                         datosMutablesVenta.setValue(null);
 
                     }
 
-                }
+                });
 
-                @Override
-                public void onFailure(Call<VentasSimples> call, Throwable t) {
-
-                    Log.e("CUR_SALES_VIEW_MODEL",String.format("No se pudo recuperar datos de venta!: %s",t.toString()));
-                    datosMutablesVenta.setValue(null);
-
-                }
-            });
-
+            }
 
 
         } catch(Exception ex){

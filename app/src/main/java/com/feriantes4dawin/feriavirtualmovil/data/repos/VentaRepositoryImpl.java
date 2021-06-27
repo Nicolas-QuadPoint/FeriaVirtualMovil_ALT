@@ -1,16 +1,20 @@
 package com.feriantes4dawin.feriavirtualmovil.data.repos;
 
 import com.feriantes4dawin.feriavirtualmovil.data.db.VentaDAO;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
+import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.network.VentaAPIService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.Module;
 import retrofit2.Call;
-import retrofit2.http.Path;
 
 @Module
 public class VentaRepositoryImpl implements VentaRepository {
@@ -24,33 +28,50 @@ public class VentaRepositoryImpl implements VentaRepository {
         this.ventaAPI = ventaAPI;
     }
 
-    /*
-    @Override
-    @Provides
-    public VentaRepository getInstance(){
-        return this;
+    public Call<TipoVenta> getTiposVenta(){
+
+        return null;
+
     }
-     */
+
+    public List<TipoVenta> getTiposVentaLocal(){
+
+        ArrayList<TipoVenta> lista = new ArrayList<TipoVenta>();
+        lista.add(TipoVenta.VENTA_INTERNA);
+        lista.add(TipoVenta.VENTA_EXTERNA);
+
+        return lista;
+
+    }
 
     @Override
-    public Call<VentasSimples> getVentasDisponibles(Usuario usuario) {
+    public Call<Ventas> getHistorialVentas(){
 
-        Call<VentasSimples> ruc = ventaAPI.getVentasSimplesDisponibles();
+        Call<Ventas> ruc = ventaAPI.getHistorialVentas();
         return ruc;
     }
 
     @Override
-    public Call<VentasSimples> getVentasSimplesDisponibles(Usuario usuario) {
+    public Call<Ventas> getVentasDisponibles(Usuario usuario) {
 
-        Call<VentasSimples> ruc = ventaAPI.getVentasSimplesDisponibles();
+        Call<Ventas> ruc;
+
+        if(Rol.PRODUCTOR.equalsValues(usuario.rol))
+            ruc = ventaAPI.getVentasDisponiblesProductores();
+        else if(Rol.TRANSPORTISTA.equalsValues(usuario.rol)){
+            ruc = ventaAPI.getVentasDisponiblesTransportistas();
+        }
+        else{
+            ruc = null;
+        }
+
         return ruc;
-
     }
 
     @Override
-    public Call<Venta> getInfoVenta(Integer venta_id){
+    public Call<DetalleVenta> getDetalleVenta(Integer venta_id){
 
-        Call<Venta> ruc = ventaAPI.getInfoVenta(venta_id);
+        Call<DetalleVenta> ruc = ventaAPI.getDetalleVenta(venta_id);
         return ruc;
     }
 }

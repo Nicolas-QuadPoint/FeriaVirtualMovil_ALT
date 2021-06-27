@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentaSimple;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
 import com.google.gson.Gson;
 
@@ -35,27 +35,51 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
      * Objeto que contiene una lista de objetos Venta, 
      * utilizados como fuente de datos para este adaptador.
      * 
-     * @see {@link com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples}
+     * @see {@link Ventas}
      */
-    private VentasSimples ventasSimples;
+    private Ventas ventasSimples;
 
     private Gson convertidorJSON;
 
     private Context context;
 
+    private boolean modoSoloLectura;
+
     /**
      * Constructor que crea un objeto SimpleSaleItemCustomAdapter. 
      * 
-     * @param ventasSimples Objeto VentasSimples usado como origen de 
+     * @param ventasSimples Objeto Ventas usado como origen de
      * datos.
+     * @param convertidorJSON Objeto Gson para procesar ciertos
+     *                        datos.
      */
-    public SimpleSaleItemCustomAdapter(VentasSimples ventasSimples, Gson convertidorJSON){
+    public SimpleSaleItemCustomAdapter(Ventas ventasSimples, Gson convertidorJSON){
 
         super();
         this.ventasSimples = ventasSimples;
         this.convertidorJSON = convertidorJSON;
-
+        this.modoSoloLectura = false;
     }
+
+    /**
+     * Constructor que crea un objeto SimpleSaleItemCustomAdapter, con la
+     * posibilidad de establecer el modo de lectura de esta lista.
+     *
+     * @param ventasSimples Objeto Ventas usado como origen de
+     * datos.
+     * @param convertidorJSON Objeto Gson para procesar ciertos datos
+     * @param modoSoloLectura Permite la no modificacion de los datos de
+     *                        esta lista.
+     */
+    public SimpleSaleItemCustomAdapter(Ventas ventasSimples, Gson convertidorJSON,boolean modoSoloLectura){
+
+        super();
+        this.ventasSimples = ventasSimples;
+        this.convertidorJSON = convertidorJSON;
+        this.modoSoloLectura = modoSoloLectura;
+    }
+
+
 
     @Override
     public SimpleSaleItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -69,7 +93,7 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
          * Aquí se gestiona el evento de selección para un elemento de lista. 
          * El contexto aquí es simplemente redirigir el flujo del fragmento y 
          * trasladar el trabajo a SaleDetailActivity para continuar con el proceso 
-         * de participación a subasta. 
+         * de participación a subasta.
          */
         view.setOnClickListener(v -> {
 
@@ -77,7 +101,7 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
                     FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
                     Context.MODE_PRIVATE);
 
-            String ventaString = convertidorJSON.toJson(vh.ventaSimple);
+            String ventaString = convertidorJSON.toJson(vh.venta);
 
             Intent i = new Intent(parent.getContext(),SaleDetailActivity.class);
             sp.edit()
@@ -85,10 +109,11 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
                     .putString(FeriaVirtualConstants.SP_VENTA_OBJ_STR,ventaString)
                     .commit();
 
+            /* Establezco el modo de solo lectura para la actividad */
+            i.putExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,SimpleSaleItemCustomAdapter.this.modoSoloLectura);
+
             parent.getContext().startActivity(i);
         });
-
-
 
         return vh;
     }
@@ -98,8 +123,8 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
 
         try {
 
-            VentaSimple vs = ventasSimples.ventas.get(position);
-            holder.ventaSimple = vs;
+            Venta vs = ventasSimples.ventas.get(position);
+            holder.venta = vs;
             holder.id_venta = vs.id_venta;
             holder.lblCodigoVenta.setText(String.format("%s N° %d",context.getString(R.string.title_sale_process),vs.id_venta));
             holder.lblFechaInicioVenta.setText(vs.fecha_inicio_venta);
@@ -137,7 +162,7 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
      */
     public class SimpleSaleItemViewHolder extends RecyclerView.ViewHolder {
 
-        public VentaSimple ventaSimple;
+        public Venta venta;
         public Integer id_venta;
         public TextView lblCodigoVenta;
         public TextView lblFechaInicioVenta;
@@ -148,7 +173,7 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
         public SimpleSaleItemViewHolder(View v) {
 
             super(v);
-            this.ventaSimple = null;
+            this.venta = null;
             this.lblCodigoVenta = v.findViewById(R.id.csi_lblCodigoVenta);
             this.lblFechaInicioVenta = v.findViewById(R.id.csi_lblFechaInicioVenta);
             this.lblFechaFinVenta = v.findViewById(R.id.csi_lblFechaFinVenta);

@@ -40,19 +40,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:text="@string/product_list"
-                    app:layout_constraintEnd_toStartOf="@+id/asd_btnCancelar"
+                    app:layout_constraintEnd_toEndOf="@+id/asd_fichaInfoVenta"
                     app:layout_constraintStart_toStartOf="@+id/asd_fichaInfoVenta"
                     app:layout_constraintTop_toBottomOf="@+id/asd_fichaInfoVenta" />
-
-                <Button
-                    android:id="@+id/asd_btnCancelar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/boton_ok"
-                    android:text="@string/action_cancel"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView8"
-                    app:layout_constraintEnd_toEndOf="@+id/asd_fichaInfoVenta"
-                    app:layout_constraintTop_toTopOf="@+id/textView8" />
 
                 <include
                     android:id="@+id/incl_contenedorFormulario"
@@ -61,9 +51,9 @@
                     android:layout_height="0dp"
                     android:layout_marginBottom="100dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/asd_btnCancelar"
+                    app:layout_constraintEnd_toEndOf="@+id/textView8"
                     app:layout_constraintStart_toStartOf="@id/textView8"
-                    app:layout_constraintTop_toBottomOf="@+id/asd_btnCancelar" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
@@ -87,22 +77,6 @@
             android:text="@string/ppbd_push"
             android:textColor="#FFFFFF"
             app:icon="@drawable/baseline_shopping_cart_black_48"
-            app:iconTint="@color/fondo_claro"
-            app:rippleColor="#FFFFFF"
-            app:srcCompat="@drawable/baseline_shopping_cart_black_48" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/asd_btnConfirmar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="0"
-            android:backgroundTint="@color/enfasis_claro_2"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/action_confirm"
-            android:textColor="#FFFFFF"
-            app:icon="@drawable/logo_feriavirtual_compacto"
             app:iconTint="@color/fondo_claro"
             app:rippleColor="#FFFFFF"
             app:srcCompat="@drawable/baseline_shopping_cart_black_48" />

@@ -21,14 +21,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.R;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentaSimple;
-import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
-import com.feriantes4dawin.feriavirtualmovil.ui.auction.AuctionSaleActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushTransportistaActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
@@ -76,7 +74,7 @@ public class SaleDetailActivity extends AppCompatActivity {
     /**
      * Referencia a la venta seleccionada en la lista de ventas.
      */
-    private VentaSimple ventaSimple;
+    private Venta venta;
 
     private boolean estaCargando;
 
@@ -102,10 +100,9 @@ public class SaleDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sale_detail);
 
         ExtendedFloatingActionButton btnPujar = (ExtendedFloatingActionButton)findViewById(R.id.asd_btnPujar);
-        Button btnCancelar = findViewById(R.id.asd_btnCancelar);
-        Button btnConfirmar = findViewById(R.id.asd_btnConfirmar);
         SwipeRefreshLayout miSwiper = (SwipeRefreshLayout)findViewById(R.id.asd_swipeSaleDetail);
         View pantallaCarga = findViewById(R.id.asd_llloading);
+        Intent datosEntradaActividad = getIntent();
         SharedPreferences sp = getSharedPreferences(
                 FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
                 Context.MODE_PRIVATE);
@@ -129,51 +126,25 @@ public class SaleDetailActivity extends AppCompatActivity {
 
         //Obtenemos el id de venta seleccionada en el fragmento CurrentSalesFragment o MyProcessesFragment
         this.id_venta = sp.getInt(FeriaVirtualConstants.SP_VENTA_ID,0);
-        this.ventaSimple = convertidorJSON.fromJson(sp.getString(FeriaVirtualConstants.SP_VENTA_OBJ_STR,""),VentaSimple.class);
+        this.venta = convertidorJSON.fromJson(sp.getString(FeriaVirtualConstants.SP_VENTA_OBJ_STR,""), Venta.class);
         this.usuario = convertidorJSON.fromJson( sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,""), Usuario.class );
 
+        if(datosEntradaActividad.getBooleanExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,false)){
 
-        //Observamos el livedata del objeto y veamos que pasa!
-        saleDetailViewModel.getDatosVenta(id_venta).observe(this,
-                new Observer<Venta>() {
-                    @Override
-                    public void onChanged(Venta venta) {
-                        rellenarDatosVenta(venta);
+            View vDescripcionListaProd = findViewById(R.id.dppb_vDescripcionListaProd);
+            vDescripcionListaProd.setVisibility(View.INVISIBLE);
+            btnPujar.setVisibility(View.GONE);
 
-                    }
-                }
-        );
+        }
+
+
+        actualizarDatosVenta();
 
         miSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 pantallaCarga.setVisibility(View.VISIBLE);
                 saleDetailViewModel.getDatosVenta(id_venta);
-            }
-        });
-
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                finish();
-
-            }
-        });
-
-        btnConfirmar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                YesNoDialog ynd = new YesNoDialog(SaleDetailActivity.this,
-                        getString(R.string.action_confirm),
-                        getString(R.string.confirm_push_products),
-                        null,
-                        null);
-
-                ynd.generate().show();
-
-
             }
         });
 
@@ -204,7 +175,7 @@ public class SaleDetailActivity extends AppCompatActivity {
 
                 Intent i = new Intent(SaleDetailActivity.this, actividadObjetivo);
                 i.putExtra("id_venta", this.id_venta);
-                startActivity(i);
+                startActivityForResult(i,1,null);
 
 
             }catch(Exception ex){
@@ -215,6 +186,56 @@ public class SaleDetailActivity extends AppCompatActivity {
             }
 
         });
+
+
+
+    }
+
+    public void actualizarDatosVenta(){
+
+        //Observamos el livedata del objeto y veamos que pasa!
+        saleDetailViewModel.getDatosVenta(id_venta).observe(this,
+                new Observer<DetalleVenta>() {
+                    @Override
+                    public void onChanged(DetalleVenta detalleVenta) {
+                        rellenarDatosVenta(detalleVenta);
+                    }
+                }
+        );
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+
+            Log.e("SALE_DETAIL_ACT","paso por onActivityResult!");
+
+            String mensaje;
+
+            if(data.hasExtra("producto_agregado")){
+
+                if(data.getBooleanExtra("producto_agregado",false)){
+                    mensaje = getString(R.string.product_added);
+                    saleDetailViewModel.getDatosVenta(id_venta);
+                } else {
+                    mensaje = String.format(
+                            getString(R.string.err_mes_operation_failed_due),
+                            getString( data.getIntExtra("codigo_error", R.string.err_code_str_generic) )
+                    );
+                }
+
+                Snackbar.make(findViewById(android.R.id.content),mensaje,Snackbar.LENGTH_LONG).show();
+
+            } else {
+
+            }
+
+
+
+        }
 
     }
 
@@ -237,10 +258,10 @@ public class SaleDetailActivity extends AppCompatActivity {
      * Método llamado desde el puente de datos para actualizar los 
      * datos obtenidos desde la fuente, exitoso o no. 
      * 
-     * @param venta Objeto Venta del cual extraer los datos. Un 
+     * @param detalleVenta Objeto Venta del cual extraer los datos. Un
      * objeto null indica que no hay datos disponibles. 
      */
-    private void rellenarDatosVenta(Venta venta){
+    private void rellenarDatosVenta(DetalleVenta detalleVenta){
 
         SwipeRefreshLayout miSwiper = (SwipeRefreshLayout)findViewById(R.id.asd_swipeSaleDetail);
         View pantallaCarga = findViewById(R.id.asd_llloading);
@@ -251,32 +272,20 @@ public class SaleDetailActivity extends AppCompatActivity {
         TextView lblEstadoVenta = findViewById(R.id.csi_lblEstadoVenta);
         TextView lblComentariosVenta = findViewById(R.id.csi_lblComentariosVenta);
 
-        RecyclerView rvProductosSeleccionados = findViewById(R.id.asd_rvListaProductosSolicitados);
+        RecyclerView rvProductosSeleccionados = findViewById(R.id.dppb_rvListaProductos);
 
-        if(venta != null){
+        lblNombreEmpresa.setText( String.format("%s N° %d",getString(R.string.title_sale_process), this.venta.id_venta) );
+        lblFechaInicioVenta.setText( this.venta.fecha_inicio_venta );
+        lblFechaFinVenta.setText( this.venta.fecha_fin_venta );
+        lblComentariosVenta.setText( this.venta.comentarios_venta );
+        lblEstadoVenta.setText( this.venta.estado_venta.descripcion );
 
-            lblNombreEmpresa.setText( venta.usuario_autor.nombre );
-            lblFechaInicioVenta.setText( venta.fecha_inicio_venta );
-            lblComentariosVenta.setText( venta.comentarios_venta );
-            lblEstadoVenta.setText( venta.estado_venta.descripcion );
+
+        if(detalleVenta != null && detalleVenta.productos != null){
 
             //Creo un nuevo objeto adapter, pasandole los datos!
-            rvProductosSeleccionados.setAdapter(new ListItemDetailProductCustomAdapter(venta.productos_venta));
+            rvProductosSeleccionados.setAdapter(new ListItemDetailProductCustomAdapter(detalleVenta.productos));
             rvProductosSeleccionados.setLayoutManager( new LinearLayoutManager(this));
-
-        } else {
-
-            lblNombreEmpresa.setText( String.format("%s N° %d",getString(R.string.title_sale_process),ventaSimple.id_venta) );
-            lblFechaInicioVenta.setText( ventaSimple.fecha_inicio_venta );
-            lblFechaFinVenta.setText( ventaSimple.fecha_fin_venta );
-            lblComentariosVenta.setText( ventaSimple.comentarios_venta );
-            lblEstadoVenta.setText( ventaSimple.estado_venta.descripcion );
-
-            Snackbar.make
-                    (this,
-                            findViewById(R.id.asd_contenedor),
-                            getString(R.string.err_msg_generic),
-                            Snackbar.LENGTH_LONG).show();
 
         }
 

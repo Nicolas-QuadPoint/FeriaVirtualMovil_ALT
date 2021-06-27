@@ -17,11 +17,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvMyProcesses"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/desc_my_processes_frag"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMyProcesses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <include

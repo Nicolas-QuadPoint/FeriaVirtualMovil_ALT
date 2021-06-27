@@ -1,13 +1,10 @@
 package com.feriantes4dawin.feriavirtualmovil.ui.sales;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
 
 import org.jetbrains.annotations.NotNull;

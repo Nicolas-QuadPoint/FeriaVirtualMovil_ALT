@@ -8,6 +8,7 @@ import androidx.room.Update;
 
 import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 
+
 @Dao
 public interface VentaDAO {
 

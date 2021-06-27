@@ -106,7 +106,7 @@ public class MainViewModel extends ViewModel {
                 @Override
                 public void onResponse(Call<ResultadoUsuario> call, Response<ResultadoUsuario> response) {
 
-                    Log.e("MAIN_VIEW_MODEL",String.format("Código de respuesta http: %d",response.code()));
+                    Log.i("MAIN_VIEW_MODEL",String.format("Código de respuesta http: %d",response.code()));
 
                     if(response.isSuccessful()){
 
@@ -114,7 +114,7 @@ public class MainViewModel extends ViewModel {
 
                     } else {
 
-                        datosMutablesUsuario.setValue(null);
+                        datosMutablesUsuario.setValue(usuario);
 
                     }
 
@@ -125,7 +125,7 @@ public class MainViewModel extends ViewModel {
                 public void onFailure(Call<ResultadoUsuario> call, Throwable t) {
                     //Ignoramos el error de forma silenciosa... no sin antes decirlo en log
                     Log.e("MAIN_VIEW_MODEL",String.format("No se pudo obtener datos de usuario!: %s",t.toString()));
-                    datosMutablesUsuario.setValue(null);
+                    datosMutablesUsuario.setValue(usuario);
                 }
 
             });
@@ -133,7 +133,7 @@ public class MainViewModel extends ViewModel {
         } catch(Exception ex){
 
             Log.e("MAIN_VIEW_MODEL",String.format("No se pudo obtener datos de usuario!: %s",ex.toString()));
-
+            datosMutablesUsuario.setValue(null);
         }
 
     }

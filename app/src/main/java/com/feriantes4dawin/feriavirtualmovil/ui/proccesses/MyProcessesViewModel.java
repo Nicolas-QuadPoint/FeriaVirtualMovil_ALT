@@ -1,12 +1,18 @@
 package com.feriantes4dawin.feriavirtualmovil.ui.proccesses;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
-import com.feriantes4dawin.feriavirtualmovil.data.models.VentasSimples;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * MyProcessesViewModel 
@@ -19,8 +25,8 @@ public class MyProcessesViewModel extends ViewModel {
     private FeriaVirtualApplication feriaVirtualApplication;
     private VentaRepository ventaRepository;
 
-    private LiveData<VentasSimples> datosVenta;
-    private MutableLiveData<VentasSimples> datosMutablesVenta;
+    private LiveData<Ventas> datosVenta;
+    private MutableLiveData<Ventas> datosMutablesVenta;
 
     public MyProcessesViewModel(VentaRepository ventaRepository, FeriaVirtualApplication feriaVirtualApplication){
 
@@ -43,10 +49,68 @@ public class MyProcessesViewModel extends ViewModel {
      * 
      * @return Un objeto LiveData para vigilar por cambios. 
      */
-    LiveData<VentasSimples> getDatosVenta(){
+    LiveData<Ventas> getDatosVenta(){
 
-        //No hago nada, ayuda!
+        obtenerHistorialDeVentas();
+
         return datosVenta;
+    }
+
+    private void obtenerHistorialDeVentas(){
+
+        try {
+
+            Call<Ventas> ruc = ventaRepository.getHistorialVentas();
+
+            ruc.enqueue(new Callback<Ventas>() {
+                @Override
+                public void onResponse(Call<Ventas> call, Response<Ventas> response) {
+
+                    if(response.isSuccessful() && response.body() != null){
+
+                        datosMutablesVenta.setValue(response.body());
+
+                    } else {
+
+                        Log.e("MY_PROCESSESS_VIEWMODEL","No hay ventas que mostrar" );
+                        datosMutablesVenta.setValue(null);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<Ventas> call, Throwable t) {
+
+                    Log.e(
+                            "MY_PROCESSESS_VIEWMODEL",
+                            String.format(
+                                    "No se pudo recuperar el historial de procesos de venta!!!: %s",
+                                    t.toString()
+                            )
+                    );
+
+                    datosMutablesVenta.setValue(null);
+
+                }
+            });
+
+
+
+        } catch(Exception ex){
+
+            Log.e(
+                "MY_PROCESSESS_VIEWMODEL",
+                String.format(
+                        "No se pudo recuperar el historial de procesos de venta!!!: %s",
+                        ex.toString()
+                )
+            );
+
+            datosMutablesVenta.setValue(null);
+
+        }
+
+
     }
 
 
