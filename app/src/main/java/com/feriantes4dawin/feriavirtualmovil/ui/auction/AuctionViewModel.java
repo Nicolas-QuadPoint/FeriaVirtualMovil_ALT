@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
 import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaTransportista;
@@ -145,28 +146,149 @@ public class AuctionViewModel extends ViewModel {
 
     public void pujarSubastaProductor(DetallePujaSubastaProductor pujaSubastaProductor, SimpleAction accion){
 
-        Call<ResultadoID> resultado = subastaRepository.pujarSubastaProductor(pujaSubastaProductor.id_venta,pujaSubastaProductor);
-        resultado.enqueue(new Callback<ResultadoID>() {
-            @Override
-            public void onResponse(Call<ResultadoID> call, Response<ResultadoID> response) {
+        try{
+            Call<ResultadoID> resultado = subastaRepository.pujarProductoSubastaProductor(pujaSubastaProductor.id_venta,pujaSubastaProductor);
+            resultado.enqueue(new Callback<ResultadoID>() {
+                @Override
+                public void onResponse(Call<ResultadoID> call, Response<ResultadoID> response) {
 
-                if(accion != null){
-                    accion.doAction(response.body().id_resultado);
+                    if(response.isSuccessful() && response.body() != null){
+
+                        if(accion != null){
+                            accion.doAction(response.body().id_resultado);
+                        }
+
+                    } else {
+
+                        if(accion != null){
+                            accion.doAction(Integer.valueOf(0));
+                        }
+
+                    }
+
                 }
 
-            }
+                @Override
+                public void onFailure(Call<ResultadoID> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<ResultadoID> call, Throwable t) {
+                    if(accion != null){
+                        accion.doAction(Integer.valueOf(0));
+                    }
 
-                if(accion != null){
-                    accion.doAction(Integer.valueOf(0));
+                    Log.e("AUCTION_VIEW_MODEL",String.format("Fallo la puja de productor!!!: %s",t.toString()));
                 }
 
-                Log.e("AUCTION_VIEW_MODEL",String.format("Fallo la puja de productor!!!: %s",t.toString()));
-            }
+            });
 
-        });
+        } catch(Exception ex){
+
+            Log.e("AUCTION_VIEW_MODEL",String.format("Fallo la puja de productor!!!: %s",ex.toString()));
+
+            if(accion != null){
+                accion.doAction(Integer.valueOf(0));
+            }
+        }
+    }
+
+    public void modificarPujaProductor(DetallePujaSubastaProductor detalle,SimpleAction accion){
+
+        try{
+
+            Call<ResultadoID> resultado = subastaRepository.modificarPujaProductor(
+                detalle.id_venta,
+                detalle);
+
+            resultado.enqueue(new Callback<ResultadoID>() {
+                @Override
+                public void onResponse(Call<ResultadoID> call, Response<ResultadoID> response) {
+
+                    if(response.isSuccessful() && response.body() != null){
+
+                        if(accion != null){
+                            accion.doAction(response.body().id_resultado);
+                        }
+
+                    } else {
+
+                        if(accion != null){
+                            accion.doAction(Integer.valueOf(0));
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResultadoID> call, Throwable t) {
+
+                    if(accion != null){
+                        accion.doAction(Integer.valueOf(0));
+                    }
+
+                    Log.e("AUCTION_VIEW_MODEL",String.format("Fallo la puja de productor!!!: %s",t.toString()));
+                }
+
+            });
+
+        } catch(Exception ex){
+
+            Log.e("AUCTION_VIEW_MODEL",String.format("Fallo la puja de productor!!!: %s",ex.toString()));
+
+            if(accion != null){
+                accion.doAction(Integer.valueOf(0));
+            }
+        }
+
+    }
+
+    public void removerPujaProductor(DetallePujaSubastaProductor detalle, SimpleAction accion){
+
+        try{
+
+            Call<DetallesPujaSubastaProductor> resultado = subastaRepository.removerPujaProductor(
+                    detalle.id_venta,
+                    detalle.id_detalle);
+
+            resultado.enqueue(new Callback<DetallesPujaSubastaProductor>() {
+                @Override
+                public void onResponse(Call<DetallesPujaSubastaProductor> call, Response<DetallesPujaSubastaProductor> response) {
+
+                    if(response.isSuccessful() && response.body() != null){
+
+                        if(accion != null){
+                            accion.doAction(response.body().pujas != null? 1 : 0);
+                        }
+
+                    } else {
+
+                        if(accion != null){
+                            accion.doAction(Integer.valueOf(0));
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<DetallesPujaSubastaProductor> call, Throwable t) {
+
+                    if(accion != null){
+                        accion.doAction(Integer.valueOf(0));
+                    }
+
+                    Log.e("AUCTION_VIEW_MODEL",String.format("Fallo la puja de productor!!!: %s",t.toString()));
+                }
+
+            });
+
+        } catch(Exception ex){
+
+            Log.e("AUCTION_VIEW_MODEL",String.format("Fallo la puja de productor!!!: %s",ex.toString()));
+
+            if(accion != null){
+                accion.doAction(Integer.valueOf(0));
+            }
+        }
 
     }
 

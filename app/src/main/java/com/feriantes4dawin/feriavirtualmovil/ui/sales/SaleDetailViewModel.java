@@ -7,8 +7,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
+import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +40,11 @@ public class SaleDetailViewModel extends ViewModel {
     private VentaRepository ventaRepository;
 
     /**
+     * Fuente de datos para subastas/procesos
+     */
+    private SubastaRepository subastaRepository;
+
+    /**
      * Referencia a la aplicación. 
      */
     private FeriaVirtualApplication feriaVirtualApplication;
@@ -40,8 +53,11 @@ public class SaleDetailViewModel extends ViewModel {
      * Puente de datos para SaleDetailActivity.
      * @link https://developer.android.com/topic/libraries/architecture/livedata
      */
-    private LiveData<DetalleVenta> datosVenta;
-    private MutableLiveData<DetalleVenta> datosMutablesVenta;
+    public LiveData<Venta> datosVenta;
+    private MutableLiveData<Venta> datosMutablesVenta;
+
+    public LiveData<DetallesPujaSubastaProductor> datosProductosVenta;
+    private MutableLiveData<DetallesPujaSubastaProductor> datosMutablesProductosVenta;
 
     /**
      * Crea un objeto SaleDetailViewModel
@@ -50,13 +66,19 @@ public class SaleDetailViewModel extends ViewModel {
      * la fuente de datos. 
      * @param feriaVirtualApplication Instancia de Application. 
      */
-    public SaleDetailViewModel(VentaRepository ventaRepository, FeriaVirtualApplication feriaVirtualApplication){
+    public SaleDetailViewModel(VentaRepository ventaRepository,
+                               SubastaRepository subastaRepository,
+                               FeriaVirtualApplication feriaVirtualApplication){
 
         this.ventaRepository = ventaRepository;
+        this.subastaRepository = subastaRepository;
         this.feriaVirtualApplication = feriaVirtualApplication;
 
         this.datosMutablesVenta = new MutableLiveData<>();
         this.datosVenta = datosMutablesVenta;
+
+        this.datosMutablesProductosVenta = new MutableLiveData<>();
+        this.datosProductosVenta = datosMutablesProductosVenta;
 
     }
 
@@ -70,12 +92,107 @@ public class SaleDetailViewModel extends ViewModel {
      * @return Un objeto LiveData, el cual se debe vigilar en 
      * caso de encontrar resultados, o no.
      */
-    public LiveData<DetalleVenta> getDatosVenta(Integer venta_id){
+    public LiveData<Venta> getDatosVenta(Integer venta_id){
 
         /* Llamo a la rutina asíncrona */
-        cargarDatosVenta(venta_id);
+        internalGetDatosVenta(venta_id);
 
         return datosVenta;
+
+    }
+
+    public LiveData<DetallesPujaSubastaProductor> borrarPuja(Integer id_venta, Integer id_productor, DetallePujaSubastaProductor p){
+
+        internalBorrarPuja(id_venta,id_productor,p);
+
+        return datosProductosVenta;
+    }
+
+    public LiveData<DetallesPujaSubastaProductor> getProductosVenta(Integer id_venta,Integer id_productor){
+
+        internalGetProductosVenta(id_venta,id_productor);
+
+        return datosProductosVenta;
+    }
+
+    private void internalGetProductosVenta(Integer id_venta,Integer id_productor){
+
+        try {
+
+            Call<DetallesPujaSubastaProductor> puc = subastaRepository.getProductosSubasta(id_venta,id_productor);
+
+            puc.enqueue(new Callback<DetallesPujaSubastaProductor>() {
+
+                @Override
+                public void onResponse(Call<DetallesPujaSubastaProductor> call, Response<DetallesPujaSubastaProductor> response) {
+
+                    datosMutablesProductosVenta.setValue(response.body());
+
+                }
+
+                @Override
+                public void onFailure(Call<DetallesPujaSubastaProductor> call, Throwable t) {
+                    Log.e("SALE_DETAIL_VIEWMODEL",String.format("No se pudo obtener productos venta!: %s",t.toString()));
+                    datosMutablesProductosVenta.setValue(null);
+                }
+            });
+
+
+        } catch(Exception ex) {
+
+            Log.e("SALE_DETAIL_VIEWMODEL",String.format("No se pudo obtener productos venta!: %s",ex.toString()));
+            datosMutablesProductosVenta.setValue(null);
+        }
+
+    }
+
+    private void internalBorrarPuja(Integer id_venta,Integer id_productor, DetallePujaSubastaProductor p){
+
+        try {
+
+            Call<DetallesPujaSubastaProductor> puc = subastaRepository.removerPujaProductor(
+                    id_venta,
+                    p.id_detalle);
+
+            puc.enqueue(new Callback<DetallesPujaSubastaProductor>() {
+                @Override
+                public void onResponse(Call<DetallesPujaSubastaProductor> call, Response<DetallesPujaSubastaProductor> response) {
+                    if(response.isSuccessful() && response.body() != null){
+
+                        datosMutablesProductosVenta.setValue(response.body());
+
+                    } else {
+
+                        //Si falla, entonces no modificamos la lista, y retornamos solamente una
+                        //copia
+                        datosMutablesProductosVenta.setValue(
+                            new DetallesPujaSubastaProductor( datosMutablesProductosVenta.getValue().pujas )
+                        );
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DetallesPujaSubastaProductor> call, Throwable t) {
+                    Log.e("SALE_DETAIL_VIEWMODEL",String.format("No se pudo eliminar puja!: %s",t.toString()));
+                    //Si falla, entonces no modificamos la lista, y retornamos solamente una
+                    //copia
+                    datosMutablesProductosVenta.setValue(
+                            new DetallesPujaSubastaProductor( datosMutablesProductosVenta.getValue().pujas )
+                    );
+                }
+            });
+
+
+        } catch(Exception ex) {
+
+            Log.e("SALE_DETAIL_VIEWMODEL",String.format("No se pudo eliminar puja!: %s",ex.toString()));
+            //Si falla, entonces no modificamos la lista, y retornamos solamente una
+            //copia
+            datosMutablesProductosVenta.setValue(
+                    new DetallesPujaSubastaProductor( datosMutablesProductosVenta.getValue().pujas )
+            );
+        }
 
     }
 
@@ -86,16 +203,16 @@ public class SaleDetailViewModel extends ViewModel {
      * 
      * @param venta_id ID de la venta a buscar, no null.
      */
-    private void cargarDatosVenta(Integer venta_id){
+    private void internalGetDatosVenta(Integer venta_id){
 
         if(venta_id != null){
 
-            Call<DetalleVenta> ventaCall = ventaRepository.getDetalleVenta(venta_id);
+            Call<Venta> puc = ventaRepository.getInfoVenta(venta_id);
             
-            ventaCall.enqueue(new Callback<DetalleVenta>() {
+            puc.enqueue(new Callback<Venta>() {
 
                 @Override
-                public void onResponse(Call<DetalleVenta> call, Response<DetalleVenta> response) {
+                public void onResponse(Call<Venta> call, Response<Venta> response) {
 
                     if(response.isSuccessful() && response.body() != null) {
 
@@ -110,13 +227,13 @@ public class SaleDetailViewModel extends ViewModel {
                 }
 
                 @Override
-                public void onFailure(Call<DetalleVenta> call, Throwable t) {
+                public void onFailure(Call<Venta> call, Throwable t) {
                     Log.e("SALE_DETAIL_VIEW_MODEL", "Error! no se pudo recuperar datos de venta!: " + t.toString());
                     datosMutablesVenta.setValue(null);
                 }
             });
 
-        } else{
+        } else {
 
             datosMutablesVenta.setValue(null);
 

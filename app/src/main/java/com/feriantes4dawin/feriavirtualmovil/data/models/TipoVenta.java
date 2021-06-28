@@ -28,8 +28,20 @@ public class TipoVenta{
     public TipoVenta() {
     }
 
+    public static final TipoVenta VENTA_INDEFINIDA = new TipoVenta(0,"Venta indefinida");
     public static final TipoVenta VENTA_INTERNA = new TipoVenta(1,"Venta Interna (Nacional)");
     public static final TipoVenta VENTA_EXTERNA = new TipoVenta(2,"Venta Externa (Exportación)");
+
+    public static TipoVenta getTipoVentaByID(int id){
+        switch(id){
+            case 1:
+                return VENTA_INTERNA;
+            case 2:
+                return VENTA_EXTERNA;
+            default:
+                return VENTA_INDEFINIDA;
+        }
+    }
 
     @NonNull
     @NotNull

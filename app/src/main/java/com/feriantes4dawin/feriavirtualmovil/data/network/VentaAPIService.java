@@ -1,6 +1,7 @@
 package com.feriantes4dawin.feriavirtualmovil.data.network;
 
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 
 import retrofit2.Call;
@@ -23,7 +24,10 @@ public interface VentaAPIService {
     @GET("ventas/historial")
     Call<Ventas> getHistorialVentas();
 
-    @GET("ventas/{venta_id}")
-    Call<DetalleVenta> getDetalleVenta(@Path(value="venta_id") Integer venta_id);
+    @GET("ventas/{id_venta}?formato=detallado")
+    Call<DetalleVenta> getDetalleVenta(@Path(value="id_venta") Integer id_venta);
+
+    @GET("ventas/{id_venta}?formato=simple")
+    Call<Venta> getInfoVenta(@Path(value="id_venta") Integer id_venta);
 
 }

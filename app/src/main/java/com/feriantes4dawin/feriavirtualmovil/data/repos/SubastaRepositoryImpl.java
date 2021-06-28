@@ -3,6 +3,9 @@ package com.feriantes4dawin.feriavirtualmovil.data.repos;
 import com.feriantes4dawin.feriavirtualmovil.data.db.SubastaDAO;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaTransportista;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
 import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaTransportista;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID;
@@ -32,48 +35,50 @@ public class SubastaRepositoryImpl implements SubastaRepository {
     }
 
     @Override
-    public Call<ResultadoID> pujarSubastaProductor(Integer id_subasta, DetallePujaSubastaProductor puja) {
-
+    public Call<ResultadoID> pujarProductoSubastaProductor(
+        Integer id_subasta,
+        DetallePujaSubastaProductor puja
+    ){
         Call<ResultadoID> puc = subastaAPI.pujarSubastaProductor(id_subasta,puja);
-
         return puc;
     }
 
-    @Override
-    public Call<ResultadoID> pujarSubastaTransportista(Integer id_subasta, DetallePujaSubastaTransportista puja) {
+    public Call<ResultadoID> modificarPujaProductor(
 
-        Call<ResultadoID> puc = subastaAPI.pujarSubastaTransportista(id_subasta,puja);
+            Integer id_subasta,
+            DetallePujaSubastaProductor puja
 
+    ){
+        Call<ResultadoID> puc = subastaAPI.modificarPujaProductor(id_subasta,puja);
         return puc;
+    };
+
+    @Override
+    public Call<DetallesPujaSubastaProductor> removerPujaProductor(
+        Integer id_subasta,
+        Integer id_detalle
+    ){
+
+        Call<DetallesPujaSubastaProductor> puc = subastaAPI.removerPujaSubastaProductor(id_subasta,id_detalle);
+        return puc;
+
     }
 
     @Override
-    public Call<ResultadoID> removerPujaSubastaProductor(Integer id_subasta, Integer id_productor) {
-        return null;
+    public Call<DetallesPujaSubastaProductor> getProductosSubasta(Integer id_subasta, Integer id_productor){
+
+        Call<DetallesPujaSubastaProductor> puc = subastaAPI.getProductosSubasta(id_subasta);
+        return puc;
+
     }
 
     @Override
-    public Call<ResultadoID> removerPujaSubastaTransportista(Integer id_subasta, Integer id_transportista) {
-        return null;
+    public Call<DetallesPujaSubastaProductor> getProductosSubasta(Integer id_subasta){
+
+        Call<DetallesPujaSubastaProductor> puc = null;
+        return puc;
+
     }
 
-    @Override
-    public List<DetallePujaSubastaProductor> getAllPujasSubastaProductor(Integer id_subasta) {
-        return null;
-    }
 
-    @Override
-    public List<DetallePujaSubastaTransportista> getAllPujasSubastaTransportista(Integer id_subasta) {
-        return null;
-    }
-
-    @Override
-    public PujaSubastaProductor getInfoPujaSubastaProductor(Integer id_subasta, Integer id_productor) {
-        return null;
-    }
-
-    @Override
-    public PujaSubastaTransportista getInfoPujaSubastaTransportista(Integer id_subasta, Integer id_transportista) {
-        return null;
-    }
 }

@@ -144,6 +144,13 @@
     <string name="mes_adv_add_items_to_list">Agrega elementos para verlos en la lista, o refresca si ya hay elementos</string>
     <string name="mes_adv_no_items">Ahora mismo no hay elementos para mostrar. Puedes deslizar hacia abajo para refrescar la lista y ver si hay nuevos elementos</string>
     <string name="no_content">Sin contenido</string>
+    <string name="err_mes_remove_push_failed">No se pudo remover la puja por ahora, inténtelo más tarde</string>
+    <string name="err_mes_remove_push_ok">Puja removida</string>
+    <string name="sale_type_s">Tipo de venta %s</string>
+    <string name="err_mes_update_push_ok">Puja Actualizada</string>
+    <string name="err_mes_update_push_failed">No se pudo actualizar la puja</string>
+    <string name="err_mes_add_push_ok">Puja creada</string>
+    <string name="err_mes_add_push_failed">No se pudo crear la puja</string>
 
 
 </resources>

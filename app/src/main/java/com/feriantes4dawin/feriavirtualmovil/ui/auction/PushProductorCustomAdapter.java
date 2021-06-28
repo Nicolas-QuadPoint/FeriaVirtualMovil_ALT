@@ -78,6 +78,8 @@ public class PushProductorCustomAdapter extends RecyclerView.Adapter<PushProduct
 
     public class PushProductorViewHolder extends RecyclerView.ViewHolder {
 
+        public Producto p;
+
         public String id_producto;
         public TextView lblNombreProducto;
         public TextView lblCantidadProducto;

@@ -3,17 +3,16 @@ package com.feriantes4dawin.feriavirtualmovil.ui.auction;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
@@ -22,17 +21,20 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProdu
 import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
 import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
-import com.feriantes4dawin.feriavirtualmovil.data.repos.ProductoRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.ProductoRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
-import com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleSpinnerArrayAdapter;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
+
+import static com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants.*;
 
 
 public class PushProductorActivity extends AppCompatActivity {
@@ -55,6 +57,10 @@ public class PushProductorActivity extends AppCompatActivity {
     private AuctionViewModelFactory auctionViewModelFactory;
 
     private Integer id_venta;
+
+    private DetallePujaSubastaProductor detalle;
+
+    private List<Producto> listaProductos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,7 @@ public class PushProductorActivity extends AppCompatActivity {
         Spinner spProductos = findViewById(R.id.app_spProducto);
         View pantallaCarga = findViewById(R.id.app_llloading);
         View contenedorPrincipal = findViewById(R.id.app_contenedorPrincipal);
+        Intent datosPeticion = getIntent();
 
         ArrayAdapter<TipoVenta> adaptadorSpTipoVenta = new ArrayAdapter<TipoVenta>(
             this,
@@ -125,7 +132,7 @@ public class PushProductorActivity extends AppCompatActivity {
 
                 detallePujaProductor.tipo_venta = (TipoVenta) spTipoVenta.getSelectedItem();
                 detallePujaProductor.cantidad = Integer.valueOf(txtCantidadProductos.getText().toString());
-                detallePujaProductor.id_producto = ((Producto) spProductos.getSelectedItem());
+                detallePujaProductor.producto = ((Producto) spProductos.getSelectedItem());
                 detallePujaProductor.id_venta = PushProductorActivity.this.id_venta;
 
                 auctionViewModel.pujarSubastaProductor(detallePujaProductor, new SimpleAction() {
@@ -133,7 +140,11 @@ public class PushProductorActivity extends AppCompatActivity {
                     public void doAction(Object o) {
 
                         Integer resultado = (Integer)o;
-                        finalizarActividad( Boolean.valueOf( resultado != 0 ) );
+                        finalizarActividad(
+                            FeriaVirtualConstants.ACCION_AGREGAR_PUJA,
+                            Boolean.valueOf( resultado != 0 ),
+                            R.string.err_mes_add_push_failed
+                        );
 
                     }
                 });
@@ -142,27 +153,6 @@ public class PushProductorActivity extends AppCompatActivity {
 
             }
         });
-
-        btnEliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                YesNoDialog ynd = new YesNoDialog(
-                        PushProductorActivity.this,
-                        getString(R.string.action_confirm),
-                        getString(R.string.confirm_delete_push),
-                        new SimpleAction() {
-                            @Override
-                            public void doAction(Object o) {
-
-                                Toast.makeText(PushProductorActivity.this,"Debería hacer algo aquí!",Toast.LENGTH_SHORT).show();
-
-                            }
-                        },null);
-
-            }
-        });
-
 
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,20 +173,29 @@ public class PushProductorActivity extends AppCompatActivity {
                             productos.productos
                     );
 
+
+
                     adaptadorSpTipoVenta.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     spProductos.setAdapter(
                         adaptadorSpTipoVenta
                     );
 
+                    PushProductorActivity.this.listaProductos = new ArrayList<>(productos.productos);
+
+                    configurarDatosEntrada();
+
+                    contenedorPrincipal.setClickable(true);
+                    pantallaCarga.setVisibility(View.GONE);
+
                 } else {
 
-                    finalizarActividad(false);
-
+                    finalizarActividad(
+                            FeriaVirtualConstants.ACCION_AGREGAR_PUJA,
+                            false,
+                            R.string.err_code_str_cant_recover_data);
                 }
 
-                contenedorPrincipal.setClickable(true);
-                pantallaCarga.setVisibility(View.GONE);
             }
         });
 
@@ -205,12 +204,179 @@ public class PushProductorActivity extends AppCompatActivity {
 
     }
 
-    public void finalizarActividad(boolean exito){
+
+    public void configurarDatosEntrada(){
+
+        Button btnPujar = findViewById(R.id.tbpm_btnPujar);
+        Button btnEliminar = findViewById(R.id.tbpm_btnEliminar);
+        Button btnCancelar = findViewById(R.id.tbpm_btnCancelar);
+        EditText txtCantidadProductos = findViewById(R.id.app_txtCantidad);
+        Spinner spTipoVenta = findViewById(R.id.app_spTipoVenta);
+        Spinner spProductos = findViewById(R.id.app_spProducto);
+        View pantallaCarga = findViewById(R.id.app_llloading);
+        View contenedorPrincipal = findViewById(R.id.app_contenedorPrincipal);
+        Intent datosPeticion = getIntent();
+
+        /* Aqui chequeo el modo de accion */
+        if(datosPeticion.getIntExtra(CODIGO_ACCION,-1) != ACCION_AGREGAR_PUJA){
+
+            try {
+
+                //Aqui doy los datos del detalle!
+                this.detalle = convertidorJSON.fromJson(
+                        datosPeticion.getStringExtra(
+                                FeriaVirtualConstants.SP_DETALLE_PUJA_PROD_STR
+                        ),
+                        DetallePujaSubastaProductor.class
+                );
+
+                if(detalle != null){
+
+                    txtCantidadProductos.setText( detalle.cantidad.toString() );
+
+                    if(listaProductos != null){
+
+                        Producto productoEncontrado = null;
+
+                        for(Producto p : listaProductos){
+
+                            if(detalle.producto.id_producto == p.id_producto){
+                                productoEncontrado = p;
+                                break;
+                            }
+
+                        }
+
+                        spProductos.setSelection(((ArrayAdapter)spProductos.getAdapter()).getPosition(
+                            productoEncontrado
+                        ));
+
+                    }
+
+                    spTipoVenta.setSelection(((ArrayAdapter)spTipoVenta.getAdapter()).getPosition(
+                            TipoVenta.getTipoVentaByID(detalle.tipo_venta.id_tipo_venta)
+                    ));
+
+                    //seleccionarElementoDeSpinner(spTipoVenta,TipoVenta.getTipoVentaByID(detalle.tipo_venta.id_tipo_venta));
+
+                } else {
+
+                    finalizarActividad(
+                            FeriaVirtualConstants.ACCION_VISUALIZAR_PUJA,
+                            false,
+                            R.string.err_code_str_cant_recover_data);
+                }
+
+
+                if(datosPeticion.getBooleanExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,false)){
+
+                    //Aqui quito control al usuario para que actue
+                    txtCantidadProductos.setEnabled(false);
+                    spProductos.setEnabled(false);
+                    spTipoVenta.setEnabled(false);
+                    btnPujar.setEnabled(false);
+                    btnCancelar.setText(R.string.action_accept);
+
+
+                } else if(datosPeticion.getIntExtra(CODIGO_ACCION, -1) == ACCION_MODIFICAR_PUJA) {
+
+                    /* Aqui es modo modificacion! */
+                    btnPujar.setText(R.string.action_update);
+                    btnEliminar.setEnabled(true);
+
+                    btnPujar.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+
+                            detalle.tipo_venta = (TipoVenta) spTipoVenta.getSelectedItem();
+                            detalle.cantidad = Integer.valueOf(txtCantidadProductos.getText().toString());
+                            detalle.producto = ((Producto) spProductos.getSelectedItem());
+                            //detalle.id_venta = PushProductorActivity.this.id_venta;
+
+                            auctionViewModel.modificarPujaProductor(detalle, new SimpleAction() {
+                                @Override
+                                public void doAction(Object o) {
+
+                                    Integer resultado = (Integer) o;
+                                    finalizarActividad(
+                                            ACCION_MODIFICAR_PUJA,
+                                            Boolean.valueOf(resultado != 0),
+                                            R.string.err_mes_update_push_failed
+                                    );
+
+                                }
+                            });
+
+                            pantallaCarga.setVisibility(View.VISIBLE);
+
+                        }
+                    });
+
+                    btnEliminar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            YesNoDialog ynd = new YesNoDialog(
+                                    PushProductorActivity.this,
+                                    getString(R.string.action_confirm),
+                                    getString(R.string.confirm_delete_push),
+                                    new SimpleAction() {
+                                        @Override
+                                        public void doAction(Object o) {
+
+                                            detalle.tipo_venta = (TipoVenta) spTipoVenta.getSelectedItem();
+                                            detalle.cantidad = Integer.valueOf(txtCantidadProductos.getText().toString());
+                                            detalle.producto = ((Producto) spProductos.getSelectedItem());
+
+                                            auctionViewModel.removerPujaProductor(
+                                                    detalle,
+                                                    new SimpleAction() {
+                                                        @Override
+                                                        public void doAction(Object o) {
+
+                                                            Integer resultado = (Integer) o;
+                                                            finalizarActividad(
+                                                                    ACCION_REMOVER_PUJA,
+                                                                    resultado != 0,
+                                                                    R.string.err_mes_remove_push_failed
+                                                            );
+
+                                                        }
+                                                    }
+                                            );
+
+                                        }
+                                    }, null);
+
+                                ynd.generate().show();
+
+                        }
+                    });
+
+
+                }
+
+            } catch(Exception ex){
+                Log.e("PUSH_PRODUCT_ACT",String.format("No se pudo visualizar puja!: %s",ex.toString()));
+                finalizarActividad(ACCION_VISUALIZAR_PUJA,false,R.string.err_code_str_cant_recover_data);
+            }
+
+
+
+        }
+
+
+    }
+
+    public void finalizarActividad(int accion, boolean exito, int idCodigoError){
 
         Intent i = new Intent();
-        i.putExtra("producto_agregado",exito);
-        i.putExtra("codigo_error",exito? R.string.err_code_str_ok : R.string.err_mes_product_add_failed);
+        i.putExtra(FeriaVirtualConstants.CODIGO_ACCION,accion);
+        i.putExtra(RESULTADO_ACCION,exito);
+        i.putExtra(FeriaVirtualConstants.ID_CODIGO_ERROR,idCodigoError);
         setResult(RESULT_OK,i);
         finish();
     }
+
 }

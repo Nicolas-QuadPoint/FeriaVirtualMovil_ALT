@@ -68,6 +68,9 @@ public final class FeriaVirtualConstants {
      */
     public static final String SP_VENTA_OBJ_STR = "sp_venta_obj_str";
 
+
+    public static final String SP_DETALLE_PUJA_PROD_STR = "sp_detalle_puja_prod_str";
+
     /**
      * Clave para usar en un Intent con el fin de inicializar
      * SaleDetailActivity en modo de solo lectura.
@@ -105,4 +108,14 @@ public final class FeriaVirtualConstants {
      * @deprecated Será removida en un futuro dependiendo de su uso actual.
      */
     public static final String FRAGMENTO_INICIO = "FRAGMENTO_INICIO";
+
+    public static final String CODIGO_ACCION = "id_accion";
+    public static final String RESULTADO_ACCION = "resultado_accion";
+    public static final String ID_CODIGO_ERROR = "id_codigo_error";
+
+    public static final int ACCION_AGREGAR_PUJA = 0;
+    public static final int ACCION_VISUALIZAR_PUJA = 1;
+    public static final int ACCION_MODIFICAR_PUJA = 2;
+    public static final int ACCION_REMOVER_PUJA = 3;
+
 }

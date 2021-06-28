@@ -2,6 +2,8 @@ package com.feriantes4dawin.feriavirtualmovil.data.repos;
 
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaTransportista;
+import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
 import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaTransportista;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID;
@@ -22,61 +24,40 @@ import retrofit2.http.Path;
 
 public interface SubastaRepository {
 
-    Call<ResultadoID> pujarSubastaProductor(
+    Call<ResultadoID> pujarProductoSubastaProductor(
 
         Integer id_subasta,
         DetallePujaSubastaProductor puja
 
     );
 
-    Call<ResultadoID> pujarSubastaTransportista(
-
-
-        Integer id_subasta,
-        DetallePujaSubastaTransportista puja
-
-    );
-
-    Call<ResultadoID> removerPujaSubastaProductor(
+    Call<ResultadoID> modificarPujaProductor(
 
         Integer id_subasta,
-        Integer id_productor
+        DetallePujaSubastaProductor puja
 
     );
 
-    Call<ResultadoID> removerPujaSubastaTransportista(
+    Call<DetallesPujaSubastaProductor> removerPujaProductor(
 
         Integer id_subasta,
-        Integer id_transportista
+        Integer id_detalle
 
     );
 
-
-    List<DetallePujaSubastaProductor> getAllPujasSubastaProductor(
-
-        Integer id_subasta
-
-    );
-
-    List<DetallePujaSubastaTransportista> getAllPujasSubastaTransportista(
-
-        Integer id_subasta
-
-    );
-
-    PujaSubastaProductor getInfoPujaSubastaProductor(
+    Call<DetallesPujaSubastaProductor> getProductosSubasta(
 
         Integer id_subasta,
         Integer id_productor
 
     );
 
-    PujaSubastaTransportista getInfoPujaSubastaTransportista(
+    Call<DetallesPujaSubastaProductor> getProductosSubasta(
 
-        Integer id_subasta,
-        Integer id_transportista
+        Integer id_subasta
 
     );
+
 
 
 }

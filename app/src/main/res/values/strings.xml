@@ -145,5 +145,12 @@
     <string name="mes_adv_add_items_to_list">Add items to view them on list, or refresh to check if are items added</string>
     <string name="mes_adv_no_items">Actually this list is empty. Slide to refresh this view and check if there are data</string>
     <string name="no_content">No content</string>
+    <string name="err_mes_remove_push_failed">Can\'t remove push right now, please try again later</string>
+    <string name="err_mes_remove_push_ok">Push removed</string>
+    <string name="sale_type_s">Sale type %s</string>
+    <string name="err_mes_update_push_ok">Push Updated</string>
+    <string name="err_mes_update_push_failed">Can´t update push registry</string>
+    <string name="err_mes_add_push_ok">Push created</string>
+    <string name="err_mes_add_push_failed">Can´t create push registry</string>
 
 </resources>

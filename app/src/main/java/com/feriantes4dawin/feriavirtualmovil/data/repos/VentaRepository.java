@@ -2,6 +2,7 @@ package com.feriantes4dawin.feriavirtualmovil.data.repos;
 
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 
@@ -14,7 +15,9 @@ public interface VentaRepository {
 
     Call<Ventas> getVentasDisponibles(Usuario usuario);
 
-    Call<DetalleVenta> getDetalleVenta(Integer venta_id);
+    Call<Venta> getInfoVenta(Integer id_venta);
+
+    Call<DetalleVenta> getDetalleVenta(Integer id_venta);
 
     Call<TipoVenta> getTiposVenta();
 

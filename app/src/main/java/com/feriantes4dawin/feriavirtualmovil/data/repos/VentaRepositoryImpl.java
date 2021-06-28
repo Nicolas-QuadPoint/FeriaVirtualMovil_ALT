@@ -4,6 +4,7 @@ import com.feriantes4dawin.feriavirtualmovil.data.db.VentaDAO;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
 import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.network.VentaAPIService;
@@ -69,9 +70,17 @@ public class VentaRepositoryImpl implements VentaRepository {
     }
 
     @Override
-    public Call<DetalleVenta> getDetalleVenta(Integer venta_id){
+    public Call<Venta> getInfoVenta(Integer id_venta){
 
-        Call<DetalleVenta> ruc = ventaAPI.getDetalleVenta(venta_id);
+        Call<Venta> ruc = ventaAPI.getInfoVenta(id_venta);
+        return ruc;
+
+    }
+
+    @Override
+    public Call<DetalleVenta> getDetalleVenta(Integer id_venta){
+
+        Call<DetalleVenta> ruc = ventaAPI.getDetalleVenta(id_venta);
         return ruc;
     }
 }

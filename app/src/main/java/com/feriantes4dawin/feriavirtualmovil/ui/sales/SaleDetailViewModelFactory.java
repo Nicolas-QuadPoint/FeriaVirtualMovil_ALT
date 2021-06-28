@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
+import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +22,15 @@ import org.jetbrains.annotations.NotNull;
 public class SaleDetailViewModelFactory implements ViewModelProvider.Factory {
 
     VentaRepository ventaRepository;
+    SubastaRepository subastaRepository;
     FeriaVirtualApplication feriaVirtualApplication;
 
-    public SaleDetailViewModelFactory(VentaRepository ventaRepository,FeriaVirtualApplication feriaVirtualApplication){
+    public SaleDetailViewModelFactory(VentaRepository ventaRepository,
+                                      SubastaRepository subastaRepository,
+                                      FeriaVirtualApplication feriaVirtualApplication){
 
         this.ventaRepository = ventaRepository;
+        this.subastaRepository = subastaRepository;
         this.feriaVirtualApplication = feriaVirtualApplication;
 
     }
@@ -37,7 +42,7 @@ public class SaleDetailViewModelFactory implements ViewModelProvider.Factory {
 
         if(modelClass.isAssignableFrom(SaleDetailViewModel.class)) {
 
-            return (T)(new SaleDetailViewModel(ventaRepository,feriaVirtualApplication));
+            return (T)(new SaleDetailViewModel(ventaRepository,subastaRepository,feriaVirtualApplication));
 
         }
 
