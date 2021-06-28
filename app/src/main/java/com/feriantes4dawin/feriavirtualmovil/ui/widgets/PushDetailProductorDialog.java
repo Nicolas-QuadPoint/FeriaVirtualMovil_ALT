@@ -2,22 +2,17 @@ package com.feriantes4dawin.feriavirtualmovil.ui.widgets;
 
 import android.content.DialogInterface;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcher;
-
-import dagger.Component;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcherAdapter;
 
 /**
  * PushDetailProductorDialog 
@@ -48,7 +43,7 @@ public final class PushDetailProductorDialog extends SimpleDialog{
 
         EditText txtCantidad = v.findViewById(R.id.liiqp_txtUnidades);
         EditText txtCoste = v.findViewById(R.id.liiqp_txtCostePorUnidad);
-        ComparadorTextWatcher comparador = new ComparadorTextWatcher(txtCantidad,txtCoste);
+        ComparadorTextWatcherAdapter comparador = new ComparadorTextWatcherAdapter(txtCantidad,txtCoste);
 
         txtCantidad.addTextChangedListener(comparador);
         txtCoste.addTextChangedListener(comparador);
@@ -125,32 +120,32 @@ public final class PushDetailProductorDialog extends SimpleDialog{
     }
 
     /**
-     * ComparadorTextWatcher 
+     * ComparadorTextWatcherAdapter
      * 
-     * Clase interna, implementación de SimpleTextWatcher, que 
+     * Clase interna, implementación de SimpleTextWatcherAdapter, que
      * comprueba que los campos de precio por cantidad y cantidad 
      * sean valores válidos. 
      * 
      * Con esto se pueden ahorrar algunas líneas de código que hacen 
      * mas o menos lo mismo.
      */
-    public class ComparadorTextWatcher extends SimpleTextWatcher {
+    public class ComparadorTextWatcherAdapter extends SimpleTextWatcherAdapter {
 
         /**
          * Objeto EditText cuyo contenido pueda compararse con el objeto 
-         * txt propio de SimpleTextWatcher. 
+         * txt propio de SimpleTextWatcherAdapter.
          */
         private EditText txt2;
 
         /**
-         * Constructor que crea un objeto ComparadorTextWatcher. La idea 
+         * Constructor que crea un objeto ComparadorTextWatcherAdapter. La idea
          * de tener dos objetos EditText, es la posibilidad de comparar 
          * fácilmente sus contenidos y realizar una lógica en base a esto. 
          * 
          * @param txt Objeto EditText que representa el campo objetivo. 
          * @param txt2 Objeto EditText que representa el campo a comparar. 
          */
-        public ComparadorTextWatcher(EditText txt, EditText txt2){
+        public ComparadorTextWatcherAdapter(EditText txt, EditText txt2){
             super(txt);
             this.txt2 = txt2;
         }

@@ -27,8 +27,8 @@ public class ObjetoConverter {
     //Conversores para listas de objetos (salida)
 
     @TypeConverter
-    public List<ProductoVenta> JSONAListaProductosVenta(String json){
-        return new Gson().fromJson(json, new ArrayList<ProductoVenta>().getClass());
+    public List<Producto> JSONListaProductos(String json){
+        return new Gson().fromJson(json,new ArrayList<Producto>().getClass());
     }
 
     @TypeConverter
@@ -36,26 +36,11 @@ public class ObjetoConverter {
         return new Gson().fromJson(json, new ArrayList<DetallePujaSubastaProductor>().getClass());
     }
 
-    @TypeConverter
-    public List<DetallePujaSubastaTransportista> JSONAListaObjetosPujaSubastaTransportista(String json){
-        return new Gson().fromJson(json, new ArrayList<DetallePujaSubastaTransportista>().getClass());
-    }
-
     //Conversores para cada tipo (salida)
-
-    @TypeConverter
-    public ClienteExterno JSONAClienteExterno(String json){
-        return new Gson().fromJson(json, ClienteExterno.class);
-    }
 
     @TypeConverter
     public ContratoUsuario JSONAContratoUsuario(String json){
         return new Gson().fromJson(json, ContratoUsuario.class);
-    }
-
-    @TypeConverter
-    public Transportista JSONATransportista(String json){
-        return new Gson().fromJson(json, Transportista.class);
     }
 
     @TypeConverter
@@ -79,22 +64,6 @@ public class ObjetoConverter {
     }
 
     @TypeConverter
-    public Minorista JSONAMinorista(String json){
-        return new Gson().fromJson(json, Minorista.class);
-    }
-
-
-    @TypeConverter
-    public Nacionalidad JSONANacionalidad(String json){
-        return new Gson().fromJson(json, Nacionalidad.class);
-    }
-
-    @TypeConverter
-    public ProductoVenta JSONAProductosVenta(String json){
-        return new Gson().fromJson(json, ProductoVenta.class);
-    }
-
-    @TypeConverter
     public Producto JSONAProducto(String json){
         return new Gson().fromJson(json, Producto.class);
     }
@@ -106,23 +75,8 @@ public class ObjetoConverter {
     }
 
     @TypeConverter
-    public Subasta JSONASubasta(String json){
-        return new Gson().fromJson(json, Subasta.class);
-    }
-
-    @TypeConverter
     public TipoVenta JSONATipoVenta(String json){
         return new Gson().fromJson(json, TipoVenta.class);
-    }
-
-    @TypeConverter
-    public TipoProducto JSONATipoProducto(String json){
-        return new Gson().fromJson(json, TipoProducto.class);
-    }
-
-    @TypeConverter
-    public TipoSubasta JSONATipoSubasta(String json){
-        return new Gson().fromJson(json, TipoSubasta.class);
     }
 
     @TypeConverter

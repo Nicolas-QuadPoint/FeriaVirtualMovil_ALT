@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class UtilityFunctions {
 
-    //Funciones estaticas
-
     /**
      * Concepto y paso a paso extraido de:
      * https://www.tutorialspoint.com/how-to-pick-an-image-from-image-gallery-in-android

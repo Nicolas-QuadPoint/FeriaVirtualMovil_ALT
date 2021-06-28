@@ -13,7 +13,7 @@ import com.google.gson.Gson;
  * Un generador de objetos LoginViewModel para poder instanciarla 
  * con objetos necesarios, como fuentes de datos, entre otras cosas.
  * 
- * @see https://stackoverflow.com/questions/54419236/why-a-viewmodel-factory-is-needed-in-android#54420034
+ * @link https://stackoverflow.com/questions/54419236/why-a-viewmodel-factory-is-needed-in-android#54420034
  * 
  */
 public class LoginViewModelFactory implements ViewModelProvider.Factory {

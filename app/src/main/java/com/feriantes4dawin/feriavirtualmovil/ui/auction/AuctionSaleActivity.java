@@ -10,22 +10,13 @@ import android.view.View;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Subasta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
-import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
-import com.feriantes4dawin.feriavirtualmovil.ui.login.LoginViewModel;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
-import com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushProductorDialog;
-import com.feriantes4dawin.feriavirtualmovil.ui.widgets.PushTransportistaDialog;
-import com.feriantes4dawin.feriavirtualmovil.ui.widgets.SimpleDialog;
-import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -83,8 +74,7 @@ public class AuctionSaleActivity extends AppCompatActivity {
             (FeriaVirtualApplication) getApplication(),
             ventaRepository,
             usuarioRepository,
-            subastaRepository,
-        null
+            subastaRepository
         );
         this.auctionViewModel = new ViewModelProvider(this,auctionViewModelFactory)
                 .get(AuctionViewModel.class);
@@ -186,10 +176,6 @@ public class AuctionSaleActivity extends AppCompatActivity {
             startActivity(irHaciaActividad);
 
         }
-
-    }
-
-    public void mostrarDialogoPuja(Usuario u,boolean modoEdicion,Object objInfoPuja){
 
     }
 

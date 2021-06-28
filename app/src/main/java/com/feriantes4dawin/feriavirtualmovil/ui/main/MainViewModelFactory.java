@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository;
-import com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesViewModel;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.ViewmodelFactory;
 import com.google.gson.Gson;
 
 /**

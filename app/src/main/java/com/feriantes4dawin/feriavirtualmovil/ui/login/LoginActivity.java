@@ -26,7 +26,7 @@ import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.main.MainActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.EnumMessageType;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcher;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcherAdapter;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.MessageDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -128,16 +128,6 @@ public class LoginActivity extends AppCompatActivity {
             linkRegistro.setText(textolink);
             linkRegistro.setMovementMethod(LinkMovementMethod.getInstance());
 
-            /*
-            linkRegistro.setOnClickListener {
-
-                val uri = "https://www.google.com/?hl=es"
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(uri)
-                startActivity(intent)
-
-            }*/
-
             loginViewModel.loginFormState.observe(this, new Observer<LoginFormState>() {
 
                 @Override
@@ -189,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
 
             username.addTextChangedListener(
 
-                new SimpleTextWatcher(null) {
+                new SimpleTextWatcherAdapter(null) {
                     @Override
                     public void afterTextChanged(Editable s) {
                         loginViewModel.loginDataChanged(
@@ -203,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
 
             password.addTextChangedListener(
 
-                new SimpleTextWatcher(null) {
+                new SimpleTextWatcherAdapter(null) {
                     @Override
                     public void afterTextChanged(Editable s) {
                         loginViewModel.loginDataChanged(

@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaTransportista;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
 
 /**
@@ -23,22 +22,18 @@ public class PushTransportistaDialog extends SimpleDialog {
 
     private boolean modoEdicion;
     private int idMensajeTitulo;
-    private DetallePujaSubastaTransportista objInfoPuja;
 
     public PushTransportistaDialog(AppCompatActivity act, SimpleAction positiveResponseFunc, SimpleAction negativeResponseFunc) {
         super(act, positiveResponseFunc, negativeResponseFunc);
         this.modoEdicion = false;
-        this.objInfoPuja = null;
         this.idMensajeTitulo = R.string.ppbd_push;
     }
 
     public PushTransportistaDialog(AppCompatActivity act,
                                    boolean modoEdicion,
-                                   DetallePujaSubastaTransportista objInfoPuja,
                                    SimpleAction positiveResponseFunc, SimpleAction negativeResponseFunc) {
         super(act, positiveResponseFunc, negativeResponseFunc);
         this.modoEdicion = modoEdicion;
-        this.objInfoPuja = objInfoPuja;
         this.idMensajeTitulo = R.string.push_update;
     }
 

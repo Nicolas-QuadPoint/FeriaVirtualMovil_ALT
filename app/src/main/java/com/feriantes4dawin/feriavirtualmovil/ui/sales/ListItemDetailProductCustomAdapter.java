@@ -1,7 +1,6 @@
 package com.feriantes4dawin.feriavirtualmovil.ui.sales;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,11 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.data.datasources.remote.FeriaVirtualAPIProvider;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
-import com.feriantes4dawin.feriavirtualmovil.data.models.ProductoVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;

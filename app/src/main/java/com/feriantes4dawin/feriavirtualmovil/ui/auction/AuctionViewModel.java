@@ -10,13 +10,7 @@ import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
-import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaTransportista;
-import com.feriantes4dawin.feriavirtualmovil.data.models.PujasSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.PujasSubastaTransportista;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Subasta;
-import com.feriantes4dawin.feriavirtualmovil.data.repos.ProductoRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
@@ -34,23 +28,6 @@ public class AuctionViewModel extends ViewModel {
     public VentaRepository ventaRepository;
     public UsuarioRepository usuarioRepository;
     public SubastaRepository subastaRepository;
-    public ProductoRepository productoRepository;
-
-    /* Espejo de datos para transportistas */
-    public LiveData<PujasSubastaTransportista> datosPujasTransportista;
-    public MutableLiveData<PujasSubastaTransportista> datosMutablesPujasTransportista;
-
-    /* Espejo de datos para la puja individual transportista */
-    public LiveData<PujaSubastaTransportista> datosPujaTransportista;
-    public MutableLiveData<PujaSubastaTransportista> datosMutablesPujaTransportista;
-
-    /* Espejo de datos para la puja individual productor */
-    public LiveData<PujaSubastaProductor> datosPujaProductor;
-    public MutableLiveData<PujaSubastaProductor> datosMutablesPujaProductor;
-
-    /* Espejo de datos para productores */
-    public LiveData<PujasSubastaProductor> datosPujasProductor;
-    public MutableLiveData<PujasSubastaProductor> datosMutablesPujasProductor;
 
     /* Espejo de datos para productos */
     public LiveData<Productos> datosProductos;
@@ -61,43 +38,31 @@ public class AuctionViewModel extends ViewModel {
             FeriaVirtualApplication aplicacion,
             VentaRepository ventaRepository,
             UsuarioRepository usuarioRepository,
-            SubastaRepository subastaRepository,
-            ProductoRepository productoRepository){
+            SubastaRepository subastaRepository){
 
         this.aplicacion = aplicacion;
 
         this.ventaRepository = ventaRepository;
         this.usuarioRepository = usuarioRepository;
         this.subastaRepository = subastaRepository;
-        this.productoRepository = productoRepository;
-
-        this.datosMutablesPujasProductor = new MutableLiveData<>();
-        this.datosMutablesPujaProductor = new MutableLiveData<>();
-        this.datosMutablesPujaTransportista = new MutableLiveData<>();
-        this.datosMutablesPujasTransportista = new MutableLiveData<>();
         this.datosMutablesProductos = new MutableLiveData<>();
-
-        this.datosPujaProductor = datosMutablesPujaProductor;
-        this.datosPujasProductor = datosMutablesPujasProductor;
-        this.datosPujaTransportista = datosMutablesPujaTransportista;
-        this.datosPujasTransportista = datosMutablesPujasTransportista;
         this.datosProductos = datosMutablesProductos;
 
     }
 
-    public LiveData<Productos> obtenerProductos(){
+    public LiveData<Productos> obtenerProductos(Integer id_usuario){
 
-        cargarProductos();
+        cargarProductos(id_usuario);
 
         return datosProductos;
 
     }
 
-    private void cargarProductos(){
+    private void cargarProductos(Integer id_usuario){
 
         try{
 
-            Call<Productos> reqProductos = productoRepository.getProductos();
+            Call<Productos> reqProductos = subastaRepository.getProductosProductor(id_usuario);
 
             reqProductos.enqueue(new Callback<Productos>() {
                 @Override
@@ -132,17 +97,6 @@ public class AuctionViewModel extends ViewModel {
         }
 
     }
-
-
-    public void pedirPujasSubastaTransportista(Subasta subasta){
-
-
-    }
-
-    public void pedirPujasSubastaProductor(Subasta subasta){
-
-    }
-
 
     public void pujarSubastaProductor(DetallePujaSubastaProductor pujaSubastaProductor, SimpleAction accion){
 
@@ -289,10 +243,6 @@ public class AuctionViewModel extends ViewModel {
                 accion.doAction(Integer.valueOf(0));
             }
         }
-
-    }
-
-    public void pujarSubastaTransportista(PujaSubastaTransportista pujaSubastaTransportista){
 
     }
 

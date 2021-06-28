@@ -179,11 +179,4 @@ public class MyProfileFragment extends Fragment {
         }
     }
 
-    public void btnFotoPerfilUsuarioClick(View v){
-
-        //Toast.makeText(this.getActivity(),"Deberia cambiar imagen ¿No?",Toast.LENGTH_SHORT).show();
-        //UtilityFunctions.getImageFromGallery( ( (AppCompatActivity) this.getActivity() ));
-
-    }
-
 }

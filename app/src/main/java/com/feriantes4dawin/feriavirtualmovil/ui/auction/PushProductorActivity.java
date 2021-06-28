@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +23,7 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProdu
 import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
 import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
-import com.feriantes4dawin.feriavirtualmovil.data.repos.ProductoRepositoryImpl;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
@@ -50,9 +52,6 @@ public class PushProductorActivity extends AppCompatActivity {
     @Inject
     public VentaRepositoryImpl ventaRepository;
 
-    @Inject
-    public ProductoRepositoryImpl productoRepository;
-
     private AuctionViewModel auctionViewModel;
     private AuctionViewModelFactory auctionViewModelFactory;
 
@@ -61,6 +60,9 @@ public class PushProductorActivity extends AppCompatActivity {
     private DetallePujaSubastaProductor detalle;
 
     private List<Producto> listaProductos;
+
+    private Usuario usuario;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +81,19 @@ public class PushProductorActivity extends AppCompatActivity {
                 (FeriaVirtualApplication) getApplication(),
                 null,
                 null,
-                subastaRepository,
-                productoRepository
+                subastaRepository
         );
 
         this.auctionViewModel = new ViewModelProvider(this,auctionViewModelFactory)
                 .get(AuctionViewModel.class);
 
+        SharedPreferences sp = getSharedPreferences(
+            FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
+            Context.MODE_PRIVATE
+        );
+
         this.id_venta = getIntent().getIntExtra("id_venta",0);
+        this.usuario = convertidorJSON.fromJson(sp.getString(SP_USUARIO_OBJ_STR,""),Usuario.class);
 
         Button btnPujar = findViewById(R.id.tbpm_btnPujar);
         Button btnEliminar = findViewById(R.id.tbpm_btnEliminar);
@@ -96,7 +103,6 @@ public class PushProductorActivity extends AppCompatActivity {
         Spinner spProductos = findViewById(R.id.app_spProducto);
         View pantallaCarga = findViewById(R.id.app_llloading);
         View contenedorPrincipal = findViewById(R.id.app_contenedorPrincipal);
-        Intent datosPeticion = getIntent();
 
         ArrayAdapter<TipoVenta> adaptadorSpTipoVenta = new ArrayAdapter<TipoVenta>(
             this,
@@ -109,19 +115,6 @@ public class PushProductorActivity extends AppCompatActivity {
         spTipoVenta.setAdapter(
             adaptadorSpTipoVenta
         );
-
-        spTipoVenta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         btnPujar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +154,7 @@ public class PushProductorActivity extends AppCompatActivity {
             }
         });
 
-        auctionViewModel.obtenerProductos().observe(this,new Observer<Productos>(){
+        auctionViewModel.obtenerProductos(usuario.id_usuario.intValue()).observe(this,new Observer<Productos>(){
             @Override
             public void onChanged(Productos productos) {
 
@@ -214,7 +207,6 @@ public class PushProductorActivity extends AppCompatActivity {
         Spinner spTipoVenta = findViewById(R.id.app_spTipoVenta);
         Spinner spProductos = findViewById(R.id.app_spProducto);
         View pantallaCarga = findViewById(R.id.app_llloading);
-        View contenedorPrincipal = findViewById(R.id.app_contenedorPrincipal);
         Intent datosPeticion = getIntent();
 
         /* Aqui chequeo el modo de accion */

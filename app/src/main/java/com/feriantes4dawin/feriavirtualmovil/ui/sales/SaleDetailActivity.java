@@ -112,7 +112,6 @@ public class SaleDetailActivity extends AppCompatActivity {
         SwipeRefreshLayout miSwiper = (SwipeRefreshLayout)findViewById(R.id.asd_swipeSaleDetail);
         View pantallaCarga = findViewById(R.id.asd_llloading);
         View pantallaCargaListaProd = findViewById(R.id.dppb_llloading);
-        RecyclerView rvListaProductos = findViewById(R.id.dppb_rvListaProductos);
         Intent datosEntradaActividad = getIntent();
         SharedPreferences sp = getSharedPreferences(
                 FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
@@ -162,7 +161,7 @@ public class SaleDetailActivity extends AppCompatActivity {
             public void onRefresh() {
                 pantallaCarga.setVisibility(View.VISIBLE);
                 saleDetailViewModel.getDatosVenta(id_venta);
-                saleDetailViewModel.getProductosVenta(id_venta,0);
+                saleDetailViewModel.getProductosVenta(id_venta,usuario.id_usuario.intValue());
             }
         });
 
@@ -226,7 +225,7 @@ public class SaleDetailActivity extends AppCompatActivity {
                 }
         );
 
-        saleDetailViewModel.getProductosVenta(this.id_venta,0).observe(this,
+        saleDetailViewModel.getProductosVenta(this.id_venta,usuario.id_usuario.intValue()).observe(this,
             new Observer<DetallesPujaSubastaProductor>() {
                 @Override
                 public void onChanged(DetallesPujaSubastaProductor productosRecuperados) {
@@ -405,7 +404,7 @@ public class SaleDetailActivity extends AppCompatActivity {
 
                         ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder vh = (ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder)viewHolder;
                         //rv.getAdapter().notifyItemChanged(vh.getAbsoluteAdapterPosition());
-                        saleDetailViewModel.borrarPuja(SaleDetailActivity.this.id_venta,0,
+                        saleDetailViewModel.borrarPuja(SaleDetailActivity.this.id_venta,usuario.id_usuario.intValue(),
                         vh.detalle).observe(SaleDetailActivity.this,observadorAlBorrarProducto);
 
                     }

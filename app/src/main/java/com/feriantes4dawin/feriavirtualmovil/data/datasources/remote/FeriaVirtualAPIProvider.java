@@ -1,9 +1,6 @@
 package com.feriantes4dawin.feriavirtualmovil.data.datasources.remote;
 
-import android.content.Context;
-
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
-import com.feriantes4dawin.feriavirtualmovil.data.network.ProductoAPIService;
 import com.feriantes4dawin.feriavirtualmovil.data.network.SubastaAPIService;
 import com.feriantes4dawin.feriavirtualmovil.data.network.UsuarioAPIService;
 import com.feriantes4dawin.feriavirtualmovil.data.network.VentaAPIService;
@@ -52,13 +49,6 @@ public class FeriaVirtualAPIProvider {
     public SubastaAPIService provideSubastaAPI(){
         return commonAPIBuilder().build().
                 create(SubastaAPIService.class);
-    }
-
-    @Provides
-    @Singleton
-    public ProductoAPIService provideProductoAPI(){
-        return commonAPIBuilder().build().
-                create(ProductoAPIService.class);
     }
 
     private Retrofit.Builder commonAPIBuilder(){

@@ -2,21 +2,14 @@ package com.feriantes4dawin.feriavirtualmovil.data.repos;
 
 import com.feriantes4dawin.feriavirtualmovil.data.db.SubastaDAO;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaTransportista;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
-import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.PujaSubastaTransportista;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID;
 import com.feriantes4dawin.feriavirtualmovil.data.network.SubastaAPIService;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.Module;
-import dagger.Provides;
 import retrofit2.Call;
 
 @Module
@@ -32,6 +25,15 @@ public class SubastaRepositoryImpl implements SubastaRepository {
         this.subastaDAO = subastaDAO;
         this.subastaAPI = subastaAPI;
 
+    }
+
+    @Override
+    public Call<Productos> getProductosProductor(
+        Integer id_productor
+    ){
+
+        Call<Productos> puc = subastaAPI.getProductosProductor(id_productor);
+        return puc;
     }
 
     @Override
@@ -68,14 +70,6 @@ public class SubastaRepositoryImpl implements SubastaRepository {
     public Call<DetallesPujaSubastaProductor> getProductosSubasta(Integer id_subasta, Integer id_productor){
 
         Call<DetallesPujaSubastaProductor> puc = subastaAPI.getProductosSubasta(id_subasta);
-        return puc;
-
-    }
-
-    @Override
-    public Call<DetallesPujaSubastaProductor> getProductosSubasta(Integer id_subasta){
-
-        Call<DetallesPujaSubastaProductor> puc = null;
         return puc;
 
     }

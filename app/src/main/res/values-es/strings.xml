@@ -43,13 +43,9 @@
 
     <!-- Profile fragment -->
 
-    <string name="mpf_setting_pid">Personal ID</string>
     <string name="mpf_setting_email">Email</string>
     <string name="mpf_setting_name">Nombres</string>
     <string name="mpf_setting_lname">Apellidos</string>
-    <string name="mpf_setting_phone">Teléfono</string>
-    <string name="mpf_setting_direction">Dirección</string>
-    <string name="mpf_setting_country">Nacionalidad</string>
     <string name="mpf_setting_usertype">Tipo de Usuario</string>
     <string name="mpf_setting_passwd">Contraseña</string>
     <string name="mpf_setting_change_passwd">Cambiar mi contraseña</string>
@@ -74,16 +70,6 @@
     <string name="li_sale_simple_comments">Comentarios</string>
 
     <!-- Settings Activity -->
-
-    <string name="sact_title">Ajustes</string>
-    <string name="sact_messages_header">Mensajes</string>
-    <string name="sact_sync_header">Sync</string>
-    <string name="sact_signature_title">Your signature</string>
-    <string name="sact_reply_title">Default reply action</string>
-    <string name="sact_sync_title">Sync email periodically</string>
-    <string name="sact_attachment_title">Download incoming attachments</string>
-    <string name="sact_attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="sact_attachment_summary_off">Only download attachments when manually requested</string>
 
     <!-- Auction -->
     <string name="auact_title">Subasta</string>
@@ -117,7 +103,6 @@
 
     <!-- Push Info -->
     <string name="pii_total_cost">Coste total</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="push_update">Actualizar puja</string>
     <string name="push_info">Información de Puja</string>
     <string name="action_update">Actualizar</string>

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * Un generador de objetos SaleDetailViewModel para poder instanciarla 
  * con objetos necesarios, como fuentes de datos, entre otras cosas.
  * 
- * @see https://stackoverflow.com/questions/54419236/why-a-viewmodel-factory-is-needed-in-android#54420034
+ * @link https://stackoverflow.com/questions/54419236/why-a-viewmodel-factory-is-needed-in-android#54420034
  * 
  */
 public class SaleDetailViewModelFactory implements ViewModelProvider.Factory {

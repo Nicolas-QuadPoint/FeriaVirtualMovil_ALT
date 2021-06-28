@@ -27,7 +27,6 @@ import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.login.LoginActivity;
-import com.feriantes4dawin.feriavirtualmovil.ui.settings.SettingsActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
@@ -149,14 +148,6 @@ public class MainActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item){
 
         switch(item.getItemId()){
-            case R.id.action_settings:{
-                // User chose the "Settings" item, show the app settings UI...
-
-                Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsActivityIntent);
-
-                return true;
-            }
             case R.id.action_logout:{
                 
                 /**

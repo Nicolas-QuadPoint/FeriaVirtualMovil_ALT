@@ -109,13 +109,48 @@ public final class FeriaVirtualConstants {
      */
     public static final String FRAGMENTO_INICIO = "FRAGMENTO_INICIO";
 
+    /**
+     * Identificador para Intents, con el fin de traspasar informacion
+     * entre actividades. El código que va de la mano con este
+     * valor suele ser un número.
+     */
     public static final String CODIGO_ACCION = "id_accion";
+
+    /**
+     * Identificador para Intents que está asociado al resultado de
+     * una operacion que es devuelta a la actividad una vez se haya
+     * completado. Con esto, se puede actuar dependiendo de su
+     * valor.
+     */
     public static final String RESULTADO_ACCION = "resultado_accion";
+
+    /**
+     * Identificador para Intents, que está asociado a un ID de
+     * recurso de cadena, para usarse a modo de entregar información
+     * detallada al usuario si la operación fue exitosa o no.
+     */
     public static final String ID_CODIGO_ERROR = "id_codigo_error";
 
+    /**
+     * Código de acción para agregar una puja. Solo debe usarse
+     * bajo ese contexto
+     */
     public static final int ACCION_AGREGAR_PUJA = 0;
+
+    /**
+     * Código de acción para visualizar una puja, en modo
+     * de lectura
+     */
     public static final int ACCION_VISUALIZAR_PUJA = 1;
+
+    /**
+     * Código de accion para modificar una puja.
+     */
     public static final int ACCION_MODIFICAR_PUJA = 2;
+
+    /**
+     * Código de acción para eliminar una puja. 
+     */
     public static final int ACCION_REMOVER_PUJA = 3;
 
 }

@@ -2,7 +2,7 @@ package com.feriantes4dawin.feriavirtualmovil.ui.widgets;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcher;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcherAdapter;
 
 import android.content.DialogInterface;
 import android.text.Editable;
@@ -61,8 +61,8 @@ public class ChangePasswordDialog extends SimpleDialog{
         EditText txtPass1 = (EditText) v.findViewById(R.id.dcp_txtPasswd2);
         EditText txtPass2 = (EditText) v.findViewById(R.id.dcp_txtPasswd3);
 
-        txtPass1.addTextChangedListener(new ChangePasswordTextWatcher(txtPass1,txtPass2));
-        txtPass2.addTextChangedListener(new ChangePasswordTextWatcher(txtPass2,txtPass1));
+        txtPass1.addTextChangedListener(new ChangePasswordTextWatcherAdapter(txtPass1,txtPass2));
+        txtPass2.addTextChangedListener(new ChangePasswordTextWatcherAdapter(txtPass2,txtPass1));
 
         return this.v;
     }
@@ -116,14 +116,14 @@ public class ChangePasswordDialog extends SimpleDialog{
 
 
     /**
-     * ChangePasswordTextWatcher 
-     * Objeto que extiende de SimpleTextWatcher para vigilar 
+     * ChangePasswordTextWatcherAdapter
+     * Objeto que extiende de SimpleTextWatcherAdapter para vigilar
      * el valor de ambos campos de contraseña típicos de los 
      * formularios de este tipo.
      * 
      * Se asegura que ambas contraseñas sean iguales, y no vacías. 
      */
-    public class ChangePasswordTextWatcher extends SimpleTextWatcher {
+    public class ChangePasswordTextWatcherAdapter extends SimpleTextWatcherAdapter {
 
         /**
          * Objeto EditText a comparar. 
@@ -131,12 +131,12 @@ public class ChangePasswordDialog extends SimpleDialog{
         private EditText txtPasswd2;
 
         /**
-         * Crea un objeto ChangePasswordTextWatcher 
+         * Crea un objeto ChangePasswordTextWatcherAdapter
          * 
          * @param txtPasswd1 El EditText principal. 
          * @param txtPasswd2 El EditText a comparar. 
          */
-        public ChangePasswordTextWatcher(EditText txtPasswd1,EditText txtPasswd2){
+        public ChangePasswordTextWatcherAdapter(EditText txtPasswd1, EditText txtPasswd2){
             super(txtPasswd1);
             this.txtPasswd2 = txtPasswd2;
         }
