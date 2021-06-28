@@ -27,13 +27,16 @@ import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.login.LoginActivity;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.EnumMessageType;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.ui.widgets.MessageDialog;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
+
+import static com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants.*;
 
 /**
  * MainActivity 
@@ -215,12 +218,35 @@ public class MainActivity extends AppCompatActivity{
 
         Uri ubicacionImagenSeleccionada;
 
-        if (resultCode == RESULT_OK && requestCode == FeriaVirtualConstants.ESCOGER_IMAGEN_REQUEST){
+        if(data == null){
+            return;
+        }
 
-            ubicacionImagenSeleccionada = data.getData();
+        int idMensajeError = data.getIntExtra(ID_CODIGO_ERROR,R.string.err_code_str_generic);
+        int accionRealizada = data.getIntExtra(CODIGO_ACCION,-1);
+        boolean resultadoAccion = data.getBooleanExtra(RESULTADO_ACCION,false);
 
-            Log.i("MAIN_ACTIVITY",String.format("Imágen recuperada: %s",
+        if (resultCode == RESULT_OK){
+
+            switch(accionRealizada){
+
+                case ACCION_TRANSPORTAR_ENCARGO:{
+
+                    MessageDialog md = new MessageDialog(this, EnumMessageType.INFO_MESSAGE,
+                        getString(R.string.action_confirm_transport),
+                        getString(idMensajeError),
+                        null);
+
+                }break;
+                case ACCION_ESCOGER_IMAGEN:{
+
+                    ubicacionImagenSeleccionada = data.getData();
+
+                    Log.i("MAIN_ACTIVITY",String.format("Imágen recuperada: %s",
                     (ubicacionImagenSeleccionada == null)? "null" : ubicacionImagenSeleccionada.getPath()));
+
+                }break;
+            }
 
         } else if (data.hasExtra("fragment")){
             Log.i("MAIN_ACTIVITY","Esto vino de algun fragmento!!!");
@@ -261,7 +287,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         SharedPreferences sp = getSharedPreferences(
-                FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
+                FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,
                 Context.MODE_PRIVATE);
         Intent loginActivityIntent = new Intent(getApplicationContext(), LoginActivity.class);
         
@@ -273,10 +299,10 @@ public class MainActivity extends AppCompatActivity{
 
         //Limpiando los datos de las shared preferences!
         sp.edit()
-                .putString(FeriaVirtualConstants.SP_FERIAVIRTUAL_WEBAPI_AUTH_TOKEN,"")
-                .putString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,"")
-                .putInt(FeriaVirtualConstants.SP_USUARIO_ID,0)
-                .putInt(FeriaVirtualConstants.SP_VENTA_ID,0)
+                .putString(SP_FERIAVIRTUAL_WEBAPI_AUTH_TOKEN,"")
+                .putString(SP_USUARIO_OBJ_STR,"")
+                .putInt(SP_USUARIO_ID,0)
+                .putInt(SP_VENTA_ID,0)
                 .commit();
 
         startActivity(loginActivityIntent);

@@ -43,6 +43,16 @@ public interface SubastaRepository {
 
     );
 
+    Call<DetallesPujaSubastaProductor> getTodosLosProductosSubasta(
+        Integer id_subasta
+    );
 
+    Call<ResultadoID> transportarEncargoProductos(
+        Integer id_subasta
+    );
+
+    Call<ResultadoID> finalizarTransporte(
+        Integer id_subasta
+    );
 
 }

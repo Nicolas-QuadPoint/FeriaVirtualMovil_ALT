@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -141,7 +142,7 @@ public class MyProcessesFragment extends Fragment{
 
             listaElementos.setVisibility(View.VISIBLE);
             llPlaceholderEmptyList.setVisibility(View.GONE);
-            rvMyProcesses.setAdapter( new SimpleSaleItemCustomAdapter(ventasSimples,convertidorJSON,true));
+            rvMyProcesses.setAdapter( new SimpleSaleItemCustomAdapter((AppCompatActivity) requireActivity(),ventasSimples,convertidorJSON,true));
             rvMyProcesses.setLayoutManager(new LinearLayoutManager(getContext()));
 
         } else {

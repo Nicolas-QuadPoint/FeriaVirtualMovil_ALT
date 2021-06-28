@@ -136,6 +136,11 @@
     <string name="err_mes_update_push_failed">No se pudo actualizar la puja</string>
     <string name="err_mes_add_push_ok">Puja creada</string>
     <string name="err_mes_add_push_failed">No se pudo crear la puja</string>
+    <string name="err_mes_product_quantity_invalid">Por favor, ingresa un valor válido para \'cantidad\'</string>
+    <string name="confirm_transport">¿Quieres transportar este encargo?</string>
+    <string name="confirm_transport_failed">No se pudo confirmar el traslado. Inténtelo más tarde</string>
+    <string name="confirm_transport_ok">Transporte confirmado. Finalízalo una vez llegue a destino</string>
+    <string name="action_confirm_transport">Confirmación Transporte</string>
 
 
 </resources>

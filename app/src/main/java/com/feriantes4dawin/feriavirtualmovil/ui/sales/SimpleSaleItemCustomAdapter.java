@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.feriantes4dawin.feriavirtualmovil.R;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
@@ -41,7 +44,7 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
 
     private Gson convertidorJSON;
 
-    private Context context;
+    private AppCompatActivity activity;
 
     private boolean modoSoloLectura;
 
@@ -53,12 +56,13 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
      * @param convertidorJSON Objeto Gson para procesar ciertos
      *                        datos.
      */
-    public SimpleSaleItemCustomAdapter(Ventas ventasSimples, Gson convertidorJSON){
+    public SimpleSaleItemCustomAdapter(AppCompatActivity activity,Ventas ventasSimples, Gson convertidorJSON){
 
         super();
         this.ventasSimples = ventasSimples;
         this.convertidorJSON = convertidorJSON;
         this.modoSoloLectura = false;
+        this.activity = activity;
     }
 
     /**
@@ -71,12 +75,13 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
      * @param modoSoloLectura Permite la no modificacion de los datos de
      *                        esta lista.
      */
-    public SimpleSaleItemCustomAdapter(Ventas ventasSimples, Gson convertidorJSON,boolean modoSoloLectura){
+    public SimpleSaleItemCustomAdapter(AppCompatActivity activity, Ventas ventasSimples, Gson convertidorJSON, boolean modoSoloLectura){
 
         super();
         this.ventasSimples = ventasSimples;
         this.convertidorJSON = convertidorJSON;
         this.modoSoloLectura = modoSoloLectura;
+        this.activity = activity;
     }
 
 
@@ -87,14 +92,13 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_sale_item,parent,false);
         SimpleSaleItemViewHolder vh = new SimpleSaleItemViewHolder(view);
 
-        this.context = parent.getContext();
-
         /**
          * Aquí se gestiona el evento de selección para un elemento de lista. 
          * El contexto aquí es simplemente redirigir el flujo del fragmento y 
          * trasladar el trabajo a SaleDetailActivity para continuar con el proceso 
          * de participación a subasta.
          */
+
         view.setOnClickListener(v -> {
 
             SharedPreferences sp = parent.getContext().getSharedPreferences(
@@ -102,17 +106,21 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
                     Context.MODE_PRIVATE);
 
             String ventaString = convertidorJSON.toJson(vh.venta);
+            Usuario usuario = convertidorJSON.fromJson(sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,""), Usuario.class);
 
             Intent i = new Intent(parent.getContext(),SaleDetailActivity.class);
             sp.edit()
-                    .putInt(FeriaVirtualConstants.SP_VENTA_ID,vh.id_venta)
+                    .putInt(FeriaVirtualConstants.SP_VENTA_ID,vh.venta.id_venta)
                     .putString(FeriaVirtualConstants.SP_VENTA_OBJ_STR,ventaString)
                     .commit();
 
             /* Establezco el modo de solo lectura para la actividad */
-            i.putExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,SimpleSaleItemCustomAdapter.this.modoSoloLectura);
+            if(Rol.TRANSPORTISTA.equalsValues(usuario.rol)){
+                //Se obliga acceder al modo edicion
+                i.putExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,true);
+            }
 
-            parent.getContext().startActivity(i);
+            activity.startActivityForResult(i,0,null);
         });
 
         return vh;
@@ -125,8 +133,7 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
 
             Venta vs = ventasSimples.ventas.get(position);
             holder.venta = vs;
-            holder.id_venta = vs.id_venta;
-            holder.lblCodigoVenta.setText(String.format("%s N° %d",context.getString(R.string.title_sale_process),vs.id_venta));
+            holder.lblCodigoVenta.setText(String.format("%s N° %d",activity.getString(R.string.title_sale_process),vs.id_venta));
             holder.lblFechaInicioVenta.setText(vs.fecha_inicio_venta);
             holder.lblFechaFinVenta.setText(vs.fecha_fin_venta);
             holder.lblEstadoVenta.setText(vs.estado_venta.descripcion);
@@ -135,8 +142,6 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
         } catch(Exception ex) {
 
             Log.e("SALE_ITEM_CUSTOMADAPTER",String.format("Paso algo raro!: %s",ex.toString()));
-
-            holder.id_venta = 0;
 
             holder.lblCodigoVenta.setText(R.string.err_mes_not_avalaible);
             holder.lblFechaInicioVenta.setText(R.string.err_mes_not_avalaible);
@@ -163,7 +168,6 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
     public class SimpleSaleItemViewHolder extends RecyclerView.ViewHolder {
 
         public Venta venta;
-        public Integer id_venta;
         public TextView lblCodigoVenta;
         public TextView lblFechaInicioVenta;
         public TextView lblFechaFinVenta;
@@ -173,7 +177,6 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
         public SimpleSaleItemViewHolder(View v) {
 
             super(v);
-            this.venta = null;
             this.lblCodigoVenta = v.findViewById(R.id.csi_lblCodigoVenta);
             this.lblFechaInicioVenta = v.findViewById(R.id.csi_lblFechaInicioVenta);
             this.lblFechaFinVenta = v.findViewById(R.id.csi_lblFechaFinVenta);

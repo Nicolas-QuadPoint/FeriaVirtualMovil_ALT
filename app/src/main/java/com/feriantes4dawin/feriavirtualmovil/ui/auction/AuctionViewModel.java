@@ -1,5 +1,7 @@
 package com.feriantes4dawin.feriavirtualmovil.ui.auction;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -11,10 +13,13 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProdu
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +33,7 @@ public class AuctionViewModel extends ViewModel {
     public VentaRepository ventaRepository;
     public UsuarioRepository usuarioRepository;
     public SubastaRepository subastaRepository;
+    public Gson convertidorJSON;
 
     /* Espejo de datos para productos */
     public LiveData<Productos> datosProductos;
@@ -38,13 +44,16 @@ public class AuctionViewModel extends ViewModel {
             FeriaVirtualApplication aplicacion,
             VentaRepository ventaRepository,
             UsuarioRepository usuarioRepository,
-            SubastaRepository subastaRepository){
+            SubastaRepository subastaRepository,
+            Gson convertidorJSON){
 
         this.aplicacion = aplicacion;
 
         this.ventaRepository = ventaRepository;
         this.usuarioRepository = usuarioRepository;
         this.subastaRepository = subastaRepository;
+        this.convertidorJSON = convertidorJSON;
+
         this.datosMutablesProductos = new MutableLiveData<>();
         this.datosProductos = datosMutablesProductos;
 
@@ -100,8 +109,14 @@ public class AuctionViewModel extends ViewModel {
 
     public void pujarSubastaProductor(DetallePujaSubastaProductor pujaSubastaProductor, SimpleAction accion){
 
-        try{
-            Call<ResultadoID> resultado = subastaRepository.pujarProductoSubastaProductor(pujaSubastaProductor.id_venta,pujaSubastaProductor);
+        try {
+
+            SharedPreferences sp = aplicacion.getSharedPreferences(FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            Usuario usuario = convertidorJSON.fromJson(sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,""),Usuario.class);
+
+            Call<ResultadoID> resultado = subastaRepository.pujarProductoSubastaProductor(
+                pujaSubastaProductor.id_venta,
+                pujaSubastaProductor);
             resultado.enqueue(new Callback<ResultadoID>() {
                 @Override
                 public void onResponse(Call<ResultadoID> call, Response<ResultadoID> response) {

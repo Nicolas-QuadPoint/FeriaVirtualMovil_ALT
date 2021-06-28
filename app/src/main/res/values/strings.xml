@@ -137,5 +137,10 @@
     <string name="err_mes_update_push_failed">Can´t update push registry</string>
     <string name="err_mes_add_push_ok">Push created</string>
     <string name="err_mes_add_push_failed">Can´t create push registry</string>
+    <string name="err_mes_product_quantity_invalid">Please input a valid value for \'quantity\'</string>
+    <string name="confirm_transport">Do you want to transport this request? You can cancel it later if you regret</string>
+    <string name="confirm_transport_failed">Can\'t confirm transport of request. Try again later</string>
+    <string name="confirm_transport_ok">Transport confirmed. Get sure of finish it once the request reach its destination</string>
+    <string name="action_confirm_transport">Confirm Transport</string>
 
 </resources>

@@ -63,12 +63,32 @@ public interface SubastaAPIService {
     );
 
 
-    @GET("subastas/{idsubasta}/productor")
+    @GET("subastas/{idsubasta}/productor/{idproductor}/pujas")
     Call<DetallesPujaSubastaProductor> getProductosSubasta(
 
         @Path("idsubasta")
-        Integer id_subasta
+        Integer id_subasta,
+        @Path("idproductor")
+        Integer id_productor
 
+    );
+
+    @GET("subastas/{idsubasta}/productos")
+    Call<DetallesPujaSubastaProductor> getTodosLosProductosSubasta(
+        @Path("idsubasta")
+        Integer id_subasta
+    );
+
+    @POST("subastas/{idsubasta}/transportista/transporte")
+    Call<ResultadoID> transportarEncargoProductos(
+        @Path("idsubasta")
+        Integer id_subasta
+    );
+
+    @PUT("subastas/{idsubasta}/transportista/transporte")
+    Call<ResultadoID> finalizarTransporte(
+        @Path("idsubasta")
+        Integer id_subasta
     );
 
 }

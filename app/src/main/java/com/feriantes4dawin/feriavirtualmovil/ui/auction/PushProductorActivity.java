@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
 import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcherAdapter;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.gson.Gson;
 
@@ -81,7 +83,8 @@ public class PushProductorActivity extends AppCompatActivity {
                 (FeriaVirtualApplication) getApplication(),
                 null,
                 null,
-                subastaRepository
+                subastaRepository,
+                convertidorJSON
         );
 
         this.auctionViewModel = new ViewModelProvider(this,auctionViewModelFactory)
@@ -147,6 +150,31 @@ public class PushProductorActivity extends AppCompatActivity {
             }
         });
 
+        txtCantidadProductos.addTextChangedListener( new SimpleTextWatcherAdapter(txtCantidadProductos){
+
+            @Override
+            public void afterTextChanged(Editable e) {
+                try{
+
+                    if(e.toString().trim().isEmpty() || Long.valueOf(e.toString()) == 0l){
+                        txtCantidadProductos.setError(getString(R.string.err_mes_product_quantity_invalid));
+                        btnPujar.setEnabled(false);
+                    } else {
+
+                        btnPujar.setEnabled(true);
+
+                    }
+
+                } catch(Exception ex) {
+
+                    txtCantidadProductos.setError(getString(R.string.err_mes_product_quantity_invalid));
+                    btnPujar.setEnabled(false);
+
+                }
+
+            }
+        });
+
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +223,8 @@ public class PushProductorActivity extends AppCompatActivity {
         contenedorPrincipal.setClickable(false);
         pantallaCarga.setVisibility(View.VISIBLE);
 
+        //Con esto evitamos que envie o modifique la cantidad a valores invalidos
+        btnPujar.setEnabled(false);
     }
 
 

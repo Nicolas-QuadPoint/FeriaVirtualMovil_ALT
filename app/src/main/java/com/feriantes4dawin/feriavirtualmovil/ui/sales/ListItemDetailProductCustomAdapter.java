@@ -81,30 +81,33 @@ public class ListItemDetailProductCustomAdapter extends RecyclerView.Adapter<Lis
         ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder vh =
                 new ListItemDetailProductCustomAdapter.ListItemDetailProductViewHolder(view);
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if(!modoSoloLectura){
 
-                String detalleString = convertidorJSON.toJson(vh.detalle);
-                Intent i = new Intent(activity, PushProductorActivity.class);
-                i.putExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,modoSoloLectura);
-                i.putExtra(FeriaVirtualConstants.SP_DETALLE_PUJA_PROD_STR,detalleString);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if(modoSoloLectura){
+                    String detalleString = convertidorJSON.toJson(vh.detalle);
+                    Intent i = new Intent(activity, PushProductorActivity.class);
+                    i.putExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,modoSoloLectura);
+                    i.putExtra(FeriaVirtualConstants.SP_DETALLE_PUJA_PROD_STR,detalleString);
 
-                    i.putExtra(FeriaVirtualConstants.CODIGO_ACCION,FeriaVirtualConstants.ACCION_VISUALIZAR_PUJA);
+                    if(modoSoloLectura){
 
-                } else {
+                        i.putExtra(FeriaVirtualConstants.CODIGO_ACCION,FeriaVirtualConstants.ACCION_VISUALIZAR_PUJA);
 
-                    i.putExtra(FeriaVirtualConstants.CODIGO_ACCION,FeriaVirtualConstants.ACCION_MODIFICAR_PUJA);
+                    } else {
+
+                        i.putExtra(FeriaVirtualConstants.CODIGO_ACCION,FeriaVirtualConstants.ACCION_MODIFICAR_PUJA);
+
+                    }
+
+                    activity.startActivityForResult(i,0);
 
                 }
+            });
 
-                activity.startActivityForResult(i,0);
-
-            }
-        });
-
+        }
 
         return vh;
     }

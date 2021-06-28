@@ -33,7 +33,7 @@ public class UtilityFunctions {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 
         //Vamos mostrando el dialogo!
-        act.startActivityForResult(galleryIntent,FeriaVirtualConstants.ESCOGER_IMAGEN_REQUEST);
+        act.startActivityForResult(galleryIntent,FeriaVirtualConstants.ACCION_ESCOGER_IMAGEN);
     }
 
 }

@@ -3,11 +3,13 @@ package com.feriantes4dawin.feriavirtualmovil.ui.sales;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -161,7 +163,7 @@ public class CurrentSalesFragment extends Fragment {
             rvListaVentasSimples.setAdapter(null);
 
             //Creo un nuevo objeto adapter, pasandole los datos!
-            rvListaVentasSimples.setAdapter(new SimpleSaleItemCustomAdapter(ventasSimples,convertidorJSON));
+            rvListaVentasSimples.setAdapter(new SimpleSaleItemCustomAdapter((AppCompatActivity) requireActivity(),ventasSimples,convertidorJSON));
             rvListaVentasSimples.setLayoutManager( new LinearLayoutManager(requireContext()));
 
             llPlaceholderEmptyList.setVisibility(View.GONE);
@@ -179,6 +181,16 @@ public class CurrentSalesFragment extends Fragment {
         if(miSwiper.isRefreshing()){
             miSwiper.setRefreshing(false);
         }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Observamos el livedata del objeto y veamos que pasa!
+        Log.i("CURRENT_SALES_FRAG",String.format("Resumiendo aquí!: Usuario: %s",usuario));
+        currentSalesViewModel.getDatosVenta(usuario);
 
     }
 }

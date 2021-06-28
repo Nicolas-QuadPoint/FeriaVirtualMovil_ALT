@@ -1,5 +1,6 @@
 package com.feriantes4dawin.feriavirtualmovil.data.repos;
 
+import com.feriantes4dawin.feriavirtualmovil.data.Result;
 import com.feriantes4dawin.feriavirtualmovil.data.db.SubastaDAO;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
@@ -45,6 +46,7 @@ public class SubastaRepositoryImpl implements SubastaRepository {
         return puc;
     }
 
+    @Override
     public Call<ResultadoID> modificarPujaProductor(
 
             Integer id_subasta,
@@ -69,10 +71,33 @@ public class SubastaRepositoryImpl implements SubastaRepository {
     @Override
     public Call<DetallesPujaSubastaProductor> getProductosSubasta(Integer id_subasta, Integer id_productor){
 
-        Call<DetallesPujaSubastaProductor> puc = subastaAPI.getProductosSubasta(id_subasta);
+        Call<DetallesPujaSubastaProductor> puc = subastaAPI.getProductosSubasta(id_subasta,id_productor);
         return puc;
 
     }
 
+    @Override
+    public Call<DetallesPujaSubastaProductor> getTodosLosProductosSubasta(
+            Integer id_subasta
+    ){
+        Call<DetallesPujaSubastaProductor> puc = subastaAPI.getTodosLosProductosSubasta(id_subasta);
+        return puc;
+    }
+
+    @Override
+    public Call<ResultadoID> transportarEncargoProductos(
+            Integer id_subasta
+    ){
+        Call<ResultadoID> puc = subastaAPI.transportarEncargoProductos(id_subasta);
+        return puc;
+    }
+
+    @Override
+    public Call<ResultadoID> finalizarTransporte(
+            Integer id_subasta
+    ){
+        Call<ResultadoID> puc = subastaAPI.finalizarTransporte(id_subasta);
+        return puc;
+    }
 
 }

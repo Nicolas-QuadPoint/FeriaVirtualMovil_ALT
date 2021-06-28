@@ -3,6 +3,7 @@ package com.feriantes4dawin.feriavirtualmovil.ui.main;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.pdf.PdfRenderer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -96,7 +97,7 @@ public class HelpSectionFragment extends Fragment {
 
                 //PdfRenderer no aguanta archivos sin procesar, por lo que hay que
                 //entregarle un flujo de bytes descomprimidos y cargados en cache.
-                flujoEntradaArchivo = requireContext().getResources().openRawResourceFd(R.raw.manual_usuario).createInputStream();
+                flujoEntradaArchivo = requireContext().getResources().openRawResource(R.raw.manual_usuario);
                 flujoSalidaArchivo = new FileOutputStream(archivoEntrada);
 
                 //Procesamos el archivo, en pedazos de 1kb, escribiéndolo en

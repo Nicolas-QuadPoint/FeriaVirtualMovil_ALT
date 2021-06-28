@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +30,11 @@ import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorActivity;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushTransportistaActivity;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.EnumMessageType;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.ui.widgets.MessageDialog;
+import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -150,60 +156,113 @@ public class SaleDetailActivity extends AppCompatActivity {
             vDescripcionListaProd.setVisibility(View.INVISIBLE);
             btnPujar.setVisibility(View.GONE);
 
-        }
+        } else {
 
+            miSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    pantallaCarga.setVisibility(View.VISIBLE);
+                    saleDetailViewModel.getDatosVenta(id_venta);
+                    saleDetailViewModel.getProductosVenta(id_venta,usuario.id_usuario.intValue());
+                }
+            });
+
+        }
 
         actualizarDatosVenta();
 
 
-        miSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                pantallaCarga.setVisibility(View.VISIBLE);
-                saleDetailViewModel.getDatosVenta(id_venta);
-                saleDetailViewModel.getProductosVenta(id_venta,usuario.id_usuario.intValue());
-            }
-        });
-
         /** 
-         * Con esto se redirige el flujo a la actividad AuctionSaleActivity, que sería
-         * la sección de subastas.
+         * Aqui damos un paron para ver las opciones a tomar.
+         * Si el usuario es transportista, entonces cambiaremos la lógica
+         * por aquí. Y como no me dan ganas de hacer algo decente, haré lo que
+         * pueda...
          */
-        btnPujar.setOnClickListener( v -> {
+        if(Rol.TRANSPORTISTA.equalsValues(usuario.rol)) {
 
-            try{
+            btnPujar.setText(R.string.action_transport);
+            btnPujar.setVisibility(View.VISIBLE);
+            btnPujar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                Class<? extends AppCompatActivity> actividadObjetivo = null;
+                    YesNoDialog ynd = new YesNoDialog(
+                        SaleDetailActivity.this,
+                        getString(R.string.action_confirm),
+                        getString(R.string.confirm_transport),
+                        new SimpleAction() {
+                            @Override
+                            public void doAction(Object o) {
 
-                if(Rol.PRODUCTOR.equalsValues(usuario.rol)) {
+                                saleDetailViewModel.transportarEncargoProductos(id_venta,
+                                    new SimpleAction() {
+                                    @Override
+                                    public void doAction(Object obo) {
 
-                    actividadObjetivo = PushProductorActivity.class;
+                                        int resultado = (Integer)obo;
+                                        int idMensajeError = resultado == 1? R.string.confirm_transport_ok : R.string.confirm_transport_failed;
 
-                } else if(Rol.TRANSPORTISTA.equalsValues(usuario.rol)){
+                                        MessageDialog md = new MessageDialog(SaleDetailActivity.this, EnumMessageType.INFO_MESSAGE,
+                                                getString(R.string.action_confirm_transport),
+                                                getString(idMensajeError),
+                                                new SimpleAction() {
+                                                    @Override
+                                                    public void doAction(Object o) {
+                                                        finish();
+                                                    }
+                                                });
 
-                    actividadObjetivo = PushTransportistaActivity.class;
+                                        md.generate().show();
 
-                } else {
+                                    }
+                                });
 
+
+                            }
+                        },null);
+
+                    ynd.generate().show();
+
+                }
+            });
+
+
+        } else {
+
+            btnPujar.setOnClickListener( v -> {
+
+                try{
+
+                    Class<? extends AppCompatActivity> actividadObjetivo = null;
+
+                    if(Rol.PRODUCTOR.equalsValues(usuario.rol)) {
+
+                        actividadObjetivo = PushProductorActivity.class;
+
+                    } else {
+
+                        Snackbar.make(this,findViewById(R.id.asd_contenedor),getString(R.string.err_msg_generic),Snackbar.LENGTH_LONG).show();
+                        return;
+
+                    }
+
+                    Intent i = new Intent(SaleDetailActivity.this, actividadObjetivo);
+                    i.putExtra("id_venta", this.id_venta);
+                    i.putExtra(CODIGO_ACCION,ACCION_AGREGAR_PUJA);
+                    startActivityForResult(i,1,null);
+
+
+                }catch(Exception ex){
+
+                    Log.e("SALE_DETAIL_ACT",String.format("Un error al intentar pujar!: %s",ex.toString()));
                     Snackbar.make(this,findViewById(R.id.asd_contenedor),getString(R.string.err_msg_generic),Snackbar.LENGTH_LONG).show();
-                    return;
 
                 }
 
-                Intent i = new Intent(SaleDetailActivity.this, actividadObjetivo);
-                i.putExtra("id_venta", this.id_venta);
-                i.putExtra(CODIGO_ACCION,ACCION_AGREGAR_PUJA);
-                startActivityForResult(i,1,null);
+            });
 
 
-            }catch(Exception ex){
-
-                Log.e("SALE_DETAIL_ACT",String.format("Un error al intentar pujar!: %s",ex.toString()));
-                Snackbar.make(this,findViewById(R.id.asd_contenedor),getString(R.string.err_msg_generic),Snackbar.LENGTH_LONG).show();
-
-            }
-
-        });
+        }
 
         pantallaCarga.setVisibility(View.VISIBLE);
         pantallaCargaListaProd.setVisibility(View.VISIBLE);
@@ -225,13 +284,27 @@ public class SaleDetailActivity extends AppCompatActivity {
                 }
         );
 
-        saleDetailViewModel.getProductosVenta(this.id_venta,usuario.id_usuario.intValue()).observe(this,
-            new Observer<DetallesPujaSubastaProductor>() {
+        if(modoSoloLectura){
+
+            saleDetailViewModel.getProductosVenta(this.id_venta).observe(this,
+                new Observer<DetallesPujaSubastaProductor>() {
                 @Override
                 public void onChanged(DetallesPujaSubastaProductor productosRecuperados) {
                     rellenarListaProductos(productosRecuperados);
                 }
-        });
+            });
+
+        } else {
+
+            saleDetailViewModel.getProductosVenta(this.id_venta,usuario.id_usuario.intValue()).observe(this,
+                    new Observer<DetallesPujaSubastaProductor>() {
+                        @Override
+                        public void onChanged(DetallesPujaSubastaProductor productosRecuperados) {
+                            rellenarListaProductos(productosRecuperados);
+                        }
+                    });
+
+        }
 
         pantallaCargaGeneral.setVisibility(View.VISIBLE);
         pantallaCargaListaProd.setVisibility(View.VISIBLE);

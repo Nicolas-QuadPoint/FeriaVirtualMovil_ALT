@@ -12,9 +12,11 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
+import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
+import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
 
 import java.util.ArrayList;
 
@@ -108,6 +110,13 @@ public class SaleDetailViewModel extends ViewModel {
         return datosProductosVenta;
     }
 
+    public LiveData<DetallesPujaSubastaProductor> getProductosVenta(Integer id_venta){
+
+        internalGetProductosVenta(id_venta,-1);
+        return datosProductosVenta;
+
+    }
+
     public LiveData<DetallesPujaSubastaProductor> getProductosVenta(Integer id_venta,Integer id_productor){
 
         internalGetProductosVenta(id_venta,id_productor);
@@ -115,11 +124,56 @@ public class SaleDetailViewModel extends ViewModel {
         return datosProductosVenta;
     }
 
-    private void internalGetProductosVenta(Integer id_venta,Integer id_productor){
+    public void transportarEncargoProductos(Integer id_venta, SimpleAction accion){
 
         try {
 
-            Call<DetallesPujaSubastaProductor> puc = subastaRepository.getProductosSubasta(id_venta,id_productor);
+            Call<ResultadoID> puc = subastaRepository.transportarEncargoProductos(id_venta);
+
+            puc.enqueue(new Callback<ResultadoID>() {
+                @Override
+                public void onResponse(Call<ResultadoID> call, Response<ResultadoID> response) {
+
+                    if(response.isSuccessful() && response.body() != null){
+
+                        if(accion != null){
+                            accion.doAction(  (response.body().id_resultado  == 1)? 1 : 0  );
+                        }
+
+                    } else {
+
+                        if(accion != null){
+                            accion.doAction(0  );
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResultadoID> call, Throwable t) {
+                    Log.e("SALE_DETAIL_ACT",String.format("No se pudo concretar el transporte!: %s",t.toString()));
+                    if(accion != null){
+                        accion.doAction(Integer.valueOf(0));
+                    }
+                }
+            });
+
+        } catch(Exception ex){
+            Log.e("SALE_DETAIL_ACT",String.format("No se pudo concretar el transporte!: %s",ex.toString()));
+        }
+
+    }
+
+    private void internalGetProductosVenta(Integer id_venta,Integer id_productor){
+
+        try {
+            Call<DetallesPujaSubastaProductor> puc;
+            if(id_productor >= 0){
+                puc = subastaRepository.getProductosSubasta(id_venta,id_productor);
+            } else {
+                puc = subastaRepository.getTodosLosProductosSubasta(id_venta);
+            }
 
             puc.enqueue(new Callback<DetallesPujaSubastaProductor>() {
 

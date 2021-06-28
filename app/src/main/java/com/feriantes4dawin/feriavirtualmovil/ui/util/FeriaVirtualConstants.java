@@ -9,14 +9,6 @@ package com.feriantes4dawin.feriavirtualmovil.ui.util;
 public final class FeriaVirtualConstants {
 
     /**
-     * Identificador de Intent para poder acceder a 
-     * la galería de fotos, y escoger una imágen 
-     * (Experimental). 
-     * @see {@link UtilityFunctions}
-     */
-    public static final int ESCOGER_IMAGEN_REQUEST = 100;
-
-    /**
      * URL base que indica la dirección del 
      * webapi de FeriaVirtual. 
      */
@@ -152,5 +144,17 @@ public final class FeriaVirtualConstants {
      * Código de acción para eliminar una puja. 
      */
     public static final int ACCION_REMOVER_PUJA = 3;
+
+    public static final int ACCION_TRANSPORTAR_ENCARGO = 4;
+
+    public static final int ACCION_FINALIZAR_TRANSPORTE = 5;
+
+    /**
+     * Identificador de Intent para poder acceder a
+     * la galería de fotos, y escoger una imágen
+     * (Experimental).
+     * @see {@link UtilityFunctions}
+     */
+    public static final int ACCION_ESCOGER_IMAGEN = 6;
 
 }
