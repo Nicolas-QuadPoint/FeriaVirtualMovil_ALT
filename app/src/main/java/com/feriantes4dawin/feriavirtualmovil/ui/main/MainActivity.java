@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity{
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
 
+        Intent datosEntradaActividad = getIntent();
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_sales, R.id.nav_processes, R.id.nav_profile)
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
+
     /**
      * Este metodo resuelve la accion seleccionada del menu superior de la actividad
      */
@@ -181,26 +185,6 @@ public class MainActivity extends AppCompatActivity{
         }
 
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        
-        /**
-         * Esto actualmente no se ejecuta, por razones que no tengo entendidas.
-         * TODO: Hacer que esto funcione, y el diálogo aparezca al presionar el 
-         * botón de retroceso!
-         */
-        YesNoDialog yesno = new YesNoDialog(this, getString(R.string.err_mes_question), getString(R.string.err_msg_logout_prompt),
-                new SimpleAction() {
-                    @Override
-                    public void doAction(Object o) {
-                        cerrarSesion();
-                    }
-                },
-                null
-        );
-        super.onBackPressed();
     }
 
     @Override
@@ -254,28 +238,29 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-    public void navLogoutClick(View v){
-
-        Log.i("[MAIN_ACTIVITY]","Logout request!");
-
-    }
-
     public void actualizarDatosMenuLateral(Usuario usuario){
 
-        TextView lblNombreUsuario;
-        TextView lblEmailUsuario;
-        TextView lblRolUsuario;
+        TextView lblNombreUsuario = findViewById(R.id.nhm_lblNombreUsuario);
+        TextView lblEmailUsuario = findViewById(R.id.nhm_lblEmailUsuario);
+        TextView lblRolUsuario = findViewById(R.id.nhm_lblRolUsuario);
 
-        if(usuario != null){
+        Log.e("MAIN_ACTIVITY",String.format(
+            "Usuario = %s - lblNombreUsuario = %s - lblEmailUsuario = %s - lblRolUsuario = %s",
+            usuario,
+            lblNombreUsuario,
+            lblEmailUsuario,
+            lblRolUsuario
+        ));
 
-            lblNombreUsuario = findViewById(R.id.nhm_lblNombreUsuario);
-            lblEmailUsuario = findViewById(R.id.nhm_lblEmailUsuario);
-            lblRolUsuario = findViewById(R.id.nhm_lblRolUsuario);
+
+        if(usuario != null && lblNombreUsuario != null && lblEmailUsuario != null && lblRolUsuario != null){
 
             lblNombreUsuario.setText( usuario.getNombreCompleto() );
             lblEmailUsuario.setText( usuario.email );
             lblRolUsuario.setText( usuario.rol.descripcion );
 
+        } else {
+            Log.e("MAIN_ACTIVITY","Por que son nulos?");
         }
     }
 
@@ -299,11 +284,12 @@ public class MainActivity extends AppCompatActivity{
 
         //Limpiando los datos de las shared preferences!
         sp.edit()
-                .putString(SP_FERIAVIRTUAL_WEBAPI_AUTH_TOKEN,"")
-                .putString(SP_USUARIO_OBJ_STR,"")
-                .putInt(SP_USUARIO_ID,0)
-                .putInt(SP_VENTA_ID,0)
-                .commit();
+            .putString(SP_FERIAVIRTUAL_WEBAPI_AUTH_TOKEN,"")
+            .putString(SP_USUARIO_OBJ_STR,"")
+            .putInt(SP_USUARIO_ID,0)
+            .putInt(SP_VENTA_ID,0)
+            .putString(SP_VENTA_OBJ_STR,"")
+            .commit();
 
         startActivity(loginActivityIntent);
 

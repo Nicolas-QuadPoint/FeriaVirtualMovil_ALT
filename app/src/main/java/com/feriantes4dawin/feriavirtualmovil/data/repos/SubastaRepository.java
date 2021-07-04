@@ -51,7 +51,7 @@ public interface SubastaRepository {
         Integer id_subasta
     );
 
-    Call<ResultadoID> finalizarTransporte(
+    Call<ResultadoID> finalizarEncargoProductos(
         Integer id_subasta
     );
 

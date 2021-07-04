@@ -52,12 +52,12 @@ public class HomeFragment extends Fragment {
             String usuarioString = sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,"");
             Usuario u = convertidorJSON.fromJson(usuarioString,Usuario.class);
             TextView lblNombreUsuario = root.findViewById(R.id.hf_lblNombreUsuario);
-            TextView lblSubastasSinConfirmar = root.findViewById(R.id.hf_lblSubastasSinConfirmar);
-            TextView lblGananciasMes = root.findViewById(R.id.hf_lblGananciasMes);
+            //TextView lblSubastasSinConfirmar = root.findViewById(R.id.hf_lblSubastasSinConfirmar);
+            //TextView lblGananciasMes = root.findViewById(R.id.hf_lblGananciasMes);
 
             lblNombreUsuario.setText(u.getNombreCompleto());
-            lblGananciasMes.setText(R.string.err_mes_not_avalaible);
-            lblSubastasSinConfirmar.setText(R.string.err_mes_not_avalaible);
+            //lblGananciasMes.setText(R.string.err_mes_not_avalaible);
+            //lblSubastasSinConfirmar.setText(R.string.err_mes_not_avalaible);
 
         } catch(Exception ex) {
 

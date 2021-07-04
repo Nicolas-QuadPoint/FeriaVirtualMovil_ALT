@@ -114,11 +114,8 @@ public class SimpleSaleItemCustomAdapter extends RecyclerView.Adapter<SimpleSale
                     .putString(FeriaVirtualConstants.SP_VENTA_OBJ_STR,ventaString)
                     .commit();
 
-            /* Establezco el modo de solo lectura para la actividad */
-            if(Rol.TRANSPORTISTA.equalsValues(usuario.rol)){
-                //Se obliga acceder al modo edicion
-                i.putExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,true);
-            }
+            //Se obliga acceder al modo edicion (solo si es explicitado!)
+            i.putExtra(FeriaVirtualConstants.MODO_SOLO_LECTURA,modoSoloLectura);
 
             activity.startActivityForResult(i,0,null);
         });

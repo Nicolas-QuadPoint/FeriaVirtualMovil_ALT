@@ -124,6 +124,45 @@ public class SaleDetailViewModel extends ViewModel {
         return datosProductosVenta;
     }
 
+    public void finalizarEncargoProductos(Integer id_venta,SimpleAction accion){
+        try {
+
+            Call<ResultadoID> puc = subastaRepository.finalizarEncargoProductos(id_venta);
+
+            puc.enqueue(new Callback<ResultadoID>() {
+                @Override
+                public void onResponse(Call<ResultadoID> call, Response<ResultadoID> response) {
+
+                    if(response.isSuccessful() && response.body() != null){
+
+                        if(accion != null){
+                            accion.doAction(  (response.body().id_resultado  == 1)? 1 : 0  );
+                        }
+
+                    } else {
+
+                        if(accion != null){
+                            accion.doAction(0  );
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResultadoID> call, Throwable t) {
+                    Log.e("SALE_DETAIL_ACT",String.format("No se pudo finalizar el transporte!: %s",t.toString()));
+                    if(accion != null){
+                        accion.doAction(Integer.valueOf(0));
+                    }
+                }
+            });
+
+        } catch(Exception ex){
+            Log.e("SALE_DETAIL_ACT",String.format("No se pudo concretar el transporte!: %s",ex.toString()));
+        }
+    }
+
     public void transportarEncargoProductos(Integer id_venta, SimpleAction accion){
 
         try {

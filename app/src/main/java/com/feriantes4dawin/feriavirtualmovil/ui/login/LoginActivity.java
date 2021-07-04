@@ -317,6 +317,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //Cambiamos a la actividad principal
         Intent menuprincipalintent = new Intent(getApplicationContext(), MainActivity.class);
+        SharedPreferences sp = getSharedPreferences(FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        menuprincipalintent.putExtra("usuario-autenticado",sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,""));
 
         startActivity(menuprincipalintent);
 

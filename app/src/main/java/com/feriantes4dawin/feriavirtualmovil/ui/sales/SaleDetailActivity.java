@@ -23,6 +23,7 @@ import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
+import com.feriantes4dawin.feriavirtualmovil.data.models.EstadoVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
@@ -156,18 +157,20 @@ public class SaleDetailActivity extends AppCompatActivity {
             vDescripcionListaProd.setVisibility(View.INVISIBLE);
             btnPujar.setVisibility(View.GONE);
 
-        } else {
+        }
 
-            miSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    pantallaCarga.setVisibility(View.VISIBLE);
-                    saleDetailViewModel.getDatosVenta(id_venta);
+        miSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pantallaCarga.setVisibility(View.VISIBLE);
+                saleDetailViewModel.getDatosVenta(id_venta);
+                if(modoSoloLectura){
+                    saleDetailViewModel.getProductosVenta(id_venta);
+                } else {
                     saleDetailViewModel.getProductosVenta(id_venta,usuario.id_usuario.intValue());
                 }
-            });
-
-        }
+            }
+        });
 
         actualizarDatosVenta();
 
@@ -180,52 +183,107 @@ public class SaleDetailActivity extends AppCompatActivity {
          */
         if(Rol.TRANSPORTISTA.equalsValues(usuario.rol)) {
 
-            btnPujar.setText(R.string.action_transport);
-            btnPujar.setVisibility(View.VISIBLE);
-            btnPujar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            if(venta.estado_venta.equalsValues(EstadoVenta.EN_TRANSPORTE)){
 
-                    YesNoDialog ynd = new YesNoDialog(
-                        SaleDetailActivity.this,
-                        getString(R.string.action_confirm),
-                        getString(R.string.confirm_transport),
-                        new SimpleAction() {
-                            @Override
-                            public void doAction(Object o) {
+                btnPujar.setText(R.string.action_finish_transport);
+                btnPujar.setVisibility(View.VISIBLE);
+                btnPujar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                                saleDetailViewModel.transportarEncargoProductos(id_venta,
-                                    new SimpleAction() {
+                        YesNoDialog ynd = new YesNoDialog(
+                                SaleDetailActivity.this,
+                                getString(R.string.action_finish_transport),
+                                getString(R.string.finish_transport),
+                                new SimpleAction() {
                                     @Override
-                                    public void doAction(Object obo) {
+                                    public void doAction(Object o) {
 
-                                        int resultado = (Integer)obo;
-                                        int idMensajeError = resultado == 1? R.string.confirm_transport_ok : R.string.confirm_transport_failed;
+                                        saleDetailViewModel.finalizarEncargoProductos(id_venta,
+                                        new SimpleAction() {
+                                            @Override
+                                            public void doAction(Object obo) {
 
-                                        MessageDialog md = new MessageDialog(SaleDetailActivity.this, EnumMessageType.INFO_MESSAGE,
-                                                getString(R.string.action_confirm_transport),
-                                                getString(idMensajeError),
+                                                int resultado = (Integer)obo;
+                                                int idMensajeError = resultado == 1? R.string.finish_transport_ok : R.string.finish_transport_failed;
+
+                                                MessageDialog md = new MessageDialog(SaleDetailActivity.this, EnumMessageType.INFO_MESSAGE,
+                                                        getString(R.string.action_finish_transport),
+                                                        getString(idMensajeError),
+                                                        new SimpleAction() {
+                                                            @Override
+                                                            public void doAction(Object o) {
+                                                                finish();
+                                                            }
+                                                        });
+
+                                                md.generate().show();
+
+                                            }
+                                        });
+
+                                    }
+                                },null);
+
+                        ynd.generate().show();
+
+                    }
+                });
+
+            } else if (venta.estado_venta.equalsValues(EstadoVenta.PENDIENTE_TRANPORTISTA)){
+
+
+                btnPujar.setText(R.string.action_transport);
+                btnPujar.setVisibility(View.VISIBLE);
+                btnPujar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        YesNoDialog ynd = new YesNoDialog(
+                                SaleDetailActivity.this,
+                                getString(R.string.action_confirm),
+                                getString(R.string.confirm_transport),
+                                new SimpleAction() {
+                                    @Override
+                                    public void doAction(Object o) {
+
+                                        saleDetailViewModel.transportarEncargoProductos(id_venta,
                                                 new SimpleAction() {
                                                     @Override
-                                                    public void doAction(Object o) {
-                                                        finish();
+                                                    public void doAction(Object obo) {
+
+                                                        int resultado = (Integer)obo;
+                                                        int idMensajeError = resultado == 1? R.string.confirm_transport_ok : R.string.confirm_transport_failed;
+
+                                                        MessageDialog md = new MessageDialog(SaleDetailActivity.this, EnumMessageType.INFO_MESSAGE,
+                                                                getString(R.string.action_confirm_transport),
+                                                                getString(idMensajeError),
+                                                                new SimpleAction() {
+                                                                    @Override
+                                                                    public void doAction(Object o) {
+                                                                        finish();
+                                                                    }
+                                                                });
+
+                                                        md.generate().show();
+
                                                     }
                                                 });
 
-                                        md.generate().show();
 
                                     }
-                                });
+                                },null);
 
+                        ynd.generate().show();
 
-                            }
-                        },null);
+                    }
+                });
 
-                    ynd.generate().show();
-
-                }
-            });
-
+            }
+            /**
+             * Si el proceso de venta no esta en trasporte, ni buscando transportistas, entonces
+             * no se hace nada!
+             **/
 
         } else {
 
@@ -430,6 +488,7 @@ public class SaleDetailActivity extends AppCompatActivity {
 
         View pantallaCargaListaProd = findViewById(R.id.dppb_llloading);
         View phListaVaciaProd = findViewById(R.id.dppb_phListaVaciaProd);
+        SwipeRefreshLayout miSwipe = findViewById(R.id.asd_swipeSaleDetail);
         RecyclerView rvListaProductos = findViewById(R.id.dppb_rvListaProductos);
 
         if(productosRecuperados != null && productosRecuperados.pujas != null &&
@@ -453,7 +512,9 @@ public class SaleDetailActivity extends AppCompatActivity {
         }
 
         pantallaCargaListaProd.setVisibility(View.GONE);
-
+        if(miSwipe.isRefreshing()){
+            miSwipe.setRefreshing(false);
+        }
 
     }
 

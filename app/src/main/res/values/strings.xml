@@ -142,5 +142,9 @@
     <string name="confirm_transport_failed">Can\'t confirm transport of request. Try again later</string>
     <string name="confirm_transport_ok">Transport confirmed. Get sure of finish it once the request reach its destination</string>
     <string name="action_confirm_transport">Confirm Transport</string>
+    <string name="action_finish_transport">Finish Transport</string>
+    <string name="finish_transport">Were you deliver the products to customer?</string>
+    <string name="finish_transport_ok">Finalization confirmed</string>
+    <string name="finish_transport_failed">An error ocurred while processing the finalization of this transport. Please try again</string>
 
 </resources>

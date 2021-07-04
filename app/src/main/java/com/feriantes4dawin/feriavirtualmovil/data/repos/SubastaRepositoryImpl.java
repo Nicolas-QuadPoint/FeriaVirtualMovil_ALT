@@ -93,10 +93,10 @@ public class SubastaRepositoryImpl implements SubastaRepository {
     }
 
     @Override
-    public Call<ResultadoID> finalizarTransporte(
+    public Call<ResultadoID> finalizarEncargoProductos(
             Integer id_subasta
     ){
-        Call<ResultadoID> puc = subastaAPI.finalizarTransporte(id_subasta);
+        Call<ResultadoID> puc = subastaAPI.finalizarEncargoProductos(id_subasta);
         return puc;
     }
 

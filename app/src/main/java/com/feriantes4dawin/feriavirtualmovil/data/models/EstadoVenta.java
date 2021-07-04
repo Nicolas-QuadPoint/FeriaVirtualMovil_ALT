@@ -43,7 +43,7 @@ public class EstadoVenta {
 
         } else {
 
-            return (this.id_estado_venta == ev.id_estado_venta && (this.descripcion.compareTo(ev.descripcion) == 0) );
+            return (this.id_estado_venta == ev.id_estado_venta );
 
         }
 

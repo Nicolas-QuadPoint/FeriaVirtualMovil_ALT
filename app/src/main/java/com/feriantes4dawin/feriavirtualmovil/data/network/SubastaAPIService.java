@@ -86,7 +86,7 @@ public interface SubastaAPIService {
     );
 
     @PUT("subastas/{idsubasta}/transportista/transporte")
-    Call<ResultadoID> finalizarTransporte(
+    Call<ResultadoID> finalizarEncargoProductos(
         @Path("idsubasta")
         Integer id_subasta
     );

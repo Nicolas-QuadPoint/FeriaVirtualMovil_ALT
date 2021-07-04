@@ -30,12 +30,6 @@
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/ppbd_clean_item_help"
-                android:textAlignment="viewStart" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

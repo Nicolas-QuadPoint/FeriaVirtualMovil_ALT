@@ -20,7 +20,7 @@
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
-    <string name="welcome">"Bienvenido"</string>
+    <string name="welcome">Bienvenid@</string>
     <string name="invalid_username">El email del usuario no es válido</string>
     <string name="invalid_user_role">"Solo los usuarios con rol Productor y Transportista son permitidos para usar esta aplicación. Tu rol es %s. Por favor utiliza la app web en su lugar, para una mejor experiencia.     "</string>
     <string name="invalid_password">La contraseña debe tener más de 5 carácteres</string>
@@ -92,7 +92,7 @@
 
     <!-- Push Productor bid messages -->
     <string name="ppbd_title">Pujar oferta</string>
-    <string name="ppbd_prod">Ingresa los productos que quieras aportar para este proceso de venta.</string>
+    <string name="ppbd_prod">Ingresa los productos que quieras aportar para este proceso de venta pulsando \'Pujar\'. Puedes modificar uno de estos elementos si los seleccionas.</string>
     <string name="ppbd_item">Producto</string>
     <string name="ppbd_quantity">¿Cuántos? (Unidades, Kilos)</string>
     <string name="ppbd_price">¿A qué precio?</string>
@@ -141,6 +141,10 @@
     <string name="confirm_transport_failed">No se pudo confirmar el traslado. Inténtelo más tarde</string>
     <string name="confirm_transport_ok">Transporte confirmado. Finalízalo una vez llegue a destino</string>
     <string name="action_confirm_transport">Confirmación Transporte</string>
+    <string name="action_finish_transport">Finalizar Transporte</string>
+    <string name="finish_transport">¿Entregaste el encargo de productos al cliente? Confirma para notificar al sistema.</string>
+    <string name="finish_transport_ok">Finaliación de transporte confirmada. Ahora puede encargarse de otros procesos</string>
+    <string name="finish_transport_failed">Ocurrió un error al finalizar este proceso de transporte. Por favor, inténtelo más tarde.</string>
 
 
 </resources>
