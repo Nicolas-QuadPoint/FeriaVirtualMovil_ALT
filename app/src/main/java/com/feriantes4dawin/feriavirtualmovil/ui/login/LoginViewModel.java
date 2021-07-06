@@ -14,7 +14,7 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.LoginObject;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoUsuario;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
@@ -103,12 +103,11 @@ public class LoginViewModel extends ViewModel {
                         ResultadoUsuario rul = response.body();
 
                         /**
-                         * Esta app solo permite usuarios adminsitradores, transportistas, y productores
+                         * Esta app solo permite usuarios transportistas, y productores
                          * así que si un rol de usuario es distinto a estos, entonces invalidamos todos
                          * los roles ajenos a estos
                          */
-                        if(Rol.ADMINISTRADOR.equalsValues(rul.usuario.rol) ||
-                           Rol.TRANSPORTISTA.equalsValues(rul.usuario.rol) ||
+                        if(Rol.TRANSPORTISTA.equalsValues(rul.usuario.rol) ||
                            Rol.PRODUCTOR.equalsValues(rul.usuario.rol)) {
 
                             String usuarioString = convertidorJSON.toJson(rul.usuario);

@@ -1,13 +1,10 @@
 package com.feriantes4dawin.feriavirtualmovil.data.models;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
 import com.google.gson.annotations.Expose;
-
-import org.jetbrains.annotations.NotNull;
 
 @Entity
 public class Usuario {

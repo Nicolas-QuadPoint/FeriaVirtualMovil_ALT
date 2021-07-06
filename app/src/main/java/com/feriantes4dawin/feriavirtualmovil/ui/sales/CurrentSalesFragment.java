@@ -20,10 +20,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualComponent;
 import com.feriantes4dawin.feriavirtualmovil.R;
+import com.feriantes4dawin.feriavirtualmovil.data.models.Rol;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Ventas;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -156,30 +157,56 @@ public class CurrentSalesFragment extends Fragment {
         RecyclerView rvListaVentasSimples = vistaMaestra.findViewById(R.id.asd_rvListaProductosSolicitados);
         SwipeRefreshLayout miSwiper = vistaMaestra.findViewById(R.id.csf_swipeCurrentSales);
         View llPlaceholderEmptyList = vistaMaestra.findViewById(R.id.csf_llPlaceholderEmptyList);
+        boolean modoFinalLectura = false;
 
-        if(ventasSimples != null){
+        try {
 
-            //Limpio la lista anterior
-            rvListaVentasSimples.setAdapter(null);
+            SharedPreferences sp = requireContext().getSharedPreferences(
+                    FeriaVirtualConstants.FERIAVIRTUAL_MOVIL_SHARED_PREFERENCES,Context.MODE_PRIVATE);
+            Usuario u = convertidorJSON.fromJson(sp.getString(FeriaVirtualConstants.SP_USUARIO_OBJ_STR,""),Usuario.class);
 
-            //Creo un nuevo objeto adapter, pasandole los datos!
-            rvListaVentasSimples.setAdapter(new SimpleSaleItemCustomAdapter((AppCompatActivity) requireActivity(),ventasSimples,convertidorJSON));
-            rvListaVentasSimples.setLayoutManager( new LinearLayoutManager(requireContext()));
+            if(ventasSimples != null){
 
-            llPlaceholderEmptyList.setVisibility(View.GONE);
-            rvListaVentasSimples.setVisibility(View.VISIBLE);
+                //Limpio la lista anterior
+                rvListaVentasSimples.setAdapter(null);
 
-        } else {
+                //Consulto de datos de usuario autenticado! (Si es transportista, solo es para lectura)
+                modoFinalLectura = Rol.TRANSPORTISTA.equalsValues(u.rol);
 
-            //NO hay datos. Vamos a cambiar la vista de lista por el placeholder. 
-            llPlaceholderEmptyList.setVisibility(View.VISIBLE);
-            rvListaVentasSimples.setVisibility(View.GONE);
+                //Creo un nuevo objeto adapter, pasandole los datos!
+                rvListaVentasSimples.setAdapter(
+                        new SimpleSaleItemCustomAdapter(
+                                (AppCompatActivity) requireActivity(),
+                                ventasSimples,
+                                convertidorJSON,
+                                modoFinalLectura));
 
-        }
+                rvListaVentasSimples.setLayoutManager( new LinearLayoutManager(requireContext()));
 
-        //Desactivo el efecto de refresco si está activo
-        if(miSwiper.isRefreshing()){
-            miSwiper.setRefreshing(false);
+                llPlaceholderEmptyList.setVisibility(View.GONE);
+                rvListaVentasSimples.setVisibility(View.VISIBLE);
+
+            } else {
+
+                //NO hay datos. Vamos a cambiar la vista de lista por el placeholder.
+                llPlaceholderEmptyList.setVisibility(View.VISIBLE);
+                rvListaVentasSimples.setVisibility(View.GONE);
+
+            }
+
+
+
+        }catch(Exception ex){
+
+            Log.e("CURRENT_SALES_FRAG",String.format("No se pudo procesar la lista de ventas!!: %s",ex.toString()));
+
+        } finally {
+
+            //Desactivo el efecto de refresco si está activo
+            if(miSwiper.isRefreshing()){
+                miSwiper.setRefreshing(false);
+            }
+
         }
 
     }

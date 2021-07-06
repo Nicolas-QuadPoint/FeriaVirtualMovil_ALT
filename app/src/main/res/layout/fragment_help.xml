@@ -5,6 +5,7 @@
     android:id="@+id/fmp_swipeFMP"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fondo_oscuro"
     android:fillViewport="true"
     android:isScrollContainer="true"
     android:orientation="vertical"

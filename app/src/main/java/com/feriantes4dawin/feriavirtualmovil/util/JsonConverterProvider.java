@@ -1,4 +1,4 @@
-package com.feriantes4dawin.feriavirtualmovil.ui.util;
+package com.feriantes4dawin.feriavirtualmovil.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

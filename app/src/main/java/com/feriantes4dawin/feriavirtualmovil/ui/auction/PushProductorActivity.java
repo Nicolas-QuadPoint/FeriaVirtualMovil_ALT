@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,9 +26,9 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcherAdapter;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleTextWatcherAdapter;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.gson.Gson;
 
@@ -38,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants.*;
+import static com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants.*;
 
 
 public class PushProductorActivity extends AppCompatActivity {
@@ -262,12 +261,20 @@ public class PushProductorActivity extends AppCompatActivity {
 
                         for(Producto p : listaProductos){
 
-                            if(detalle.producto.id_producto == p.id_producto){
+                            if(detalle.producto.id_producto.compareTo(p.id_producto) == 0){
                                 productoEncontrado = p;
                                 break;
                             }
 
                         }
+
+                        Log.e("PUSH_PRODUCTOR_ACT",String.format(
+                                "Producto del detalle: %s |"+
+                                "Producto de la lista: %s ",productoEncontrado,
+                                ((ArrayAdapter)spProductos.getAdapter()).getPosition(
+                                        productoEncontrado
+                                )
+                                ));
 
                         spProductos.setSelection(((ArrayAdapter)spProductos.getAdapter()).getPosition(
                             productoEncontrado

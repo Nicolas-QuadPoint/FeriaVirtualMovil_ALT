@@ -8,17 +8,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.feriantes4dawin.feriavirtualmovil.FeriaVirtualApplication;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.DetalleVenta;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallesPujaSubastaProductor;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Producto;
-import com.feriantes4dawin.feriavirtualmovil.data.models.Productos;
 import com.feriantes4dawin.feriavirtualmovil.data.models.ResultadoID;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
-
-import java.util.ArrayList;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
 
 import retrofit2.Call;
 import retrofit2.Callback;

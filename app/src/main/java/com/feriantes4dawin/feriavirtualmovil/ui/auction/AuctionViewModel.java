@@ -17,8 +17,8 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepository;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepository;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
 import com.google.gson.Gson;
 
 import retrofit2.Call;

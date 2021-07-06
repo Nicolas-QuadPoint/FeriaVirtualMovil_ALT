@@ -1,10 +1,8 @@
 package com.feriantes4dawin.feriavirtualmovil.ui.widgets;
 
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -15,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorCustomAdapter;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
 
 import org.jetbrains.annotations.NotNull;
 

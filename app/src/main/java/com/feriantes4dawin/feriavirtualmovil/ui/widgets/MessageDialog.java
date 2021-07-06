@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.EnumMessageType;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.EnumMessageType;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
 
 /**
  * MessageDialog 

@@ -8,7 +8,7 @@ import com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.Authentica
 import com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.AuthenticationInterceptorImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.ConnectivityInterceptor;
 import com.feriantes4dawin.feriavirtualmovil.data.network.interceptor.ConnectivityInterceptorImpl;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

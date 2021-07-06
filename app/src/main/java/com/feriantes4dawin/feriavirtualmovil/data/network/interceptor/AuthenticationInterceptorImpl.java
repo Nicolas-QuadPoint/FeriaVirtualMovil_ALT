@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
 
 import java.io.IOException;
 

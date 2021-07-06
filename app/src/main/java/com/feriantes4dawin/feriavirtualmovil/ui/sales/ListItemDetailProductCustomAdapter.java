@@ -15,7 +15,7 @@ import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.data.models.DetallePujaSubastaProductor;
 import com.feriantes4dawin.feriavirtualmovil.data.models.TipoVenta;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorActivity;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
 import com.google.gson.Gson;
 
 import java.util.List;

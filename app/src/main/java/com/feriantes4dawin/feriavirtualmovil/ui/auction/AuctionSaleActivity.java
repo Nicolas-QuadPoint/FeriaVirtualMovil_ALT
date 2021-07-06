@@ -14,7 +14,7 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
+import com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;

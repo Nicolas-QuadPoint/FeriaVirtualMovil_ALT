@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,10 +29,8 @@ import com.feriantes4dawin.feriavirtualmovil.data.models.Venta;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.SubastaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.VentaRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushProductorActivity;
-import com.feriantes4dawin.feriavirtualmovil.ui.auction.PushTransportistaActivity;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.EnumMessageType;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.EnumMessageType;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.MessageDialog;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -44,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
-import static com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants.*;
+import static com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants.*;
 
 /**
  * SaleDetailActivity 
@@ -342,6 +339,8 @@ public class SaleDetailActivity extends AppCompatActivity {
                 }
         );
 
+        Log.e("SALE_DETAIL_ACT",String.format("Modo de lectura: %s",modoSoloLectura));
+
         if(modoSoloLectura){
 
             saleDetailViewModel.getProductosVenta(this.id_venta).observe(this,
@@ -355,12 +354,12 @@ public class SaleDetailActivity extends AppCompatActivity {
         } else {
 
             saleDetailViewModel.getProductosVenta(this.id_venta,usuario.id_usuario.intValue()).observe(this,
-                    new Observer<DetallesPujaSubastaProductor>() {
-                        @Override
-                        public void onChanged(DetallesPujaSubastaProductor productosRecuperados) {
-                            rellenarListaProductos(productosRecuperados);
-                        }
-                    });
+            new Observer<DetallesPujaSubastaProductor>() {
+                @Override
+                public void onChanged(DetallesPujaSubastaProductor productosRecuperados) {
+                    rellenarListaProductos(productosRecuperados);
+                }
+            });
 
         }
 

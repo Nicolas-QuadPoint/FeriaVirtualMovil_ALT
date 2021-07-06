@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 
 public class PushTransportistaActivity extends AppCompatActivity {

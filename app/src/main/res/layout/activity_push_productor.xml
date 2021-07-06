@@ -30,6 +30,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="number"
+            android:text="0"
             app:layout_constraintEnd_toEndOf="@+id/textView7"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textView7"

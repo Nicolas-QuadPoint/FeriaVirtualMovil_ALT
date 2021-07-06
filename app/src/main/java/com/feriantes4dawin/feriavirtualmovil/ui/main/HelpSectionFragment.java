@@ -42,7 +42,7 @@ import java.io.InputStream;
  */
 public class HelpSectionFragment extends Fragment {
 
-    private static final String nombreArchivo = "manual_usuario.pdf";
+    private static final String nombreArchivo = "manual_usuario_2.pdf";
     private float factorDeEscalado = 1.0f;
     private ScaleGestureDetector detectorDeEscalado;
     private GestureDetector.SimpleOnGestureListener detectorGestos;
@@ -97,7 +97,7 @@ public class HelpSectionFragment extends Fragment {
 
                 //PdfRenderer no aguanta archivos sin procesar, por lo que hay que
                 //entregarle un flujo de bytes descomprimidos y cargados en cache.
-                flujoEntradaArchivo = requireContext().getResources().openRawResource(R.raw.manual_usuario);
+                flujoEntradaArchivo = requireContext().getResources().openRawResource(R.raw.manual_usuario_2);
                 flujoSalidaArchivo = new FileOutputStream(archivoEntrada);
 
                 //Procesamos el archivo, en pedazos de 1kb, escribiéndolo en

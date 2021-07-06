@@ -1,4 +1,4 @@
-package com.feriantes4dawin.feriavirtualmovil.ui.util;
+package com.feriantes4dawin.feriavirtualmovil.util;
 
 import android.text.Editable;
 import android.text.TextWatcher;

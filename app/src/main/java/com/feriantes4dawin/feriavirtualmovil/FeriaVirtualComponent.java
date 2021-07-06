@@ -15,7 +15,7 @@ import com.feriantes4dawin.feriavirtualmovil.ui.proccesses.MyProcessesFragment;
 import com.feriantes4dawin.feriavirtualmovil.ui.profile.MyProfileFragment;
 import com.feriantes4dawin.feriavirtualmovil.ui.sales.CurrentSalesFragment;
 import com.feriantes4dawin.feriavirtualmovil.ui.sales.SaleDetailActivity;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.JsonConverterProvider;
+import com.feriantes4dawin.feriavirtualmovil.util.JsonConverterProvider;
 
 import javax.inject.Singleton;
 import dagger.Component;

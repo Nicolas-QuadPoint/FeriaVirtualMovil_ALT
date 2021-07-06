@@ -11,8 +11,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.feriantes4dawin.feriavirtualmovil.R;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleTextWatcherAdapter;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleTextWatcherAdapter;
 
 /**
  * PushDetailProductorDialog 

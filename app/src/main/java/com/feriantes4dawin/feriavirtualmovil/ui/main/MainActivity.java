@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -28,8 +26,8 @@ import com.feriantes4dawin.feriavirtualmovil.R;
 import com.feriantes4dawin.feriavirtualmovil.data.models.Usuario;
 import com.feriantes4dawin.feriavirtualmovil.data.repos.UsuarioRepositoryImpl;
 import com.feriantes4dawin.feriavirtualmovil.ui.login.LoginActivity;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.EnumMessageType;
-import com.feriantes4dawin.feriavirtualmovil.ui.util.SimpleAction;
+import com.feriantes4dawin.feriavirtualmovil.util.EnumMessageType;
+import com.feriantes4dawin.feriavirtualmovil.util.SimpleAction;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.MessageDialog;
 import com.feriantes4dawin.feriavirtualmovil.ui.widgets.YesNoDialog;
 import com.google.android.material.navigation.NavigationView;
@@ -37,7 +35,7 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-import static com.feriantes4dawin.feriavirtualmovil.ui.util.FeriaVirtualConstants.*;
+import static com.feriantes4dawin.feriavirtualmovil.util.FeriaVirtualConstants.*;
 
 /**
  * MainActivity 
